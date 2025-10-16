@@ -2,10 +2,12 @@ import { Entity } from '../../../../core/domain/entity';
 import { Result, success } from '../../../../core/utils/result';
 
 interface OrderItemProps {
-  orderId: string;
-  productId: string;
+  order_id: string;
+  product_id: string;
   quantity: number;
-  price: number;
+  unit_price: number;
+  line_total: number;
+  note: string;
 }
 
 export class OrderItem extends Entity<OrderItemProps> {
@@ -13,27 +15,34 @@ export class OrderItem extends Entity<OrderItemProps> {
     super(props, id);
   }
 
-  get orderId(): string {
-    return this.props.orderId;
+  get order_id(): string {
+    return this.props.order_id;
   }
 
-  get productId(): string {
-    return this.props.productId;
+  get product_id(): string {
+    return this.props.product_id;
   }
 
   get quantity(): number {
     return this.props.quantity;
   }
 
-  get price(): number {
-    return this.props.price;
+  get unit_price(): number {
+    return this.props.unit_price;
+  }
+
+  get line_total(): number {
+    return this.props.line_total;
+  }
+
+  get note(): string {
+    return this.props.note;
   }
 
   public static create(
     props: OrderItemProps,
     id?: string,
   ): Result<OrderItem, Error> {
-    // Add validation logic here
     const orderItem = new OrderItem(props, id);
     return success(orderItem);
   }
