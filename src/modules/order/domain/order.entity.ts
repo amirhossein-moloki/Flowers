@@ -2,7 +2,7 @@ import { Entity } from '../../../../core/domain/entity';
 import { Result, success } from '../../../../core/utils/result';
 import { OrderItem } from './order-item.entity';
 
-interface OrderProps {
+export interface IOrderProps {
   customer_id: string;
   vendor_id: string;
   outlet_id: string;
@@ -23,8 +23,8 @@ interface OrderProps {
   items?: OrderItem[];
 }
 
-export class Order extends Entity<OrderProps> {
-  private constructor(props: OrderProps, id?: string) {
+export class Order extends Entity<IOrderProps> {
+  private constructor(props: IOrderProps, id?: string) {
     super(props, id);
   }
 
@@ -92,7 +92,7 @@ export class Order extends Entity<OrderProps> {
     return this.props.items;
   }
 
-  public static create(props: OrderProps, id?: string): Result<Order, Error> {
+  public static create(props: IOrderProps, id?: string): Result<Order, Error> {
     const order = new Order(
       {
         ...props,
