@@ -2,7 +2,7 @@ import { Entity } from '../../../../core/domain/entity';
 import { Result, success } from '../../../../core/utils/result';
 import { UserRole } from '../../../../core/domain/enums';
 
-interface UserProps {
+export interface IUserProps {
   username: string;
   full_name: string;
   phone: string;
@@ -13,8 +13,8 @@ interface UserProps {
   updatedAt?: Date;
 }
 
-export class User extends Entity<UserProps> {
-  private constructor(props: UserProps, id?: string) {
+export class User extends Entity<IUserProps> {
+  private constructor(props: IUserProps, id?: string) {
     super(props, id);
   }
 
@@ -42,7 +42,7 @@ export class User extends Entity<UserProps> {
     return this.props.is_active;
   }
 
-  public static create(props: UserProps, id?: string): Result<User, Error> {
+  public static create(props: IUserProps, id?: string): Result<User, Error> {
     const user = new User(
       {
         ...props,

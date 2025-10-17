@@ -1,32 +1,40 @@
 import { IUserRepository } from '../../domain/user.repository';
-import { User } from '../../domain/user.entity';
+import { User, IUserProps } from '../../domain/user.entity';
 import { CreateUserDto } from '../dtos/create-user.dto';
+import { UserDto } from '../dtos/user.dto';
 import { Result, success, failure } from '../../../../../core/utils/result';
 import { HttpError } from '../../../../../core/errors/http-error';
+import { UserMapper } from '../../infrastructure/user.mapper';
 
-// This is a simplified example. In a real app, you'd hash the password.
 export class CreateUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  async execute(dto: CreateUserDto): Promise<Result<User, HttpError>> {
-    const existingUser = await this.userRepository.findByEmail(dto.email);
-    if (existingUser) {
+  async execute(dto: CreateUserDto): Promise<Result<UserDto, HttpError>> {
+    // 1. Check for existing user by email or username
+    const existingByEmail = await this.userRepository.findByEmail(dto.email);
+    if (existingByEmail) {
       return failure(HttpError.badRequest('Email already in use.'));
     }
+    const existingByUsername = await this.userRepository.findByUsername(dto.username);
+    if (existingByUsername) {
+      return failure(HttpError.badRequest('Username already taken.'));
+    }
 
-    const userResult = User.create({
-      email: dto.email,
-      name: dto.name,
-      passwordHash: dto.password, // HASH THIS in a real app
-    });
+    // 2. Create the User entity
+    const userProps: IUserProps = { ...dto };
+    const userResult = User.create(userProps);
 
     if (!userResult.success) {
       return failure(HttpError.internalServerError(userResult.error.message));
     }
-
     const user = userResult.value;
+
+    // 3. Persist the user
+    // Note: In a real app, password hashing would happen here before saving
     await this.userRepository.save(user);
 
-    return success(user);
+    // 4. Return a public-facing DTO
+    const userDto = UserMapper.toDto(user);
+    return success(userDto);
   }
 }

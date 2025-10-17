@@ -1,44 +1,19 @@
 import { Entity } from '../../../../core/domain/entity';
 import { Result, success } from '../../../../core/utils/result';
 
-interface VendorProps {
+// A simplified Vendor entity for dependency purposes.
+export interface IVendorProps {
   name: string;
-  legal_name: string;
-  contact_phone: string;
-  status?: string;
-  created_at?: Date;
-  updated_at?: Date;
+  is_active: boolean;
 }
 
-export class Vendor extends Entity<VendorProps> {
-  private constructor(props: VendorProps, id?: string) {
+export class Vendor extends Entity<IVendorProps> {
+  private constructor(props: IVendorProps, id?: string) {
     super(props, id);
   }
 
-  get name(): string {
-    return this.props.name;
-  }
-
-  get legal_name(): string {
-    return this.props.legal_name;
-  }
-
-  get contact_phone(): string {
-    return this.props.contact_phone;
-  }
-
-  get status(): string {
-    return this.props.status;
-  }
-
-  public static create(props: VendorProps, id?: string): Result<Vendor, Error> {
-    const vendor = new Vendor(
-      {
-        ...props,
-        status: props.status ?? 'active',
-      },
-      id,
-    );
+  public static create(props: IVendorProps, id?: string): Result<Vendor, Error> {
+    const vendor = new Vendor(props, id);
     return success(vendor);
   }
 }
