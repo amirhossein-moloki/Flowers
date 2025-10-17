@@ -1,42 +1,30 @@
 import { AutomationLog } from '../domain/automation-log.entity';
-import { AutomationLogDto } from '../application/dtos/automation-log.dto';
+import { AutomationLog as PrismaAutomationLog } from '@prisma/client';
 
 export class AutomationLogMapper {
-  static toDto(automationLog: AutomationLog): AutomationLogDto {
-    return {
-      id: automationLog.id,
-      order_id: automationLog.order_id,
-      action: automationLog.action,
-      status: automationLog.status,
-      message: automationLog.message,
-      executed_at: automationLog.executed_at,
-    };
-  }
+  public static toDomain(prismaLog: PrismaAutomationLog): AutomationLog {
+    const logResult = AutomationLog.create({
+      order_id: prismaLog.order_id,
+      action: prismaLog.action,
+      status: prismaLog.status,
+      message: prismaLog.message,
+      executed_at: prismaLog.executed_at,
+    }, prismaLog.id);
 
-  static toDomain(dto: AutomationLogDto): AutomationLog {
-    const result = AutomationLog.create({
-      order_id: dto.order_id,
-      action: dto.action,
-      status: dto.status,
-      message: dto.message,
-      executed_at: dto.executed_at,
-    }, dto.id);
-
-    if (result.success) {
-      return result.value;
-    } else {
-      throw result.error;
+    if (logResult.success) {
+      return logResult.value;
     }
+    throw new Error(`Could not create domain entity from prisma data: ${logResult.error}`);
   }
 
-  static toPersistence(automationLog: AutomationLog): any {
+  public static toPersistence(log: AutomationLog) {
     return {
-      id: automationLog.id,
-      order_id: automationLog.order_id,
-      action: automationLog.action,
-      status: automationLog.status,
-      message: automationLog.message,
-      executed_at: automationLog.executed_at,
+      id: log.id,
+      order_id: log.order_id,
+      action: log.action,
+      status: log.status,
+      message: log.message,
+      executed_at: log.executed_at,
     };
   }
 }

@@ -5,9 +5,9 @@ This file tracks the implementation status of the repository layer for each modu
 | # | Module | Status | Notes |
 |---|---|---|---|
 | 1 | `address` | ✅ Done | Implemented repository, mapper, and test skeleton. |
-| 2 | `automation-log` | 🕒 Pending | |
+| 2 | `automation-log` | ✅ Done | Implemented repository and mapper. |
 | 3 | `courier` | ✅ Done | Implemented repository, mapper, and test skeleton. |
-| 4 | `customer-address` | 🕒 Pending | |
+| 4 | `customer-address` | ✅ Done | Implemented repository and mapper. |
 | 5 | `delivery` | 🕒 Pending | |
 | 6 | `delivery-status` | 🕒 Pending | |
 | 7 | `delivery-window` | 🕒 Pending | |
