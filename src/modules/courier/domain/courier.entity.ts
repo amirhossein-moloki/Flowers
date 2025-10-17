@@ -1,58 +1,62 @@
-import { Entity } from '../../../../core/domain/entity';
-import { Result, success } from '../../../../core/utils/result';
-import { VehicleType } from '../../../../core/domain/enums';
+import { Entity } from '@/core/domain/entity';
+import { Result, success, failure } from '@/core/utils/result';
 
-interface CourierProps {
-  user_id: string;
-  vehicle_type: VehicleType;
-  plate_number: string;
-  is_active?: boolean;
-  last_seen_at: Date;
-  current_lat: number;
-  current_lng: number;
+export class CourierCreationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'CourierCreationError';
+  }
 }
 
-export class Courier extends Entity<CourierProps> {
-  private constructor(props: CourierProps, id?: string) {
+export interface ICourierProps {
+  name: string;
+  phone: string;
+  email: string;
+  vehicle?: string | null;
+  isAvailable?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export class Courier extends Entity<ICourierProps> {
+  private constructor(props: ICourierProps, id?: string) {
     super(props, id);
   }
 
-  get user_id(): string {
-    return this.props.user_id;
+  get name(): string {
+    return this.props.name;
   }
 
-  get vehicle_type(): VehicleType {
-    return this.props.vehicle_type;
+  get phone(): string {
+    return this.props.phone;
   }
 
-  get plate_number(): string {
-    return this.props.plate_number;
+  get email(): string {
+    return this.props.email;
   }
 
-  get is_active(): boolean {
-    return this.props.is_active;
+  get vehicle(): string | null {
+    return this.props.vehicle ?? null;
   }
 
-  get last_seen_at(): Date {
-    return this.props.last_seen_at;
+  get isAvailable(): boolean {
+    return this.props.isAvailable ?? true;
   }
 
-  get current_lat(): number {
-    return this.props.current_lat;
-  }
+  public static create(props: ICourierProps, id?: string): Result<Courier, CourierCreationError> {
+    if (!props.name || !props.phone || !props.email) {
+      return failure(new CourierCreationError('Courier name, phone, and email cannot be empty.'));
+    }
+    // Basic email validation
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(props.email)) {
+        return failure(new CourierCreationError('Invalid email format.'));
+    }
 
-  get current_lng(): number {
-    return this.props.current_lng;
-  }
-
-  public static create(
-    props: CourierProps,
-    id?: string,
-  ): Result<Courier, Error> {
     const courier = new Courier(
       {
         ...props,
-        is_active: props.is_active ?? true,
+        vehicle: props.vehicle ?? null,
+        isAvailable: props.isAvailable ?? true,
       },
       id,
     );

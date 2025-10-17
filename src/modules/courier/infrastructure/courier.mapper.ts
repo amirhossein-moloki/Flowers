@@ -1,48 +1,36 @@
+import { Courier as PrismaCourier } from '@prisma/client';
 import { Courier } from '../domain/courier.entity';
-import { CourierDto } from '../application/dtos/courier.dto';
 
 export class CourierMapper {
-  static toDto(courier: Courier): CourierDto {
-    return {
-      id: courier.id,
-      user_id: courier.user_id,
-      vehicle_type: courier.vehicle_type,
-      plate_number: courier.plate_number,
-      is_active: courier.is_active,
-      last_seen_at: courier.last_seen_at,
-      current_lat: courier.current_lat,
-      current_lng: courier.current_lng,
-    };
-  }
+  public static toDomain(raw: PrismaCourier): Courier {
+    const courierResult = Courier.create(
+      {
+        name: raw.name,
+        phone: raw.phone,
+        email: raw.email,
+        vehicle: raw.vehicle,
+        isAvailable: raw.isAvailable,
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
+      },
+      raw.id,
+    );
 
-  static toDomain(dto: CourierDto): Courier {
-    const result = Courier.create({
-      user_id: dto.user_id,
-      vehicle_type: dto.vehicle_type,
-      plate_number: dto.plate_number,
-      is_active: dto.is_active,
-      last_seen_at: dto.last_seen_at,
-      current_lat: dto.current_lat,
-      current_lng: dto.current_lng,
-    }, dto.id);
-
-    if (result.success) {
-      return result.value;
-    } else {
-      throw result.error;
+    if (!courierResult.success) {
+      throw new Error(`Failed to map raw data to Courier entity: ${courierResult.error.message}`);
     }
+    return courierResult.value;
   }
 
-  static toPersistence(courier: Courier): any {
+  public static toPersistence(courier: Courier) {
+    const props = courier.props;
     return {
       id: courier.id,
-      user_id: courier.user_id,
-      vehicle_type: courier.vehicle_type,
-      plate_number: courier.plate_number,
-      is_active: courier.is_active,
-      last_seen_at: courier.last_seen_at,
-      current_lat: courier.current_lat,
-      current_lng: courier.current_lng,
+      name: props.name,
+      phone: props.phone,
+      email: props.email,
+      vehicle: props.vehicle,
+      isAvailable: props.isAvailable,
     };
   }
 }

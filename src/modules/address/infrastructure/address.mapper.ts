@@ -1,48 +1,38 @@
+import { Address as PrismaAddress } from '@prisma/client';
 import { Address } from '../domain/address.entity';
-import { AddressDto } from '../application/dtos/address.dto';
 
 export class AddressMapper {
-  static toDto(address: Address): AddressDto {
-    return {
-      id: address.id,
-      formatted: address.formatted,
-      city: address.city,
-      province: address.province,
-      postal_code: address.postal_code,
-      lat: address.lat,
-      lng: address.lng,
-      extra: address.extra,
-    };
-  }
+  public static toDomain(raw: PrismaAddress): Address {
+    const addressResult = Address.create(
+      {
+        street: raw.street,
+        city: raw.city,
+        state: raw.state,
+        zipCode: raw.zipCode,
+        country: raw.country,
+        isResidential: raw.isResidential,
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
+      },
+      raw.id,
+    );
 
-  static toDomain(dto: AddressDto): Address {
-    const result = Address.create({
-      formatted: dto.formatted,
-      city: dto.city,
-      province: dto.province,
-      postal_code: dto.postal_code,
-      lat: dto.lat,
-      lng: dto.lng,
-      extra: dto.extra,
-    }, dto.id);
-
-    if (result.success) {
-      return result.value;
-    } else {
-      throw result.error;
+    if (!addressResult.success) {
+      throw new Error(`Failed to map raw data to Address entity: ${addressResult.error.message}`);
     }
+    return addressResult.value;
   }
 
-  static toPersistence(address: Address): any {
+  public static toPersistence(address: Address) {
+    const props = address.props;
     return {
       id: address.id,
-      formatted: address.formatted,
-      city: address.city,
-      province: address.province,
-      postal_code: address.postal_code,
-      lat: address.lat,
-      lng: address.lng,
-      extra: address.extra,
+      street: props.street,
+      city: props.city,
+      state: props.state,
+      zipCode: props.zipCode,
+      country: props.country,
+      isResidential: props.isResidential,
     };
   }
 }
