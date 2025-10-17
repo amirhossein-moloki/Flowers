@@ -1,65 +1,55 @@
 import { Entity } from '../../../../core/domain/entity';
-import { Result, success } from '../../../../core/utils/result';
+import { Result, success, failure } from '../../../../core/utils/result';
 
-interface ProductProps {
-  vendor_id: string;
-  name: string;
-  sku_code: string;
-  description: string;
-  base_price: number;
-  prep_time_min?: number;
-  is_active?: boolean;
-  photo_url: string;
-  created_at?: Date;
-  updated_at?: Date;
+export class ProductCreationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ProductCreationError';
+  }
 }
 
-export class Product extends Entity<ProductProps> {
-  private constructor(props: ProductProps, id?: string) {
-    super(props, id);
-  }
+export interface IProductProps {
+  name: string;
+  description: string | null;
+  price: number;
+  stock: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
-  get vendor_id(): string {
-    return this.props.vendor_id;
+export class Product extends Entity<IProductProps> {
+  private constructor(props: IProductProps, id?: string) {
+    super(props, id);
   }
 
   get name(): string {
     return this.props.name;
   }
 
-  get sku_code(): string {
-    return this.props.sku_code;
-  }
-
-  get description(): string {
+  get description(): string | null {
     return this.props.description;
   }
 
-  get base_price(): number {
-    return this.props.base_price;
+  get price(): number {
+    return this.props.price;
   }
 
-  get prep_time_min(): number {
-    return this.props.prep_time_min;
+  get stock(): number {
+    return this.props.stock;
   }
 
-  get is_active(): boolean {
-    return this.props.is_active;
-  }
+  public static create(props: IProductProps, id?: string): Result<Product, ProductCreationError> {
+    if (!props.name || props.name.trim().length === 0) {
+      return failure(new ProductCreationError('Product name cannot be empty.'));
+    }
+    if (props.price < 0) {
+      return failure(new ProductCreationError('Price cannot be negative.'));
+    }
 
-  get photo_url(): string {
-    return this.props.photo_url;
-  }
-
-  public static create(
-    props: ProductProps,
-    id?: string,
-  ): Result<Product, Error> {
     const product = new Product(
       {
         ...props,
-        prep_time_min: props.prep_time_min ?? 20,
-        is_active: props.is_active ?? true,
+        description: props.description ?? null,
       },
       id,
     );

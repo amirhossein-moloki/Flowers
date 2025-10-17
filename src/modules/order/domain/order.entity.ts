@@ -1,26 +1,65 @@
 import { Entity } from '../../../../core/domain/entity';
-import { Result, success } from '../../../../core/utils/result';
-import { OrderItem } from './order-item.entity';
+import { Product } from '../../product/domain/product.entity';
+import { Result, success, failure } from '../../../../core/utils/result';
+
+export class OrderCreationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'OrderCreationError';
+  }
+}
+
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  SHIPPED = 'SHIPPED',
+  DELIVERED = 'DELIVERED',
+  CANCELED = 'CANCELED',
+}
+
+export interface IOrderItemProps {
+  orderId: string;
+  productId: string;
+  product?: Product; // Can be populated
+  quantity: number;
+  price: number;
+}
+
+export class OrderItem extends Entity<IOrderItemProps> {
+  private constructor(props: IOrderItemProps, id?: string) {
+    super(props, id);
+  }
+
+  get productId(): string {
+    return this.props.productId;
+  }
+
+  get quantity(): number {
+    return this.props.quantity;
+  }
+
+  get price(): number {
+    return this.props.price;
+  }
+
+  public static create(props: IOrderItemProps, id?: string): Result<OrderItem, OrderCreationError> {
+    if (props.quantity <= 0) {
+      return failure(new OrderCreationError('Quantity must be positive.'));
+    }
+    if (props.price < 0) {
+      return failure(new OrderCreationError('Price cannot be negative.'));
+    }
+    return success(new OrderItem(props, id));
+  }
+}
 
 export interface IOrderProps {
-  customer_id: string;
-  vendor_id: string;
-  outlet_id: string;
-  status_id: string;
-  customer_address_id: string;
-  delivery_window_id: string;
-  note: string;
-  subtotal: number;
-  delivery_fee?: number;
-  service_fee?: number;
-  discount_total?: number;
-  tax_total?: number;
-  total_payable: number;
-  currency?: string;
-  scheduled_at: Date;
-  created_at?: Date;
-  updated_at?: Date;
-  items?: OrderItem[];
+  userId: string;
+  items: OrderItem[];
+  status: OrderStatus;
+  total: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export class Order extends Entity<IOrderProps> {
@@ -28,80 +67,34 @@ export class Order extends Entity<IOrderProps> {
     super(props, id);
   }
 
-  get customer_id(): string {
-    return this.props.customer_id;
-  }
-
-  get vendor_id(): string {
-    return this.props.vendor_id;
-  }
-
-  get outlet_id(): string {
-    return this.props.outlet_id;
-  }
-
-  get status_id(): string {
-    return this.props.status_id;
-  }
-
-  get customer_address_id(): string {
-    return this.props.customer_address_id;
-  }
-
-  get delivery_window_id(): string {
-    return this.props.delivery_window_id;
-  }
-
-  get note(): string {
-    return this.props.note;
-  }
-
-  get subtotal(): number {
-    return this.props.subtotal;
-  }
-
-  get delivery_fee(): number {
-    return this.props.delivery_fee;
-  }
-
-  get service_fee(): number {
-    return this.props.service_fee;
-  }
-
-  get discount_total(): number {
-    return this.props.discount_total;
-  }
-
-  get tax_total(): number {
-    return this.props.tax_total;
-  }
-
-  get total_payable(): number {
-    return this.props.total_payable;
-  }
-
-  get currency(): string {
-    return this.props.currency;
-  }
-
-  get scheduled_at(): Date {
-    return this.props.scheduled_at;
+  get userId(): string {
+    return this.props.userId;
   }
 
   get items(): OrderItem[] {
     return this.props.items;
   }
 
-  public static create(props: IOrderProps, id?: string): Result<Order, Error> {
+  get status(): OrderStatus {
+    return this.props.status;
+  }
+
+  get total(): number {
+    return this.props.total;
+  }
+
+  public static create(props: IOrderProps, id?: string): Result<Order, OrderCreationError> {
+    if (!props.userId) {
+      return failure(new OrderCreationError('User ID is required.'));
+    }
+    if (props.items.length === 0) {
+      return failure(new OrderCreationError('Order must have at least one item.'));
+    }
+
     const order = new Order(
       {
         ...props,
-        delivery_fee: props.delivery_fee ?? 0,
-        service_fee: props.service_fee ?? 0,
-        discount_total: props.discount_total ?? 0,
-        tax_total: props.tax_total ?? 0,
-        currency: props.currency ?? 'IRR',
-        items: props.items ?? [],
+        status: props.status ?? OrderStatus.PENDING,
       },
       id,
     );
