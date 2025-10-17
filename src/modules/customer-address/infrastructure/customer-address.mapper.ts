@@ -1,39 +1,28 @@
 import { CustomerAddress } from '../domain/customer-address.entity';
-import { CustomerAddressDto } from '../application/dtos/customer-address.dto';
+import { CustomerAddress as PrismaCustomerAddress } from '@prisma/client';
 
 export class CustomerAddressMapper {
-  static toDto(customerAddress: CustomerAddress): CustomerAddressDto {
-    return {
-      id: customerAddress.id,
-      user_id: customerAddress.user_id,
-      address_id: customerAddress.address_id,
-      is_default: customerAddress.is_default,
-      label: customerAddress.label,
-    };
-  }
+  public static toDomain(prismaAddress: PrismaCustomerAddress): CustomerAddress {
+    const addressResult = CustomerAddress.create({
+      user_id: prismaAddress.user_id,
+      address_id: prismaAddress.address_id,
+      is_default: prismaAddress.is_default,
+      label: prismaAddress.label,
+    }, prismaAddress.id);
 
-  static toDomain(dto: CustomerAddressDto): CustomerAddress {
-    const result = CustomerAddress.create({
-      user_id: dto.user_id,
-      address_id: dto.address_id,
-      is_default: dto.is_default,
-      label: dto.label,
-    }, dto.id);
-
-    if (result.success) {
-      return result.value;
-    } else {
-      throw result.error;
+    if (addressResult.success) {
+      return addressResult.value;
     }
+    throw new Error(`Could not create domain entity from prisma data: ${addressResult.error}`);
   }
 
-  static toPersistence(customerAddress: CustomerAddress): any {
+  public static toPersistence(address: CustomerAddress) {
     return {
-      id: customerAddress.id,
-      user_id: customerAddress.user_id,
-      address_id: customerAddress.address_id,
-      is_default: customerAddress.is_default,
-      label: customerAddress.label,
+      id: address.id,
+      user_id: address.user_id,
+      address_id: address.address_id,
+      is_default: address.is_default,
+      label: address.label,
     };
   }
 }

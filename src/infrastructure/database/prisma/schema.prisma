@@ -87,3 +87,24 @@ model Courier {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model CustomerAddress {
+  id         String   @id @default(uuid())
+  user_id    String
+  address_id String
+  is_default Boolean  @default(false)
+  label      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model AutomationLog {
+  id          String   @id @default(uuid())
+  order_id    String
+  action      String
+  status      String
+  message     String
+  executed_at DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
