@@ -11,8 +11,8 @@ This file tracks the implementation status of the repository layer for each modu
 | 5 | `delivery` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 6 | `delivery-status` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 7 | `delivery-window` | ✅ Done | Implemented repository, mapper, and test skeleton. |
-| 8 | `driver-location` | 🕒 Pending | |
-| 9 | `notification` | 🕒 Pending | |
+| 8 | `driver-location` | ✅ Done | Implemented repository and mapper. |
+| 9 | `notification` | ✅ Done | Implemented repository and mapper. |
 | 10 | `order` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 11 | `order-promotion` | 🕒 Pending | |
 | 12 | `order-status` | 🕒 Pending | |

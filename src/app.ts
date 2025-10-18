@@ -3,11 +3,44 @@ import { errorHandler } from './infrastructure/http/middlewares/error-handler';
 import { notFoundHandler } from './infrastructure/http/middlewares/not-found';
 import { securityMiddleware } from './infrastructure/http/middlewares/security';
 
+import { IAddressRepository } from './modules/address/domain/address.repository';
+import { IAutomationLogRepository } from './modules/automation-log/domain/automation-log.repository';
+import { ICourierRepository } from './modules/courier/domain/courier.repository';
+import { ICustomerAddressRepository } from './modules/customer-address/domain/customer-address.repository';
+import { IDeliveryRepository } from './modules/delivery/domain/delivery.repository';
+import { IDeliveryStatusRepository } from './modules/delivery-status/domain/delivery-status.repository';
+import { IDeliveryWindowRepository } from './modules/delivery-window/domain/delivery-window.repository';
+import { IDriverLocationRepository } from './modules/driver-location/domain/driver-location.repository';
+import { INotificationRepository } from './modules/notification/domain/notification.repository';
+import { IOrderRepository } from './modules/order/domain/order.repository';
+import { IPaymentRepository } from './modules/payment/domain/payment.repository';
+import { IProductRepository } from './modules/product/domain/product.repository';
+import { IUserRepository } from './modules/user/domain/user.repository';
+
+// Define a type for your dependency container
+export interface AppDependencies {
+  addressRepository: IAddressRepository;
+  automationLogRepository: IAutomationLogRepository;
+  courierRepository: ICourierRepository;
+  customerAddressRepository: ICustomerAddressRepository;
+  deliveryRepository: IDeliveryRepository;
+  deliveryStatusRepository: IDeliveryStatusRepository;
+  deliveryWindowRepository: IDeliveryWindowRepository;
+  driverLocationRepository: IDriverLocationRepository;
+  notificationRepository: INotificationRepository;
+  orderRepository: IOrderRepository;
+  paymentRepository: IPaymentRepository;
+  productRepository: IProductRepository;
+  userRepository: IUserRepository;
+}
+
 class App {
   public express: Application;
+  private dependencies: AppDependencies;
 
-  constructor() {
+  constructor(dependencies: AppDependencies) {
     this.express = express();
+    this.dependencies = dependencies;
     this.setupMiddlewares();
     this.setupRoutes();
     this.setupErrorHandlers();

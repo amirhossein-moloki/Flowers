@@ -1,4 +1,4 @@
-export class DriverLocationDto {
+export interface DriverLocationDto {
   id: string;
   delivery_id: string;
   courier_id: string;

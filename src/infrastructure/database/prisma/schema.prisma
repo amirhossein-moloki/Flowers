@@ -20,6 +20,21 @@ enum OrderStatus {
   CANCELED
 }
 
+enum NotificationChannel {
+  PUSH
+  SMS
+  EMAIL
+  IN_APP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  DELIVERED
+  READ
+}
+
 
 // --- Application Models ---
 
@@ -86,6 +101,32 @@ model Courier {
   isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model DriverLocation {
+  id          String   @id @default(uuid())
+  delivery_id String
+  courier_id  String
+  lat         Float
+  lng         Float
+  speed_kmh   Float
+  heading_deg Float
+  recorded_at DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Notification {
+  id           String             @id @default(uuid())
+  user_id      String
+  order_id     String
+  channel      NotificationChannel
+  template     String
+  payload_json Json
+  status       NotificationStatus @default(PENDING)
+  sent_at      DateTime?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
 }
 
 model CustomerAddress {

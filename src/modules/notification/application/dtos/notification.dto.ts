@@ -1,6 +1,6 @@
-import { NotificationChannel } from '../../../../../core/domain/enums';
+import { NotificationChannel } from '../../../../core/domain/enums';
 
-export class NotificationDto {
+export interface NotificationDto {
   id: string;
   user_id: string;
   order_id: string;
