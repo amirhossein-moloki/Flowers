@@ -1,7 +1,7 @@
 import { PrismaOrderRepository } from '../prisma-order.repository';
 import { Order, OrderItem, OrderStatus } from '../../domain/order.entity';
 import { prismaMock } from '../../../__tests__/helpers/prisma-mock.helper';
-import { Order as PrismaOrder, OrderItem as PrismaOrderItem, OrderStatus as PrismaOrderStatus, Product as PrismaProduct } from '@prisma/client';
+import { Order as PrismaOrder, OrderItem as PrismaOrderItem, OrderStatus, Product as PrismaProduct } from '@prisma/client';
 
 jest.mock('../../../../infrastructure/database/prisma/prisma-client');
 
@@ -32,7 +32,7 @@ describe('PrismaOrderRepository', () => {
   const prismaOrder = {
     id: orderId,
     userId,
-    status: PrismaOrderStatus.PENDING,
+    status: OrderStatus.PENDING,
     total: 100,
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -1,17 +1,17 @@
 import { Order as PrismaOrder, OrderItem as PrismaOrderItem, OrderStatus as PrismaOrderStatus } from '@prisma/client';
-import { Order, OrderItem, IOrderProps, IOrderItemProps, OrderStatus } from '../domain/order.entity';
+import { Order, OrderItem, IOrderProps, IOrderItemProps, OrderStatus as DomainOrderStatus } from '../domain/order.entity';
 
 type PrismaOrderWithItems = PrismaOrder & {
   items: PrismaOrderItem[];
 };
 
 export class OrderMapper {
-  private static prismaStatusToDomain(status: PrismaOrderStatus): OrderStatus {
-    return OrderStatus[status];
+  private static prismaStatusToDomain(status: PrismaOrderStatus): DomainOrderStatus {
+    return status as DomainOrderStatus;
   }
 
-  private static domainStatusToPrisma(status: OrderStatus): PrismaOrderStatus {
-    return PrismaOrderStatus[status];
+  private static domainStatusToPrisma(status: DomainOrderStatus): PrismaOrderStatus {
+    return status as PrismaOrderStatus;
   }
 
   public static toDomain(prismaOrder: PrismaOrderWithItems): Order {

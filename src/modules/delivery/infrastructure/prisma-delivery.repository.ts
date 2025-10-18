@@ -16,9 +16,10 @@ export class PrismaDeliveryRepository implements IDeliveryRepository {
 
   async save(delivery: Delivery): Promise<void> {
     const data = DeliveryMapper.toPersistence(delivery);
+    const { id, ...updateData } = data;
     await prisma.delivery.upsert({
       where: { id: delivery.id },
-      update: data,
+      update: updateData,
       create: data,
     });
   }
