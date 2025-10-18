@@ -1,6 +1,6 @@
 import { User as PrismaUser } from '@prisma/client';
-import { User } from '../domain/user.entity';
-import { UserDto } from '../application/dtos/user.dto';
+import { User } from '@/modules/user/domain/user.entity';
+import { UserDto } from '@/modules/user/application/dtos/user.dto';
 
 export class UserMapper {
   /**

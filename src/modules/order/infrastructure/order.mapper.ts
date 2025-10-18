@@ -1,5 +1,5 @@
 import { Order as PrismaOrder, OrderItem as PrismaOrderItem, OrderStatus as PrismaOrderStatus } from '@prisma/client';
-import { Order, OrderItem, IOrderProps, IOrderItemProps, OrderStatus as DomainOrderStatus } from '../domain/order.entity';
+import { Order, OrderItem, IOrderProps, IOrderItemProps, OrderStatus as DomainOrderStatus } from '@/modules/order/domain/order.entity';
 
 type PrismaOrderWithItems = PrismaOrder & {
   items: PrismaOrderItem[];
@@ -37,7 +37,7 @@ export class OrderMapper {
     const orderProps: IOrderProps = {
       userId: prismaOrder.userId,
       items: orderItems,
-      status: this.prismaStatusToDomain(prismaOrder.status),
+      status: OrderMapper.prismaStatusToDomain(prismaOrder.status),
       total: prismaOrder.total,
       createdAt: prismaOrder.createdAt,
       updatedAt: prismaOrder.updatedAt,
@@ -55,7 +55,7 @@ export class OrderMapper {
     const orderData = {
       id: order.id,
       userId: order.userId,
-      status: this.domainStatusToPrisma(order.status),
+      status: OrderMapper.domainStatusToPrisma(order.status),
       total: order.total,
     };
 

@@ -1,6 +1,6 @@
-import { Entity } from '../../../../core/domain/entity';
-import { Result, success } from '../../../../core/utils/result';
-import { NotificationChannel } from '../../../../core/domain/enums';
+import { Entity } from '@/core/domain/entity';
+import { Result, success } from '@/core/utils/result';
+import { NotificationChannel } from '@/core/domain/enums';
 
 interface NotificationProps {
   user_id: string;

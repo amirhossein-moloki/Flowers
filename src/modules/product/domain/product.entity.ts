@@ -1,5 +1,5 @@
-import { Entity } from '../../../core/domain/entity';
-import { Result, success, failure } from '../../../core/utils/result';
+import { Entity } from '@/core/domain/entity';
+import { Result, success, failure } from '@/core/utils/result';
 
 export class ProductCreationError extends Error {
   constructor(message: string) {

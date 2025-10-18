@@ -1,7 +1,7 @@
 import { Payment as PrismaPayment } from '@prisma/client';
-import { Payment } from '../domain/payment.entity';
-import { PaymentDto } from '../application/dtos/payment.dto';
-import { PaymentMethod, PaymentStatus } from '../../../core/domain/enums';
+import { Payment } from '@/modules/payment/domain/payment.entity';
+import { PaymentDto } from '@/modules/payment/application/dtos/payment.dto';
+import { PaymentMethod, PaymentStatus } from '@/core/domain/enums';
 
 export class PaymentMapper {
   public static toDomain(raw: PrismaPayment): Payment {

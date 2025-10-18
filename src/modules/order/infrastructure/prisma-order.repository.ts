@@ -1,7 +1,7 @@
-import { IOrderRepository } from '../domain/order.repository';
-import { Order } from '../domain/order.entity';
-import prisma from '../../../infrastructure/database/prisma/prisma-client';
-import { OrderMapper } from './order.mapper';
+import { IOrderRepository } from '@/modules/order/domain/order.repository';
+import { Order } from '@/modules/order/domain/order.entity';
+import prisma from '@/infrastructure/database/prisma/prisma-client';
+import { OrderMapper } from '@/modules/order/infrastructure/order.mapper';
 
 export class PrismaOrderRepository implements IOrderRepository {
   async findById(id: string): Promise<Order | null> {

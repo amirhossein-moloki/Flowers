@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { INotificationRepository } from '../domain/notification.repository';
-import { Notification } from '../domain/notification.entity';
-import { NotificationMapper } from './notification.mapper';
+import { INotificationRepository } from '@/modules/notification/domain/notification.repository';
+import { Notification } from '@/modules/notification/domain/notification.entity';
+import { NotificationMapper } from '@/modules/notification/infrastructure/notification.mapper';
 
 export class PrismaNotificationRepository implements INotificationRepository {
   constructor(private readonly prisma: PrismaClient) {}

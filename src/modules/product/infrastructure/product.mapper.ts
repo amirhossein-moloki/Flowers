@@ -1,6 +1,6 @@
 import { Product as PrismaProduct } from '@prisma/client';
-import { Product, IProductProps } from '../domain/product.entity';
-import { Result } from '../../../../core/utils/result';
+import { Product, IProductProps } from '@/modules/product/domain/product.entity';
+import { Result } from '@/core/utils/result';
 
 export class ProductMapper {
   public static toDomain(prismaProduct: PrismaProduct): Product {

@@ -1,7 +1,7 @@
-import { IPaymentRepository } from '../domain/payment.repository';
-import { Payment } from '../domain/payment.entity';
-import prisma from '../../../infrastructure/database/prisma/prisma-client';
-import { PaymentMapper } from './payment.mapper';
+import { IPaymentRepository } from '@/modules/payment/domain/payment.repository';
+import { Payment } from '@/modules/payment/domain/payment.entity';
+import prisma from '@/infrastructure/database/prisma/prisma-client';
+import { PaymentMapper } from '@/modules/payment/infrastructure/payment.mapper';
 
 export class PrismaPaymentRepository implements IPaymentRepository {
   async findById(id: string): Promise<Payment | null> {

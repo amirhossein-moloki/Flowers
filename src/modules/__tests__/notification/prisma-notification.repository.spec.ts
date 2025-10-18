@@ -1,0 +1,75 @@
+import { prismaMock } from '../helpers/prisma-mock.helper';
+import { PrismaNotificationRepository } from '@/modules/notification/infrastructure/prisma-notification.repository';
+import { Notification } from '@/modules/notification/domain/notification.entity';
+import { NotificationMapper } from '@/modules/notification/infrastructure/notification.mapper';
+import { NotificationChannel } from '@/core/domain/enums';
+import { PrismaClient } from '@prisma/client';
+
+describe('PrismaNotificationRepository', () => {
+  let repository: PrismaNotificationRepository;
+
+  beforeEach(() => {
+    repository = new PrismaNotificationRepository(prismaMock as unknown as PrismaClient);
+  });
+
+  const notificationProps = {
+    user_id: 'user-123',
+    order_id: 'order-456',
+    channel: NotificationChannel.EMAIL,
+    template: 'order-confirmation',
+    payload_json: { total: 100 },
+    status: 'sent',
+    sent_at: new Date(),
+  };
+  const notificationResult = Notification.create(notificationProps, 'notif-id-1');
+  if (!notificationResult.success) {
+    throw new Error('Test setup failed: could not create notification entity');
+  }
+  const notificationEntity = notificationResult.value;
+
+  const prismaNotification = {
+    id: notificationEntity.id,
+    ...notificationProps,
+    payload_json: JSON.stringify(notificationProps.payload_json), // Prisma stores JSON as string
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+
+  test('findById should return a notification entity when found', async () => {
+    prismaMock.notification.findUnique.mockResolvedValue(prismaNotification);
+
+    const foundNotification = await repository.findById('notif-id-1');
+
+    expect(foundNotification).toBeInstanceOf(Notification);
+    expect(foundNotification?.id).toBe('notif-id-1');
+    expect(prismaMock.notification.findUnique).toHaveBeenCalledWith({ where: { id: 'notif-id-1' } });
+  });
+
+  test('findAll should return an array of notification entities', async () => {
+    prismaMock.notification.findMany.mockResolvedValue([prismaNotification]);
+
+    const notifications = await repository.findAll();
+
+    expect(notifications).toHaveLength(1);
+    expect(notifications[0]).toBeInstanceOf(Notification);
+    expect(prismaMock.notification.findMany).toHaveBeenCalledWith();
+  });
+
+  test('save should call upsert on prisma client', async () => {
+    await repository.save(notificationEntity);
+
+    expect(prismaMock.notification.upsert).toHaveBeenCalledWith({
+      where: { id: notificationEntity.id },
+      create: NotificationMapper.toPersistence(notificationEntity),
+      update: NotificationMapper.toPersistence(notificationEntity),
+    });
+  });
+
+  test('delete should call delete on prisma client', async () => {
+    await repository.delete('notif-id-1');
+
+    expect(prismaMock.notification.delete).toHaveBeenCalledWith({
+      where: { id: 'notif-id-1' },
+    });
+  });
+});

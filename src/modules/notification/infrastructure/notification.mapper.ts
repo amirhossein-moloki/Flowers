@@ -3,9 +3,9 @@ import {
   NotificationChannel as PrismaNotificationChannel,
   NotificationStatus as PrismaNotificationStatus,
 } from '@prisma/client';
-import { Notification } from '../domain/notification.entity';
-import { NotificationDto } from '../application/dtos/notification.dto';
-import { NotificationChannel as DomainNotificationChannel } from '../../../../core/domain/enums';
+import { Notification } from '@/modules/notification/domain/notification.entity';
+import { NotificationDto } from '@/modules/notification/application/dtos/notification.dto';
+import { NotificationChannel as DomainNotificationChannel } from '@/core/domain/enums';
 import { Prisma } from '@prisma/client';
 
 function toPrismaNotificationChannel(
