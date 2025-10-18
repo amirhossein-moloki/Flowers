@@ -1,3 +1,4 @@
+import { DriverLocation as PrismaDriverLocation } from '@prisma/client';
 import { DriverLocation } from '../domain/driver-location.entity';
 import { DriverLocationDto } from '../application/dtos/driver-location.dto';
 
@@ -15,16 +16,21 @@ export class DriverLocationMapper {
     };
   }
 
-  static toDomain(dto: DriverLocationDto): DriverLocation {
-    const result = DriverLocation.create({
-      delivery_id: dto.delivery_id,
-      courier_id: dto.courier_id,
-      lat: dto.lat,
-      lng: dto.lng,
-      speed_kmh: dto.speed_kmh,
-      heading_deg: dto.heading_deg,
-      recorded_at: dto.recorded_at,
-    }, dto.id);
+  static toDomain(
+    prismaDriverLocation: PrismaDriverLocation,
+  ): DriverLocation {
+    const result = DriverLocation.create(
+      {
+        delivery_id: prismaDriverLocation.delivery_id,
+        courier_id: prismaDriverLocation.courier_id,
+        lat: prismaDriverLocation.lat,
+        lng: prismaDriverLocation.lng,
+        speed_kmh: prismaDriverLocation.speed_kmh,
+        heading_deg: prismaDriverLocation.heading_deg,
+        recorded_at: prismaDriverLocation.recorded_at,
+      },
+      prismaDriverLocation.id,
+    );
 
     if (result.success) {
       return result.value;
@@ -33,7 +39,9 @@ export class DriverLocationMapper {
     }
   }
 
-  static toPersistence(driverLocation: DriverLocation): any {
+  static toPersistence(
+    driverLocation: DriverLocation,
+  ): Omit<PrismaDriverLocation, 'createdAt' | 'updatedAt'> {
     return {
       id: driverLocation.id,
       delivery_id: driverLocation.delivery_id,
