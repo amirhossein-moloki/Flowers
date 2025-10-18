@@ -22,10 +22,10 @@ This file tracks the implementation status of the repository layer for each modu
 | 16 | `promotion` | ✅ Done | Implemented repository and mapper. |
 | 17 | `proof-of-delivery` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 18 | `service-zone` | ✅ Done | Implemented repository, mapper, and test skeleton. |
-| 19 | `shipping-rate` | 🕒 Pending | |
+| 19 | `shipping-rate` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 20 | `user` | ✅ Done | Initial example |
-| 21 | `vendor` | 🕒 Pending | |
-| 22 | `vendor-outlet` | 🕒 Pending | |
+| 21 | `vendor` | ✅ Done | Implemented repository, mapper, and test skeleton. |
+| 22 | `vendor-outlet` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 
 **Legend:**
 - ✅ Done: Repository is fully implemented and tested.

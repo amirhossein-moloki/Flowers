@@ -135,6 +135,56 @@ model Courier {
   updatedAt   DateTime @updatedAt
 }
 
+model Vendor {
+  id          String         @id @default(uuid())
+  name        String
+  description String?
+  email       String         @unique
+  phone       String         @unique
+  address     String
+  is_active   Boolean        @default(true)
+  created_at  DateTime       @default(now())
+  updated_at  DateTime       @updatedAt
+  outlets     VendorOutlet[]
+}
+
+model VendorOutlet {
+  id          String   @id @default(uuid())
+  vendor_id   String
+  vendor      Vendor   @relation(fields: [vendor_id], references: [id])
+  name        String
+  address     String
+  latitude    Float
+  longitude   Float
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model ServiceZone {
+  id             String         @id @default(uuid())
+  name           String
+  geo_json       Json
+  is_active      Boolean        @default(true)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  shipping_rates ShippingRate[]
+}
+
+model ShippingRate {
+  id              String      @id @default(uuid())
+  service_zone_id String
+  service_zone    ServiceZone @relation(fields: [service_zone_id], references: [id])
+  rate            Float
+  currency        String      @default("USD")
+  weight_unit     String      @default("kg")
+  min_weight      Float
+  max_weight      Float
+  is_active       Boolean     @default(true)
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+}
+
 model DriverLocation {
   id          String   @id @default(uuid())
   delivery_id String

@@ -1,54 +1,67 @@
-import { Entity } from '../../../../core/domain/entity';
-import { Result, success } from '../../../../core/utils/result';
-import { VehicleType } from '../../../../core/domain/enums';
+import { Entity } from '@/core/domain/entity';
+import { Result, success, failure } from '@/core/utils/result';
 
-interface ShippingRateProps {
-  zone_id: string;
-  vehicle_type: VehicleType;
-  base_fee: number;
-  per_km_fee?: number;
-  min_fee?: number;
-  max_fee: number;
+export class ShippingRateCreationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ShippingRateCreationError';
+  }
 }
 
-export class ShippingRate extends Entity<ShippingRateProps> {
-  private constructor(props: ShippingRateProps, id?: string) {
+export interface IShippingRateProps {
+  service_zone_id: string;
+  rate: number;
+  currency: string;
+  weight_unit: string;
+  min_weight: number;
+  max_weight: number;
+  is_active: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export class ShippingRate extends Entity<IShippingRateProps> {
+  private constructor(props: IShippingRateProps, id?: string) {
     super(props, id);
   }
 
-  get zone_id(): string {
-    return this.props.zone_id;
+  get service_zone_id(): string {
+    return this.props.service_zone_id;
   }
 
-  get vehicle_type(): VehicleType {
-    return this.props.vehicle_type;
+  get rate(): number {
+    return this.props.rate;
   }
 
-  get base_fee(): number {
-    return this.props.base_fee;
+  get currency(): string {
+    return this.props.currency;
   }
 
-  get per_km_fee(): number {
-    return this.props.per_km_fee;
+  get weight_unit(): string {
+    return this.props.weight_unit;
   }
 
-  get min_fee(): number {
-    return this.props.min_fee;
+  get min_weight(): number {
+    return this.props.min_weight;
   }
 
-  get max_fee(): number {
-    return this.props.max_fee;
+  get max_weight(): number {
+    return this.props.max_weight;
   }
 
-  public static create(
-    props: ShippingRateProps,
-    id?: string,
-  ): Result<ShippingRate, Error> {
+  get is_active(): boolean {
+    return this.props.is_active;
+  }
+
+  public static create(props: IShippingRateProps, id?: string): Result<ShippingRate, ShippingRateCreationError> {
+    if (!props.service_zone_id || props.rate == null) {
+      return failure(new ShippingRateCreationError('Service zone ID and rate are required.'));
+    }
+
     const shippingRate = new ShippingRate(
       {
         ...props,
-        per_km_fee: props.per_km_fee ?? 0,
-        min_fee: props.min_fee ?? 0,
+        is_active: props.is_active ?? true,
       },
       id,
     );
