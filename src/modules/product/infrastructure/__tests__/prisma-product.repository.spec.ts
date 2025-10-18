@@ -3,6 +3,8 @@ import { Product } from '../../domain/product.entity';
 import { prismaMock } from '../../../__tests__/helpers/prisma-mock.helper';
 import { Product as PrismaProduct } from '@prisma/client';
 
+jest.mock('../../../../infrastructure/database/prisma/prisma-client');
+
 describe('PrismaProductRepository', () => {
   let repository: PrismaProductRepository;
   const productProps = { name: 'Test Product', description: 'A test product', price: 100, stock: 10 };

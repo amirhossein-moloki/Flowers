@@ -1,48 +1,56 @@
+import { Payment as PrismaPayment } from '@prisma/client';
 import { Payment } from '../domain/payment.entity';
 import { PaymentDto } from '../application/dtos/payment.dto';
+import { PaymentMethod, PaymentStatus } from '../../../core/domain/enums';
 
 export class PaymentMapper {
-  static toDto(payment: Payment): PaymentDto {
+  public static toDomain(raw: PrismaPayment): Payment {
+    const paymentResult = Payment.create(
+      {
+        order_id: raw.order_id,
+        method: raw.method as PaymentMethod,
+        status: raw.status as PaymentStatus,
+        gateway: raw.gateway,
+        gateway_ref: raw.gateway_ref,
+        amount: raw.amount,
+        paid_at: raw.paid_at,
+        created_at: raw.created_at,
+      },
+      raw.id,
+    );
+
+    if (!paymentResult.success) {
+      throw new Error(`Failed to map raw data to Payment entity: ${paymentResult.error.message}`);
+    }
+    return paymentResult.value;
+  }
+
+  public static toPersistence(payment: Payment) {
+    const props = payment.props;
     return {
       id: payment.id,
-      order_id: payment.order_id,
-      method: payment.method,
-      status: payment.status,
-      gateway: payment.gateway,
-      gateway_ref: payment.gateway_ref,
-      amount: payment.amount,
-      paid_at: payment.paid_at,
+      order_id: props.order_id,
+      method: props.method,
+      status: props.status,
+      gateway: props.gateway,
+      gateway_ref: props.gateway_ref,
+      amount: props.amount,
+      paid_at: props.paid_at,
     };
   }
 
-  static toDomain(dto: PaymentDto): Payment {
-    const result = Payment.create({
-      order_id: dto.order_id,
-      method: dto.method,
-      status: dto.status,
-      gateway: dto.gateway,
-      gateway_ref: dto.gateway_ref,
-      amount: dto.amount,
-      paid_at: dto.paid_at,
-    }, dto.id);
-
-    if (result.success) {
-      return result.value;
-    } else {
-      throw result.error;
-    }
-  }
-
-  static toPersistence(payment: Payment): any {
+  public static toDto(payment: Payment): PaymentDto {
+    const props = payment.props;
     return {
       id: payment.id,
-      order_id: payment.order_id,
-      method: payment.method,
-      status: payment.status,
-      gateway: payment.gateway,
-      gateway_ref: payment.gateway_ref,
-      amount: payment.amount,
-      paid_at: payment.paid_at,
+      order_id: props.order_id,
+      method: props.method,
+      status: props.status,
+      gateway: props.gateway,
+      gateway_ref: props.gateway_ref,
+      amount: props.amount,
+      paid_at: props.paid_at,
+      created_at: props.created_at,
     };
   }
 }

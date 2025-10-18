@@ -1,6 +1,6 @@
-import { Entity } from '../../../../core/domain/entity';
+import { Entity } from '../../../core/domain/entity';
 import { Product } from '../../product/domain/product.entity';
-import { Result, success, failure } from '../../../../core/utils/result';
+import { Result, success, failure } from '../../../core/utils/result';
 
 export class OrderCreationError extends Error {
   constructor(message: string) {
