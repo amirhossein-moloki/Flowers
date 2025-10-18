@@ -45,12 +45,12 @@ modules/
 
 | # | Module | Controller Status | Route Status | DTO Status | Presenter Status | Notes / Instructions |
 |---|---------|------------------|---------------|-------------|------------------|----------------------|
-| 1 | address | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | CRUD endpoints for managing address data. |
+| 1 | address | ✅ Done | ✅ Done | ✅ Done | ✅ Done | CRUD endpoints for managing address data. |
 | 2 | automation-log | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Read-only GET endpoint for logs. |
-| 3 | courier | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Auth required for write actions. |
-| 4 | customer-address | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Connects with address module during creation. |
-| 5 | delivery | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Add `/assign-driver` endpoint. |
-| 6 | delivery-status | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Read-only; return label in presenter. |
+| 3 | courier | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Auth required for write actions. |
+| 4 | customer-address | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Connects with address module during creation. |
+| 5 | delivery | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add `/assign-driver` endpoint. |
+| 6 | delivery-status | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Read-only; return label in presenter. |
 | 7 | delivery-window | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Validate time range with Zod. |
 | 8 | driver-location | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Endpoint for updating driver coordinates. |
 | 9 | notification | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Add manual trigger endpoint. |
