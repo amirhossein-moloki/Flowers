@@ -14,12 +14,12 @@ This file tracks the implementation status of the repository layer for each modu
 | 8 | `driver-location` | ✅ Done | Implemented repository and mapper. |
 | 9 | `notification` | ✅ Done | Implemented repository and mapper. |
 | 10 | `order` | ✅ Done | Implemented repository, mapper, and test skeleton. |
-| 11 | `order-promotion` | 🕒 Pending | |
+| 11 | `order-promotion` | ✅ Done | Implemented repository and mapper. |
 | 12 | `order-status` | 🕒 Pending | |
 | 13 | `payment` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 14 | `product` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 15 | `product-image` | 🕒 Pending | |
-| 16 | `promotion` | 🕒 Pending | |
+| 16 | `promotion` | ✅ Done | Implemented repository and mapper. |
 | 17 | `proof-of-delivery` | 🕒 Pending | |
 | 18 | `service-zone` | 🕒 Pending | |
 | 19 | `shipping-rate` | 🕒 Pending | |

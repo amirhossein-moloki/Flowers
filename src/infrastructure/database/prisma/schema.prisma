@@ -20,6 +20,11 @@ enum OrderStatus {
   CANCELED
 }
 
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
 enum NotificationChannel {
   PUSH
   SMS
@@ -90,6 +95,33 @@ model Address {
   isResidential Boolean?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model Promotion {
+  id                 String           @id @default(uuid())
+  code               String           @unique
+  description        String?
+  discount_type      DiscountType
+  discount_value     Float
+  start_date         DateTime
+  end_date           DateTime?
+  max_uses           Int?
+  uses_count         Int              @default(0)
+  is_active          Boolean          @default(true)
+  created_at         DateTime         @default(now())
+  updated_at         DateTime         @updatedAt
+  order_promotions   OrderPromotion[]
+}
+
+model OrderPromotion {
+  id             String    @id @default(uuid())
+  order_id       String
+  promotion_id   String
+  discount_applied Float
+  created_at     DateTime  @default(now())
+  promotion      Promotion @relation(fields: [promotion_id], references: [id])
+
+  @@unique([order_id, promotion_id])
 }
 
 model Courier {

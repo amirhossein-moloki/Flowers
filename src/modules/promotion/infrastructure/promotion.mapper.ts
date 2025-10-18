@@ -1,51 +1,42 @@
+import { Promotion as PrismaPromotion, DiscountType } from '@prisma/client';
 import { Promotion } from '../domain/promotion.entity';
-import { PromotionDto } from '../application/dtos/promotion.dto';
 
 export class PromotionMapper {
-  static toDto(promotion: Promotion): PromotionDto {
-    return {
-      id: promotion.id,
-      code: promotion.code,
-      type: promotion.type,
-      amount: promotion.amount,
-      percent: promotion.percent,
-      starts_at: promotion.starts_at,
-      ends_at: promotion.ends_at,
-      usage_limit: promotion.usage_limit,
-      is_active: promotion.is_active,
-    };
-  }
+  public static toDomain(raw: PrismaPromotion): Promotion {
+    const promotionResult = Promotion.create(
+      {
+        code: raw.code,
+        description: raw.description,
+        discount_type: raw.discount_type,
+        discount_value: raw.discount_value,
+        start_date: raw.start_date,
+        end_date: raw.end_date,
+        max_uses: raw.max_uses,
+        uses_count: raw.uses_count,
+        is_active: raw.is_active,
+      },
+      raw.id,
+    );
 
-  static toDomain(dto: PromotionDto): Promotion {
-    const result = Promotion.create({
-      code: dto.code,
-      type: dto.type,
-      amount: dto.amount,
-      percent: dto.percent,
-      starts_at: dto.starts_at,
-      ends_at: dto.ends_at,
-      usage_limit: dto.usage_limit,
-      is_active: dto.is_active,
-    }, dto.id);
-
-    if (result.success) {
-      return result.value;
-    } else {
-      throw result.error;
+    if (!promotionResult.success) {
+      throw new Error(`Failed to map raw data to Promotion entity: ${promotionResult.error.message}`);
     }
+    return promotionResult.value;
   }
 
-  static toPersistence(promotion: Promotion): any {
+  public static toPersistence(promotion: Promotion) {
+    const props = promotion.props;
     return {
       id: promotion.id,
-      code: promotion.code,
-      type: promotion.type,
-      amount: promotion.amount,
-      percent: promotion.percent,
-      starts_at: promotion.starts_at,
-      ends_at: promotion.ends_at,
-      usage_limit: promotion.usage_limit,
-      is_active: promotion.is_active,
+      code: props.code,
+      description: props.description,
+      discount_type: props.discount_type,
+      discount_value: props.discount_value,
+      start_date: props.start_date,
+      end_date: props.end_date,
+      max_uses: props.max_uses,
+      uses_count: props.uses_count,
+      is_active: props.is_active,
     };
   }
 }

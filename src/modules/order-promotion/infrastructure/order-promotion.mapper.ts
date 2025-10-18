@@ -1,36 +1,32 @@
+import { OrderPromotion as PrismaOrderPromotion } from '@prisma/client';
 import { OrderPromotion } from '../domain/order-promotion.entity';
-import { OrderPromotionDto } from '../application/dtos/order-promotion.dto';
 
 export class OrderPromotionMapper {
-  static toDto(orderPromotion: OrderPromotion): OrderPromotionDto {
-    return {
-      id: orderPromotion.id,
-      order_id: orderPromotion.order_id,
-      promotion_id: orderPromotion.promotion_id,
-      discount_amount: orderPromotion.discount_amount,
-    };
-  }
+  public static toDomain(raw: PrismaOrderPromotion): OrderPromotion {
+    const orderPromotionResult = OrderPromotion.create(
+      {
+        order_id: raw.order_id,
+        promotion_id: raw.promotion_id,
+        discount_applied: raw.discount_applied,
+        created_at: raw.created_at,
+      },
+      raw.id,
+    );
 
-  static toDomain(dto: OrderPromotionDto): OrderPromotion {
-    const result = OrderPromotion.create({
-      order_id: dto.order_id,
-      promotion_id: dto.promotion_id,
-      discount_amount: dto.discount_amount,
-    }, dto.id);
-
-    if (result.success) {
-      return result.value;
-    } else {
-      throw result.error;
+    if (!orderPromotionResult.success) {
+      throw new Error(`Failed to map raw data to OrderPromotion entity: ${orderPromotionResult.error.message}`);
     }
+    return orderPromotionResult.value;
   }
 
-  static toPersistence(orderPromotion: OrderPromotion): any {
+  public static toPersistence(orderPromotion: OrderPromotion) {
+    const props = orderPromotion.props;
     return {
       id: orderPromotion.id,
-      order_id: orderPromotion.order_id,
-      promotion_id: orderPromotion.promotion_id,
-      discount_amount: orderPromotion.discount_amount,
+      order_id: props.order_id,
+      promotion_id: props.promotion_id,
+      discount_applied: props.discount_applied,
+      created_at: props.created_at,
     };
   }
 }
