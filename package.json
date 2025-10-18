@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --write .",
-"test": "jest"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.17.1",
+    "pino": "^10.1.0",
     "zod": "^4.1.12"
   }
 }

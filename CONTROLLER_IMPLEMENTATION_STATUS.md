@@ -47,7 +47,7 @@ modules/
 
 | # | Module | Controller Status | Route Status | DTO Status | Presenter Status | Notes / Instructions |
 |---|---------|------------------|--------------|------------|------------------|----------------------|
-| 1 | user | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Add `/me` endpoint with JWT middleware. |
+| 1 | user | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add `/me` endpoint with JWT middleware. |
 | 2 | vendor | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Only admin can update/delete. |
 | 3 | vendor-outlet | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Join with vendor and zone in presenter. |
 | 4 | address | ✅ Done | ✅ Done | ✅ Done | ✅ Done | CRUD endpoints for managing address data. |

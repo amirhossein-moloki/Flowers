@@ -2,8 +2,8 @@ import { IUserRepository } from '../../domain/user.repository';
 import { User, IUserProps } from '../../domain/user.entity';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UserDto } from '../dtos/user.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { UserMapper } from '../../infrastructure/user.mapper';
 
 export class CreateUserUseCase {
