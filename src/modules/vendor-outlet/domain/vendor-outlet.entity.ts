@@ -1,18 +1,26 @@
-import { Entity } from '../../../../core/domain/entity';
-import { Result, success } from '../../../../core/utils/result';
+import { Entity } from '@/core/domain/entity';
+import { Result, success, failure } from '@/core/utils/result';
 
-interface VendorOutletProps {
-  vendor_id: string;
-  name: string;
-  address_id: string;
-  open_hours_json: any;
-  is_active?: boolean;
-  created_at?: Date;
-  updated_at?: Date;
+export class VendorOutletCreationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'VendorOutletCreationError';
+  }
 }
 
-export class VendorOutlet extends Entity<VendorOutletProps> {
-  private constructor(props: VendorOutletProps, id?: string) {
+export interface IVendorOutletProps {
+  vendor_id: string;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  is_active: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export class VendorOutlet extends Entity<IVendorOutletProps> {
+  private constructor(props: IVendorOutletProps, id?: string) {
     super(props, id);
   }
 
@@ -24,22 +32,27 @@ export class VendorOutlet extends Entity<VendorOutletProps> {
     return this.props.name;
   }
 
-  get address_id(): string {
-    return this.props.address_id;
+  get address(): string {
+    return this.props.address;
   }
 
-  get open_hours_json(): any {
-    return this.props.open_hours_json;
+  get latitude(): number {
+    return this.props.latitude;
+  }
+
+  get longitude(): number {
+    return this.props.longitude;
   }
 
   get is_active(): boolean {
     return this.props.is_active;
   }
 
-  public static create(
-    props: VendorOutletProps,
-    id?: string,
-  ): Result<VendorOutlet, Error> {
+  public static create(props: IVendorOutletProps, id?: string): Result<VendorOutlet, VendorOutletCreationError> {
+    if (!props.vendor_id || !props.name || !props.address) {
+      return failure(new VendorOutletCreationError('Vendor ID, name, and address are required.'));
+    }
+
     const vendorOutlet = new VendorOutlet(
       {
         ...props,
