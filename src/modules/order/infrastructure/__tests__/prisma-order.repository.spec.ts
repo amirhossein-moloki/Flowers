@@ -3,6 +3,8 @@ import { Order, OrderItem, OrderStatus } from '../../domain/order.entity';
 import { prismaMock } from '../../../__tests__/helpers/prisma-mock.helper';
 import { Order as PrismaOrder, OrderItem as PrismaOrderItem, OrderStatus as PrismaOrderStatus, Product as PrismaProduct } from '@prisma/client';
 
+jest.mock('../../../../infrastructure/database/prisma/prisma-client');
+
 describe('PrismaOrderRepository', () => {
   let repository: PrismaOrderRepository;
 
@@ -63,7 +65,7 @@ describe('PrismaOrderRepository', () => {
   describe('save', () => {
     it('should use a transaction to save an order and its items', async () => {
       // Mock the transaction
-      prismaMock.$transaction.mockImplementation((callback) => callback(prismaMock));
+      prismaMock.$transaction.mockImplementation((callback: any) => callback(prismaMock));
 
       await repository.save(orderEntity!);
 
