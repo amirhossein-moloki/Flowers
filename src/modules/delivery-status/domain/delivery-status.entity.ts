@@ -1,5 +1,5 @@
-import { Entity } from '../../../../core/domain/entity';
-import { Result, success } from '../../../../core/utils/result';
+import { Entity } from '@/core/domain/entity';
+import { Result, success } from '@/core/utils/result';
 
 interface DeliveryStatusProps {
   code: string;

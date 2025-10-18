@@ -16,9 +16,10 @@ export class PrismaPaymentRepository implements IPaymentRepository {
 
   async save(payment: Payment): Promise<void> {
     const data = PaymentMapper.toPersistence(payment);
+    const { id, ...updateData } = data;
     await prisma.payment.upsert({
       where: { id: payment.id },
-      update: data,
+      update: updateData,
       create: data,
     });
   }
