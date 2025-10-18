@@ -15,13 +15,13 @@ This file tracks the implementation status of the repository layer for each modu
 | 9 | `notification` | ✅ Done | Implemented repository and mapper. |
 | 10 | `order` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 11 | `order-promotion` | ✅ Done | Implemented repository and mapper. |
-| 12 | `order-status` | 🕒 Pending | |
+| 12 | `order-status` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 13 | `payment` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 14 | `product` | ✅ Done | Implemented repository, mapper, and test skeleton. |
-| 15 | `product-image` | 🕒 Pending | |
+| 15 | `product-image` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 16 | `promotion` | ✅ Done | Implemented repository and mapper. |
-| 17 | `proof-of-delivery` | 🕒 Pending | |
-| 18 | `service-zone` | 🕒 Pending | |
+| 17 | `proof-of-delivery` | ✅ Done | Implemented repository, mapper, and test skeleton. |
+| 18 | `service-zone` | ✅ Done | Implemented repository, mapper, and test skeleton. |
 | 19 | `shipping-rate` | 🕒 Pending | |
 | 20 | `user` | ✅ Done | Initial example |
 | 21 | `vendor` | 🕒 Pending | |
