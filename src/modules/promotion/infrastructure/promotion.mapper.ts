@@ -1,5 +1,5 @@
 import { Promotion as PrismaPromotion, DiscountType } from '@prisma/client';
-import { Promotion } from '../domain/promotion.entity';
+import { Promotion } from '@/modules/promotion/domain/promotion.entity';
 
 export class PromotionMapper {
   public static toDomain(raw: PrismaPromotion): Promotion {

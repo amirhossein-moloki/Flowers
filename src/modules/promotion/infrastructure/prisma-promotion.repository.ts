@@ -1,7 +1,7 @@
-import { IPromotionRepository } from '../domain/promotion.repository';
-import { Promotion } from '../domain/promotion.entity';
-import prisma from '../../../infrastructure/database/prisma/prisma-client';
-import { PromotionMapper } from './promotion.mapper';
+import { IPromotionRepository } from '@/modules/promotion/domain/promotion.repository';
+import { Promotion } from '@/modules/promotion/domain/promotion.entity';
+import prisma from '@/infrastructure/database/prisma/prisma-client';
+import { PromotionMapper } from '@/modules/promotion/infrastructure/promotion.mapper';
 
 export class PrismaPromotionRepository implements IPromotionRepository {
   async findById(id: string): Promise<Promotion | null> {

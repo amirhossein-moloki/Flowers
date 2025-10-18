@@ -1,7 +1,7 @@
-import { IOrderPromotionRepository } from '../domain/order-promotion.repository';
-import { OrderPromotion } from '../domain/order-promotion.entity';
-import prisma from '../../../infrastructure/database/prisma/prisma-client';
-import { OrderPromotionMapper } from './order-promotion.mapper';
+import { IOrderPromotionRepository } from '@/modules/order-promotion/domain/order-promotion.repository';
+import { OrderPromotion } from '@/modules/order-promotion/domain/order-promotion.entity';
+import prisma from '@/infrastructure/database/prisma/prisma-client';
+import { OrderPromotionMapper } from '@/modules/order-promotion/infrastructure/order-promotion.mapper';
 
 export class PrismaOrderPromotionRepository implements IOrderPromotionRepository {
   async findById(id: string): Promise<OrderPromotion | null> {

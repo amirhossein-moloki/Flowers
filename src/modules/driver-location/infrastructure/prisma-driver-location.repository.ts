@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { IDriverLocationRepository } from '../domain/driver-location.repository';
-import { DriverLocation } from '../domain/driver-location.entity';
-import { DriverLocationMapper } from './driver-location.mapper';
+import { IDriverLocationRepository } from '@/modules/driver-location/domain/driver-location.repository';
+import { DriverLocation } from '@/modules/driver-location/domain/driver-location.entity';
+import { DriverLocationMapper } from '@/modules/driver-location/infrastructure/driver-location.mapper';
 
 export class PrismaDriverLocationRepository implements IDriverLocationRepository {
   constructor(private readonly prisma: PrismaClient) {}

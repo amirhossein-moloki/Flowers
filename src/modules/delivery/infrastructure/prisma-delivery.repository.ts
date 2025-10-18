@@ -1,7 +1,7 @@
-import { IDeliveryRepository } from '../domain/delivery.repository';
-import { Delivery } from '../domain/delivery.entity';
-import prisma from '../../../infrastructure/database/prisma/prisma-client';
-import { DeliveryMapper } from './delivery.mapper';
+import { IDeliveryRepository } from '@/modules/delivery/domain/delivery.repository';
+import { Delivery } from '@/modules/delivery/domain/delivery.entity';
+import prisma from '@/infrastructure/database/prisma/prisma-client';
+import { DeliveryMapper } from '@/modules/delivery/infrastructure/delivery.mapper';
 
 export class PrismaDeliveryRepository implements IDeliveryRepository {
   async findById(id: string): Promise<Delivery | null> {

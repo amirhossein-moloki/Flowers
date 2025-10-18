@@ -1,5 +1,5 @@
 import { OrderPromotion as PrismaOrderPromotion } from '@prisma/client';
-import { OrderPromotion } from '../domain/order-promotion.entity';
+import { OrderPromotion } from '@/modules/order-promotion/domain/order-promotion.entity';
 
 export class OrderPromotionMapper {
   public static toDomain(raw: PrismaOrderPromotion): OrderPromotion {

@@ -1,6 +1,6 @@
-import { Entity } from '../../../core/domain/entity';
-import { Result, success } from '../../../core/utils/result';
-import { PaymentMethod, PaymentStatus } from '../../../../core/domain/enums';
+import { Entity } from '@/core/domain/entity';
+import { Result, success } from '@/core/utils/result';
+import { PaymentMethod, PaymentStatus } from '@/core/domain/enums';
 
 interface PaymentProps {
   order_id: string;

@@ -1,7 +1,7 @@
-import { IProductRepository } from '../domain/product.repository';
-import { Product } from '../domain/product.entity';
-import prisma from '../../../infrastructure/database/prisma/prisma-client';
-import { ProductMapper } from './product.mapper';
+import { IProductRepository } from '@/modules/product/domain/product.repository';
+import { Product } from '@/modules/product/domain/product.entity';
+import prisma from '@/infrastructure/database/prisma/prisma-client';
+import { ProductMapper } from '@/modules/product/infrastructure/product.mapper';
 
 export class PrismaProductRepository implements IProductRepository {
   async findById(id: string): Promise<Product | null> {
