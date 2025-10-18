@@ -1,65 +1,26 @@
 import { Entity } from '../../../../core/domain/entity';
 import { Result, success } from '../../../../core/utils/result';
+import { DiscountType } from '@prisma/client';
 
-interface PromotionProps {
+export interface IPromotionProps {
   code: string;
-  type: string;
-  amount: number;
-  percent: number;
-  starts_at: Date;
-  ends_at: Date;
-  usage_limit: number;
-  is_active?: boolean;
+  description?: string;
+  discount_type: DiscountType;
+  discount_value: number;
+  start_date: Date;
+  end_date?: Date;
+  max_uses?: number;
+  uses_count: number;
+  is_active: boolean;
 }
 
-export class Promotion extends Entity<PromotionProps> {
-  private constructor(props: PromotionProps, id?: string) {
+export class Promotion extends Entity<IPromotionProps> {
+  private constructor(props: IPromotionProps, id?: string) {
     super(props, id);
   }
 
-  get code(): string {
-    return this.props.code;
-  }
-
-  get type(): string {
-    return this.props.type;
-  }
-
-  get amount(): number {
-    return this.props.amount;
-  }
-
-  get percent(): number {
-    return this.props.percent;
-  }
-
-  get starts_at(): Date {
-    return this.props.starts_at;
-  }
-
-  get ends_at(): Date {
-    return this.props.ends_at;
-  }
-
-  get usage_limit(): number {
-    return this.props.usage_limit;
-  }
-
-  get is_active(): boolean {
-    return this.props.is_active;
-  }
-
-  public static create(
-    props: PromotionProps,
-    id?: string,
-  ): Result<Promotion, Error> {
-    const promotion = new Promotion(
-      {
-        ...props,
-        is_active: props.is_active ?? true,
-      },
-      id,
-    );
+  public static create(props: IPromotionProps, id?: string): Result<Promotion, Error> {
+    const promotion = new Promotion(props, id);
     return success(promotion);
   }
 }
