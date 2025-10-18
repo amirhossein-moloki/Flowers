@@ -1,39 +1,36 @@
+import { OrderStatus as PrismaOrderStatus } from '@prisma/client';
 import { OrderStatus } from '../domain/order-status.entity';
-import { OrderStatusDto } from '../application/dtos/order-status.dto';
 
 export class OrderStatusMapper {
-  static toDto(orderStatus: OrderStatus): OrderStatusDto {
-    return {
-      id: orderStatus.id,
-      code: orderStatus.code,
-      name: orderStatus.name,
-      display_order: orderStatus.display_order,
-      is_terminal: orderStatus.is_terminal,
-    };
-  }
-
-  static toDomain(dto: OrderStatusDto): OrderStatus {
-    const result = OrderStatus.create({
-      code: dto.code,
-      name: dto.name,
-      display_order: dto.display_order,
-      is_terminal: dto.is_terminal,
-    }, dto.id);
-
-    if (result.success) {
-      return result.value;
-    } else {
-      throw result.error;
+  static toDomain(
+    prismaOrderStatus: PrismaOrderStatus,
+  ): OrderStatus {
+    const orderStatusResult = OrderStatus.create(
+      {
+        code: prismaOrderStatus.code,
+        name: prismaOrderStatus.name,
+        display_order: prismaOrderStatus.display_order,
+        is_terminal: prismaOrderStatus.is_terminal,
+      },
+      prismaOrderStatus.id,
+    );
+    if (orderStatusResult.isFailure) {
+      throw new Error('Could not map PrismaOrderStatus to domain');
     }
+    return orderStatusResult.value;
   }
 
-  static toPersistence(orderStatus: OrderStatus): any {
+  static toPersistence(
+    orderStatus: OrderStatus,
+  ): PrismaOrderStatus {
     return {
       id: orderStatus.id,
       code: orderStatus.code,
       name: orderStatus.name,
       display_order: orderStatus.display_order,
       is_terminal: orderStatus.is_terminal,
+      created_at: new Date(),
+      updated_at: new Date(),
     };
   }
 }
