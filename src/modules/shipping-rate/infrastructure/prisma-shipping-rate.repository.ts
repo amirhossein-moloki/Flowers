@@ -1,44 +1,49 @@
+import { IShippingRateRepository } from '@/modules/shipping-rate/domain/shipping-rate.repository';
+import { ShippingRate } from '@/modules/shipping-rate/domain/shipping-rate.entity';
 import { PrismaClient } from '@prisma/client';
-import { IShippingRateRepository } from '../domain/shipping-rate.repository';
-import { ShippingRate } from '../domain/shipping-rate.entity';
-import { ShippingRateMapper } from './shipping-rate.mapper';
+import { ShippingRateMapper } from '@/modules/shipping-rate/infrastructure/shipping-rate.mapper';
 
 export class PrismaShippingRateRepository implements IShippingRateRepository {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaClient) {}
 
   async findById(id: string): Promise<ShippingRate | null> {
-    const rate = await this.prisma.shippingRate.findUnique({ where: { id } });
-    return rate ? ShippingRateMapper.toDomain(rate) : null;
+    const shippingRate = await this.prisma.shippingRate.findUnique({ where: { id } });
+    return shippingRate ? ShippingRateMapper.toDomain(shippingRate) : null;
   }
 
   async findByServiceZoneId(serviceZoneId: string): Promise<ShippingRate[]> {
-    const rates = await this.prisma.shippingRate.findMany({
+    const shippingRates = await this.prisma.shippingRate.findMany({
       where: { service_zone_id: serviceZoneId },
     });
-    return rates.map(ShippingRateMapper.toDomain);
+    return shippingRates.map(ShippingRateMapper.toDomain);
   }
 
   async findAll(): Promise<ShippingRate[]> {
-    const rates = await this.prisma.shippingRate.findMany();
-    return rates.map(ShippingRateMapper.toDomain);
+    const shippingRates = await this.prisma.shippingRate.findMany();
+    return shippingRates.map(ShippingRateMapper.toDomain);
   }
 
   async save(shippingRate: ShippingRate): Promise<ShippingRate> {
     const data = ShippingRateMapper.toPersistence(shippingRate);
-    const savedRate = await this.prisma.shippingRate.upsert({
+    await this.prisma.shippingRate.upsert({
       where: { id: shippingRate.id },
       update: data,
       create: data,
     });
-    return ShippingRateMapper.toDomain(savedRate);
+    return shippingRate;
+  }
+
+  async update(shippingRate: ShippingRate): Promise<ShippingRate> {
+    const data = ShippingRateMapper.toPersistence(shippingRate);
+    const updatedShippingRate = await this.prisma.shippingRate.update({
+      where: { id: shippingRate.id },
+      data,
+    });
+    return ShippingRateMapper.toDomain(updatedShippingRate);
   }
 
   async delete(id: string): Promise<boolean> {
-    try {
-      await this.prisma.shippingRate.delete({ where: { id } });
-      return true;
-    } catch (error) {
-      return false;
-    }
+    await this.prisma.shippingRate.delete({ where: { id } });
+    return true;
   }
 }

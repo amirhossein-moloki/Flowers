@@ -53,7 +53,7 @@ modules/
 | 4 | address | ✅ Done | ✅ Done | ✅ Done | ✅ Done | CRUD endpoints for managing address data. |
 | 5 | customer-address | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Connects with address module during creation. |
 | 6 | service-zone | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Read-only; return GeoJSON. |
-| 7 | shipping-rate | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Add `/calculate` endpoint. |
+| 7 | shipping-rate | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add `/calculate` endpoint. |
 | 8 | courier | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Auth required for write actions. |
 | 9 | driver-location | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Endpoint for updating driver coordinates. |
 | 10 | delivery-status | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Read-only; return label in presenter. |
