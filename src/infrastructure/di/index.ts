@@ -20,8 +20,18 @@ import { FindProofOfDeliveryByIdUseCase } from '@/modules/proof-of-delivery/appl
 import { UpdateProofOfDeliveryUseCase } from '@/modules/proof-of-delivery/application/use-cases/update-proof-of-delivery.usecase';
 import { DeleteProofOfDeliveryUseCase } from '@/modules/proof-of-delivery/application/use-cases/delete-proof-of-delivery.usecase';
 import { PrismaProofOfDeliveryRepository } from '@/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository';
+import { CreateNotificationUseCase } from '@/modules/notification/application/use-cases/create-notification.usecase';
+import { PrismaNotificationRepository } from '@/modules/notification/infrastructure/prisma-notification.repository';
+
+import { GetNotificationUseCase } from '@/modules/notification/application/use-cases/get-notification.usecase';
+import { UpdateNotificationUseCase } from '@/modules/notification/application/use-cases/update-notification.usecase';
+import { DeleteNotificationUseCase } from '@/modules/notification/application/use-cases/delete-notification.usecase';
 
 export interface Dependencies {
+  createNotificationUseCase: CreateNotificationUseCase;
+  getNotificationUseCase: GetNotificationUseCase;
+  updateNotificationUseCase: UpdateNotificationUseCase;
+  deleteNotificationUseCase: DeleteNotificationUseCase;
   createProofOfDeliveryUseCase: CreateProofOfDeliveryUseCase;
   findProofOfDeliveryByIdUseCase: FindProofOfDeliveryByIdUseCase;
   updateProofOfDeliveryUseCase: UpdateProofOfDeliveryUseCase;
@@ -46,7 +56,12 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const shippingRateRepository = new PrismaShippingRateRepository(prisma);
   const vendorRepository = new PrismaVendorRepository(prisma);
   const serviceZoneRepository = new PrismaServiceZoneRepository(prisma);
+  const notificationRepository = new PrismaNotificationRepository(prisma);
 
+  const createNotificationUseCase = new CreateNotificationUseCase(notificationRepository);
+  const getNotificationUseCase = new GetNotificationUseCase(notificationRepository);
+  const updateNotificationUseCase = new UpdateNotificationUseCase(notificationRepository);
+  const deleteNotificationUseCase = new DeleteNotificationUseCase(notificationRepository);
   const createShippingRateUseCase = new CreateShippingRateUseCase(shippingRateRepository);
   const updateShippingRateUseCase = new UpdateShippingRateUseCase(shippingRateRepository);
   const deleteShippingRateUseCase = new DeleteShippingRateUseCase(shippingRateRepository);
@@ -69,6 +84,10 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const deleteProofOfDeliveryUseCase = new DeleteProofOfDeliveryUseCase(proofOfDeliveryRepository);
 
   return {
+    createNotificationUseCase,
+    getNotificationUseCase,
+    updateNotificationUseCase,
+    deleteNotificationUseCase,
     createProofOfDeliveryUseCase,
     findProofOfDeliveryByIdUseCase,
     updateProofOfDeliveryUseCase,

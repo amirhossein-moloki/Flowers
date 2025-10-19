@@ -2,8 +2,8 @@ import { INotificationRepository } from '../../domain/notification.repository';
 import { Notification } from '../../domain/notification.entity';
 import { CreateNotificationDto } from '../dtos/create-notification.dto';
 import { NotificationDto } from '../dtos/notification.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '../../../../core/utils/result';
+import { HttpError } from '../../../../core/errors/http-error';
 import { NotificationMapper } from '../../infrastructure/notification.mapper';
 
 export class CreateNotificationUseCase {
