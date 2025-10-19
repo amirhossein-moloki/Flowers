@@ -1,26 +1,43 @@
-import { IPromotionRepository } from '../../domain/promotion.repository';
-import { Promotion } from '../../domain/promotion.entity';
-import { CreatePromotionDto } from '../dtos/create-promotion.dto';
-import { PromotionDto } from '../dtos/promotion.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { PromotionMapper } from '../../infrastructure/promotion.mapper';
+import { IPromotionRepository } from '@/modules/promotion/domain/promotion.repository';
+import { Promotion, IPromotionProps } from '@/modules/promotion/domain/promotion.entity';
+import { Result, success, failure } from '@/core/utils/result';
+import { NotFoundError } from '@/core/errors/not-found.error';
+
+type CreatePromotionRequest = Omit<IPromotionProps, 'uses_count' | 'is_active'> & {
+  is_active?: boolean;
+};
 
 export class CreatePromotionUseCase {
-  constructor(private readonly promotionRepository: IPromotionRepository) {}
+  constructor(private promotionRepository: IPromotionRepository) {}
 
-  async execute(dto: CreatePromotionDto): Promise<Result<PromotionDto, HttpError>> {
-    const promotionResult = Promotion.create(dto);
+  async execute(request: CreatePromotionRequest): Promise<Result<Promotion, Error>> {
+    const promotionOrError = Promotion.create({
+      ...request,
+      uses_count: 0,
+      is_active: request.is_active ?? true,
+    });
 
-    if (!promotionResult.success) {
-      return failure(HttpError.internalServerError(promotionResult.error.message));
+    if (!promotionOrError.success) {
+      return failure(promotionOrError.error);
     }
 
-    const promotion = promotionResult.value;
+    const promotion = promotionOrError.value;
+    const existingPromotion = await this.promotionRepository.findByCode(promotion.props.code);
 
-    await this.promotionRepository.save(promotion);
+    if (existingPromotion.success) {
+      return failure(new Error('Promotion code already exists'));
+    }
 
-    const promotionDto = PromotionMapper.toDto(promotion);
-    return success(promotionDto);
+    if (!(existingPromotion.error instanceof NotFoundError)) {
+      return failure(existingPromotion.error);
+    }
+
+    const saveResult = await this.promotionRepository.save(promotion);
+
+    if (!saveResult.success) {
+      return failure(saveResult.error);
+    }
+
+    return success(promotion);
   }
 }

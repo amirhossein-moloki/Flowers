@@ -1,8 +1,11 @@
 import { Promotion } from './promotion.entity';
+import { Result } from '@/core/utils/result';
 
 export interface IPromotionRepository {
-  findById(id: string): Promise<Promotion | null>;
-  findByCode(code: string): Promise<Promotion | null>;
-  save(promotion: Promotion): Promise<void>;
-  delete(id: string): Promise<void>;
+  findById(id: string): Promise<Result<Promotion, Error>>;
+  findByCode(code: string): Promise<Result<Promotion, Error>>;
+  findAll(): Promise<Result<Promotion[], Error>>;
+  save(promotion: Promotion): Promise<Result<void, Error>>;
+  update(promotion: Promotion): Promise<Result<void, Error>>;
+  delete(id: string): Promise<Result<void, Error>>;
 }

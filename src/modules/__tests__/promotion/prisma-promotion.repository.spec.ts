@@ -1,14 +1,31 @@
-import { prismaMock } from '../helpers/prisma-mock.helper';
+import { mockDeep, mockReset } from 'jest-mock-extended';
+import { PrismaClient, DiscountType } from '@prisma/client';
 import { PrismaPromotionRepository } from '@/modules/promotion/infrastructure/prisma-promotion.repository';
 import { Promotion } from '@/modules/promotion/domain/promotion.entity';
-import { PromotionMapper } from '@/modules/promotion/infrastructure/promotion.mapper';
-import { DiscountType } from '@prisma/client';
+import { PromotionMapper } from '@/modules/promotion/infrastructure/mappers/promotion.mapper';
+
+jest.mock('@prisma/client', () => {
+  const originalModule = jest.requireActual('@prisma/client');
+  return {
+    ...originalModule,
+    DiscountType: {
+      PERCENTAGE: 'PERCENTAGE',
+      FIXED_AMOUNT: 'FIXED_AMOUNT',
+    },
+  };
+});
+
+const prismaMock = mockDeep<PrismaClient>();
+
+beforeEach(() => {
+  mockReset(prismaMock);
+});
 
 describe('PrismaPromotionRepository', () => {
   let repository: PrismaPromotionRepository;
 
   beforeEach(() => {
-    repository = new PrismaPromotionRepository();
+    repository = new PrismaPromotionRepository(prismaMock as any);
   });
 
   const promotionProps = {
@@ -38,8 +55,10 @@ describe('PrismaPromotionRepository', () => {
   test('findById should return a promotion entity when found', async () => {
     prismaMock.promotion.findUnique.mockResolvedValue(prismaPromotion);
 
-    const foundPromo = await repository.findById('promo-id-1');
+    const foundPromoResult = await repository.findById('promo-id-1');
 
+    expect(foundPromoResult.success).toBe(true);
+    const foundPromo = foundPromoResult.value as Promotion;
     expect(foundPromo).toBeInstanceOf(Promotion);
     expect(foundPromo?.id).toBe('promo-id-1');
     expect(prismaMock.promotion.findUnique).toHaveBeenCalledWith({ where: { id: 'promo-id-1' } });
@@ -48,20 +67,20 @@ describe('PrismaPromotionRepository', () => {
   test('findByCode should return a promotion entity when found', async () => {
     prismaMock.promotion.findUnique.mockResolvedValue(prismaPromotion);
 
-    const foundPromo = await repository.findByCode('SUMMER25');
+    const foundPromoResult = await repository.findByCode('SUMMER25');
 
+    expect(foundPromoResult.success).toBe(true);
+    const foundPromo = foundPromoResult.value as Promotion;
     expect(foundPromo).toBeInstanceOf(Promotion);
     expect(foundPromo?.props.code).toBe('SUMMER25');
     expect(prismaMock.promotion.findUnique).toHaveBeenCalledWith({ where: { code: 'SUMMER25' } });
   });
 
-  test('save should call upsert on prisma client', async () => {
+  test('save should call create on prisma client', async () => {
     await repository.save(promotionEntity);
 
-    expect(prismaMock.promotion.upsert).toHaveBeenCalledWith({
-      where: { id: promotionEntity.id },
-      create: PromotionMapper.toPersistence(promotionEntity),
-      update: PromotionMapper.toPersistence(promotionEntity),
+    expect(prismaMock.promotion.create).toHaveBeenCalledWith({
+      data: PromotionMapper.toPersistence(promotionEntity),
     });
   });
 
