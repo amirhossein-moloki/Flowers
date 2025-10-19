@@ -16,6 +16,8 @@ import { IOrderRepository } from './modules/order/domain/order.repository';
 import { IPaymentRepository } from './modules/payment/domain/payment.repository';
 import { IProductRepository } from './modules/product/domain/product.repository';
 import { IUserRepository } from './modules/user/domain/user.repository';
+import { IVendorRepository } from './modules/vendor/domain/vendor.repository';
+import { PrismaClient } from '@prisma/client';
 
 // Define a type for your dependency container
 export interface AppDependencies {
@@ -32,6 +34,8 @@ export interface AppDependencies {
   paymentRepository: IPaymentRepository;
   productRepository: IProductRepository;
   userRepository: IUserRepository;
+  vendorRepository: IVendorRepository;
+  prisma: PrismaClient;
 }
 
 class App {
@@ -50,11 +54,20 @@ class App {
     securityMiddleware(this.express);
   }
 
+import { userRoutes } from './modules/user/http/routes';
+import { createVendorRoutes } from './modules/vendor/http/routes';
+
+// ... (imports)
+
+// ... (App class definition)
+
   private setupRoutes(): void {
     // Placeholder for future routes
     this.express.get('/', (req, res) => {
       res.send('API is running...');
     });
+    this.express.use('/api/v1/users', userRoutes);
+    this.express.use('/api/v1/vendors', createVendorRoutes(this.dependencies));
   }
 
   private setupErrorHandlers(): void {

@@ -12,6 +12,7 @@ import { PrismaOrderRepository } from '@/modules/order/infrastructure/prisma-ord
 import { PrismaPaymentRepository } from '@/modules/payment/infrastructure/prisma-payment.repository';
 import { PrismaProductRepository } from '@/modules/product/infrastructure/prisma-product.repository';
 import { PrismaUserRepository } from '@/modules/user/infrastructure/prisma-user.repository';
+import { PrismaVendorRepository } from '@/modules/vendor/infrastructure/prisma-vendor.repository';
 
 export function createDependencyContainer(prisma: PrismaClient) {
   return {
@@ -28,5 +29,6 @@ export function createDependencyContainer(prisma: PrismaClient) {
     paymentRepository: new PrismaPaymentRepository(prisma),
     productRepository: new PrismaProductRepository(prisma),
     userRepository: new PrismaUserRepository(prisma),
+    vendorRepository: new PrismaVendorRepository(prisma),
   };
 }

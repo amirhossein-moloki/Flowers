@@ -1,38 +1,53 @@
 import { Vendor as PrismaVendor } from '@prisma/client';
-import { Vendor } from '../domain/vendor.entity';
+import { Vendor } from '@/modules/vendor/domain/vendor.entity';
+import { VendorDto } from '@/modules/vendor/application/dtos/vendor.dto';
 
 export class VendorMapper {
-  static toDomain(prismaVendor: PrismaVendor): Vendor {
+  public static toDomain(raw: PrismaVendor): Vendor {
     const vendorResult = Vendor.create(
       {
-        name: prismaVendor.name,
-        description: prismaVendor.description ?? undefined,
-        email: prismaVendor.email,
-        phone: prismaVendor.phone,
-        address: prismaVendor.address,
-        is_active: prismaVendor.is_active,
-        createdAt: prismaVendor.created_at,
-        updatedAt: prismaVendor.updated_at,
+        name: raw.name,
+        description: raw.description,
+        email: raw.email,
+        phone: raw.phone,
+        address: raw.address,
+        is_active: raw.is_active,
+        createdAt: raw.created_at,
+        updatedAt: raw.updated_at,
       },
-      prismaVendor.id,
+      raw.id,
     );
 
     if (!vendorResult.success) {
-      throw new Error(String(vendorResult.error));
+      throw new Error(`Failed to map raw data to Vendor entity: ${vendorResult.error.message}`);
     }
-
     return vendorResult.value;
   }
 
-  static toPersistence(vendor: Vendor) {
+  public static toPersistence(vendor: Vendor) {
+    const props = vendor.props;
     return {
       id: vendor.id,
-      name: vendor.name,
-      description: vendor.description,
-      email: vendor.email,
-      phone: vendor.phone,
-      address: vendor.address,
-      is_active: vendor.is_active,
+      name: props.name,
+      description: props.description,
+      email: props.email,
+      phone: props.phone,
+      address: props.address,
+      is_active: props.is_active,
+    };
+  }
+
+  public static toDto(vendor: Vendor): VendorDto {
+    const props = vendor.props;
+    return {
+      id: vendor.id,
+      name: props.name,
+      description: props.description,
+      email: props.email,
+      phone: props.phone,
+      address: props.address,
+      is_active: props.is_active,
+      createdAt: vendor.createdAt,
     };
   }
 }
