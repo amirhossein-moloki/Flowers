@@ -1,23 +1,20 @@
 import { Request, Response } from 'express';
-import { Request, Response } from 'express';
 import { VendorPresenter } from './presenters/vendor.presenter';
 import { CreateVendorInput } from './dto/create-vendor.schema';
-import { VendorDependencies } from '../vendor.dependencies';
+import { CreateVendorUseCase } from '../application/use-cases/create-vendor.usecase';
+import { GetVendorUseCase } from '../application/use-cases/get-vendor.usecase';
+import { UpdateVendorUseCase } from '../application/use-cases/update-vendor.usecase';
+import { DeleteVendorUseCase } from '../application/use-cases/delete-vendor.usecase';
+import { ListVendorsUseCase } from '../application/use-cases/list-vendors.usecase';
 
 export class VendorController {
-  private readonly createVendorUseCase: VendorDependencies['createVendorUseCase'];
-  private readonly getVendorUseCase: VendorDependencies['getVendorUseCase'];
-  private readonly updateVendorUseCase: VendorDependencies['updateVendorUseCase'];
-  private readonly deleteVendorUseCase: VendorDependencies['deleteVendorUseCase'];
-  private readonly listVendorsUseCase: VendorDependencies['listVendorsUseCase'];
-
-  constructor(dependencies: VendorDependencies) {
-    this.createVendorUseCase = dependencies.createVendorUseCase;
-    this.getVendorUseCase = dependencies.getVendorUseCase;
-    this.updateVendorUseCase = dependencies.updateVendorUseCase;
-    this.deleteVendorUseCase = dependencies.deleteVendorUseCase;
-    this.listVendorsUseCase = dependencies.listVendorsUseCase;
-  }
+  constructor(
+    private readonly createVendorUseCase: CreateVendorUseCase,
+    private readonly getVendorUseCase: GetVendorUseCase,
+    private readonly updateVendorUseCase: UpdateVendorUseCase,
+    private readonly deleteVendorUseCase: DeleteVendorUseCase,
+    private readonly listVendorsUseCase: ListVendorsUseCase,
+  ) {}
 
   async create(req: Request, res: Response): Promise<Response> {
     const result = await this.createVendorUseCase.execute(req.body as CreateVendorInput);
