@@ -60,7 +60,7 @@ modules/
 | 11 | delivery-window | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Validate time range with Zod. |
 | 12 | delivery | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add `/assign-driver` endpoint. |
 | 13 | proof-of-delivery | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add signature upload endpoint. |
-| 14 | notification | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Add manual trigger endpoint. |
+| 14 | notification | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add manual trigger endpoint. |
 | 15 | product | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | CRUD; filter by vendorId; pagination. |
 | 16 | product-image | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Metadata only; upload later. |
 | 17 | promotion | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Validate start/end dates. |
