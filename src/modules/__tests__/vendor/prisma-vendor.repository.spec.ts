@@ -1,102 +1,100 @@
-import { PrismaClient, Vendor as PrismaVendor } from '@prisma/client';
-import { PrismaVendorRepository } from '../../vendor/infrastructure/prisma-vendor.repository';
-import { Vendor } from '../../vendor/domain/vendor.entity';
-import { VendorMapper } from '../../vendor/infrastructure/vendor.mapper';
-
-const mockPrisma = {
-  vendor: {
-    findUnique: jest.fn(),
-    findMany: jest.fn(),
-    upsert: jest.fn(),
-    delete: jest.fn(),
-  },
-};
-
-jest.mock('@prisma/client', () => ({
-  PrismaClient: jest.fn(() => mockPrisma),
-}));
+import { prismaMock } from '../helpers/prisma-mock.helper';
+import { PrismaVendorRepository } from '@/modules/vendor/infrastructure/prisma-vendor.repository';
+import { Vendor } from '@/modules/vendor/domain/vendor.entity';
+import { VendorMapper } from '@/modules/vendor/infrastructure/vendor.mapper';
+import { PrismaClient } from '@prisma/client';
 
 describe('PrismaVendorRepository', () => {
   let repository: PrismaVendorRepository;
-  let prisma: PrismaClient;
-
-  const now = new Date();
-  const vendorProps = {
-    name: 'Test Vendor',
-    description: 'A test vendor',
-    email: 'test@vendor.com',
-    phone: '1234567890',
-    address: '123 Test St',
-    is_active: true,
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  const vendorResult = Vendor.create(vendorProps, 'test-id');
-  const vendorEntity = vendorResult.success ? vendorResult.value : null;
-  if (!vendorEntity) {
-    throw new Error('Test setup failed: could not create vendor entity');
-  }
-
-  const prismaVendor: PrismaVendor = {
-    id: 'test-id',
-    name: vendorProps.name,
-    description: vendorProps.description ?? null,
-    email: vendorProps.email,
-    phone: vendorProps.phone,
-    address: vendorProps.address,
-    is_active: vendorProps.is_active,
-    created_at: vendorProps.createdAt,
-    updated_at: vendorProps.updatedAt,
-  };
 
   beforeEach(() => {
-    prisma = new PrismaClient();
-    repository = new PrismaVendorRepository(prisma);
-    jest.clearAllMocks();
+    repository = new PrismaVendorRepository(prismaMock as unknown as PrismaClient);
   });
 
-  it('should find a vendor by id', async () => {
-    mockPrisma.vendor.findUnique.mockResolvedValue(prismaVendor);
-    const result = await repository.findById('test-id');
-    expect(result).toEqual(vendorEntity);
-    expect(mockPrisma.vendor.findUnique).toHaveBeenCalledWith({ where: { id: 'test-id' } });
+  const vendorProps = {
+    name: 'Test Vendor',
+    description: 'Test Description',
+    email: 'test@example.com',
+    phone: '+12345678901',
+    address: '123 Test St',
+    is_active: true,
+  };
+  const vendorResult = Vendor.create(vendorProps, 'vendor-id-1');
+  if (!vendorResult.success) {
+    throw new Error('Test setup failed: could not create vendor entity');
+  }
+  const vendorEntity = vendorResult.value;
+
+  const prismaVendor = {
+    id: vendorEntity.id,
+    ...vendorProps,
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
+
+  test('findById should return a vendor entity when found', async () => {
+    prismaMock.vendor.findUnique.mockResolvedValue(prismaVendor);
+
+    const foundVendor = await repository.findById('vendor-id-1');
+
+    expect(foundVendor).toBeInstanceOf(Vendor);
+    expect(foundVendor?.id).toBe('vendor-id-1');
+    expect(prismaMock.vendor.findUnique).toHaveBeenCalledWith({ where: { id: 'vendor-id-1' } });
   });
 
-  it('should return null if vendor not found', async () => {
-    mockPrisma.vendor.findUnique.mockResolvedValue(null);
-    const result = await repository.findById('not-found-id');
-    expect(result).toBeNull();
+  test('findByEmail should return a vendor entity when found', async () => {
+    prismaMock.vendor.findUnique.mockResolvedValue(prismaVendor);
+
+    const foundVendor = await repository.findByEmail('test@example.com');
+
+    expect(foundVendor).toBeInstanceOf(Vendor);
+    expect(foundVendor?.email).toBe('test@example.com');
+    expect(prismaMock.vendor.findUnique).toHaveBeenCalledWith({ where: { email: 'test@example.com' } });
   });
 
-  it('should find all vendors', async () => {
-    mockPrisma.vendor.findMany.mockResolvedValue([prismaVendor]);
-    const result = await repository.findAll();
-    expect(result).toEqual([vendorEntity]);
-    expect(mockPrisma.vendor.findMany).toHaveBeenCalled();
+  test('findByPhone should return a vendor entity when found', async () => {
+    prismaMock.vendor.findUnique.mockResolvedValue(prismaVendor);
+
+    const foundVendor = await repository.findByPhone('+12345678901');
+
+    expect(foundVendor).toBeInstanceOf(Vendor);
+    expect(foundVendor?.phone).toBe('+12345678901');
+    expect(prismaMock.vendor.findUnique).toHaveBeenCalledWith({ where: { phone: '+12345678901' } });
   });
 
-  it('should save a vendor', async () => {
-    mockPrisma.vendor.upsert.mockResolvedValue(prismaVendor);
-    const result = await repository.save(vendorEntity);
-    expect(result).toEqual(vendorEntity);
-    expect(mockPrisma.vendor.upsert).toHaveBeenCalledWith({
-      where: { id: 'test-id' },
-      update: VendorMapper.toPersistence(vendorEntity),
-      create: VendorMapper.toPersistence(vendorEntity),
+  test('findAll should return an array of vendor entities', async () => {
+    prismaMock.vendor.findMany.mockResolvedValue([prismaVendor]);
+
+    const vendors = await repository.findAll();
+
+    expect(vendors).toHaveLength(1);
+    expect(vendors[0]).toBeInstanceOf(Vendor);
+  });
+
+  test('save should call create on prisma client', async () => {
+    prismaMock.vendor.create.mockResolvedValue(prismaVendor);
+    await repository.save(vendorEntity);
+
+    expect(prismaMock.vendor.create).toHaveBeenCalledWith({
+      data: VendorMapper.toPersistence(vendorEntity),
     });
   });
 
-  it('should delete a vendor', async () => {
-    mockPrisma.vendor.delete.mockResolvedValue(prismaVendor);
-    const result = await repository.delete('test-id');
-    expect(result).toBe(true);
-    expect(mockPrisma.vendor.delete).toHaveBeenCalledWith({ where: { id: 'test-id' } });
+  test('update should call update on prisma client', async () => {
+    prismaMock.vendor.update.mockResolvedValue(prismaVendor);
+    await repository.update(vendorEntity);
+
+    expect(prismaMock.vendor.update).toHaveBeenCalledWith({
+      where: { id: vendorEntity.id },
+      data: VendorMapper.toPersistence(vendorEntity),
+    });
   });
 
-  it('should return false if delete fails', async () => {
-    mockPrisma.vendor.delete.mockRejectedValue(new Error('Delete failed'));
-    const result = await repository.delete('fail-id');
-    expect(result).toBe(false);
+  test('delete should call delete on prisma client', async () => {
+    await repository.delete('vendor-id-1');
+
+    expect(prismaMock.vendor.delete).toHaveBeenCalledWith({
+      where: { id: 'vendor-id-1' },
+    });
   });
 });

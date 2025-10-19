@@ -10,6 +10,27 @@ import { success, failure } from '@/core/utils/result';
 import { User } from '../../domain/user.entity';
 import { UserRole } from '@prisma/client';
 
+jest.mock('@/config/env', () => ({
+  env: {
+    DATABASE_URL: 'test_url',
+    REDIS_HOST: 'test_host',
+    REDIS_PORT: 6379,
+    JWT_SECRET: 'test_secret',
+  },
+}));
+
+jest.mock('@prisma/client', () => ({
+  PrismaClient: jest.fn(() => ({
+    $on: jest.fn(),
+  })),
+  UserRole: {
+    ADMIN: 'ADMIN',
+    CUSTOMER: 'CUSTOMER',
+    DRIVER: 'DRIVER',
+    VENDOR: 'VENDOR',
+  },
+}));
+
 // Mock the use cases
 const mockCreateUserUseCase = {
   execute: jest.fn(),
