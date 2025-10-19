@@ -15,8 +15,17 @@ import { PrismaVendorRepository } from '@/modules/vendor/infrastructure/prisma-v
 import { GetServiceZoneUseCase } from '@/modules/service-zone/application/use-cases/get-service-zone.usecase';
 import { ListServiceZonesUseCase } from '@/modules/service-zone/application/use-cases/list-service-zones.usecase';
 import { PrismaServiceZoneRepository } from '@/modules/service-zone/infrastructure/prisma-service-zone.repository';
+import { CreateProofOfDeliveryUseCase } from '@/modules/proof-of-delivery/application/use-cases/create-proof-of-delivery.usecase';
+import { FindProofOfDeliveryByIdUseCase } from '@/modules/proof-of-delivery/application/use-cases/find-proof-of-delivery-by-id.usecase';
+import { UpdateProofOfDeliveryUseCase } from '@/modules/proof-of-delivery/application/use-cases/update-proof-of-delivery.usecase';
+import { DeleteProofOfDeliveryUseCase } from '@/modules/proof-of-delivery/application/use-cases/delete-proof-of-delivery.usecase';
+import { PrismaProofOfDeliveryRepository } from '@/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository';
 
 export interface Dependencies {
+  createProofOfDeliveryUseCase: CreateProofOfDeliveryUseCase;
+  findProofOfDeliveryByIdUseCase: FindProofOfDeliveryByIdUseCase;
+  updateProofOfDeliveryUseCase: UpdateProofOfDeliveryUseCase;
+  deleteProofOfDeliveryUseCase: DeleteProofOfDeliveryUseCase;
   createShippingRateUseCase: CreateShippingRateUseCase;
   updateShippingRateUseCase: UpdateShippingRateUseCase;
   deleteShippingRateUseCase: DeleteShippingRateUseCase;
@@ -33,6 +42,7 @@ export interface Dependencies {
 }
 
 export function createDependencies(prisma: PrismaClient): Dependencies {
+  const proofOfDeliveryRepository = new PrismaProofOfDeliveryRepository(prisma);
   const shippingRateRepository = new PrismaShippingRateRepository(prisma);
   const vendorRepository = new PrismaVendorRepository(prisma);
   const serviceZoneRepository = new PrismaServiceZoneRepository(prisma);
@@ -53,7 +63,16 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const getServiceZoneUseCase = new GetServiceZoneUseCase(serviceZoneRepository);
   const listServiceZonesUseCase = new ListServiceZonesUseCase(serviceZoneRepository);
 
+  const createProofOfDeliveryUseCase = new CreateProofOfDeliveryUseCase(proofOfDeliveryRepository);
+  const findProofOfDeliveryByIdUseCase = new FindProofOfDeliveryByIdUseCase(proofOfDeliveryRepository);
+  const updateProofOfDeliveryUseCase = new UpdateProofOfDeliveryUseCase(proofOfDeliveryRepository);
+  const deleteProofOfDeliveryUseCase = new DeleteProofOfDeliveryUseCase(proofOfDeliveryRepository);
+
   return {
+    createProofOfDeliveryUseCase,
+    findProofOfDeliveryByIdUseCase,
+    updateProofOfDeliveryUseCase,
+    deleteProofOfDeliveryUseCase,
     createShippingRateUseCase,
     updateShippingRateUseCase,
     deleteShippingRateUseCase,

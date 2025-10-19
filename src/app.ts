@@ -7,6 +7,7 @@ import { userRoutes } from './modules/user/http/routes';
 import { createVendorRoutes } from './modules/vendor/http/routes';
 import { createServiceZoneRoutes } from './modules/service-zone/http/routes';
 import { createShippingRateRoutes } from './modules/shipping-rate/presentation/http/shipping-rate.routes';
+import { createProofOfDeliveryRoutes } from './modules/proof-of-delivery/presentation/http/routes';
 import { PrismaClient } from '@prisma/client';
 
 class App {
@@ -33,6 +34,7 @@ class App {
     this.express.use('/api/v1/vendors', createVendorRoutes(this.dependencies));
     this.express.use('/api/v1/service-zones', createServiceZoneRoutes(this.dependencies));
     this.express.use('/api/v1/shipping-rates', createShippingRateRoutes(this.dependencies));
+    this.express.use('/api/v1/proof-of-delivery', createProofOfDeliveryRoutes(this.dependencies));
   }
 
   private setupErrorHandlers(): void {

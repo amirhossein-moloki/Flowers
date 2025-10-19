@@ -3,11 +3,12 @@ import { Result, success } from '../../../core/utils/result';
 
 interface ProofOfDeliveryProps {
   delivery_id: string;
-  photo_url: string;
-  receiver_name: string;
-  receiver_signature_url: string;
-  otp_code: string;
+  signature_url?: string;
+  photo_url?: string;
+  notes?: string;
+  is_verified?: boolean;
   created_at?: Date;
+  updated_at?: Date;
 }
 
 export class ProofOfDelivery extends Entity<ProofOfDeliveryProps> {
@@ -19,20 +20,20 @@ export class ProofOfDelivery extends Entity<ProofOfDeliveryProps> {
     return this.props.delivery_id;
   }
 
-  get photo_url(): string {
+  get signature_url(): string | undefined {
+    return this.props.signature_url;
+  }
+
+  get photo_url(): string | undefined {
     return this.props.photo_url;
   }
 
-  get receiver_name(): string {
-    return this.props.receiver_name;
+  get notes(): string | undefined {
+    return this.props.notes;
   }
 
-  get receiver_signature_url(): string {
-    return this.props.receiver_signature_url;
-  }
-
-  get otp_code(): string {
-    return this.props.otp_code;
+  get is_verified(): boolean | undefined {
+    return this.props.is_verified;
   }
 
   public static create(
