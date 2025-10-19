@@ -61,7 +61,7 @@ modules/
 | 12 | delivery | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add `/assign-driver` endpoint. |
 | 13 | proof-of-delivery | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add signature upload endpoint. |
 | 14 | notification | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add manual trigger endpoint. |
-| 15 | product | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | CRUD; filter by vendorId; pagination. |
+| 15 | product | ✅ Done | ✅ Done | ✅ Done | ✅ Done | CRUD; filter by vendorId; pagination. |
 | 16 | product-image | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Metadata only; upload later. |
 | 17 | promotion | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Validate start/end dates. |
 | 18 | order-status | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Read-only; display transitions. |
