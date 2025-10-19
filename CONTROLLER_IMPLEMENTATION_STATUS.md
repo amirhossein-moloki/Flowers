@@ -62,7 +62,7 @@ modules/
 | 13 | proof-of-delivery | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add signature upload endpoint. |
 | 14 | notification | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add manual trigger endpoint. |
 | 15 | product | ✅ Done | ✅ Done | ✅ Done | ✅ Done | CRUD; filter by vendorId; pagination. |
-| 16 | product-image | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Metadata only; upload later. |
+| 16 | product-image | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Metadata only; upload later. |
 | 17 | promotion | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Validate start/end dates. |
 | 18 | order-status | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Read-only; display transitions. |
 | 19 | order-promotion | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Join with promotion in presenter. |
