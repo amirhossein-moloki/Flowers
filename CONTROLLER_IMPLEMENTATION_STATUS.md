@@ -57,7 +57,7 @@ modules/
 | 8 | courier | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Auth required for write actions. |
 | 9 | driver-location | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Endpoint for updating driver coordinates. |
 | 10 | delivery-status | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Read-only; return label in presenter. |
-| 11 | delivery-window | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Validate time range with Zod. |
+| 11 | delivery-window | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Validate time range with Zod. |
 | 12 | delivery | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Add `/assign-driver` endpoint. |
 | 13 | proof-of-delivery | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Add signature upload endpoint. |
 | 14 | notification | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Add manual trigger endpoint. |

@@ -1,18 +1,16 @@
 import { IDeliveryWindowRepository } from '../../domain/delivery-window.repository';
 import { DeliveryWindow } from '../../domain/delivery-window.entity';
 import { CreateDeliveryWindowDto } from '../dtos/create-delivery-window.dto';
-import { DeliveryWindowDto } from '../dtos/delivery-window.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { DeliveryWindowMapper } from '../../infrastructure/delivery-window.mapper';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 
 export class CreateDeliveryWindowUseCase {
   constructor(private readonly deliveryWindowRepository: IDeliveryWindowRepository) {}
 
-  async execute(dto: CreateDeliveryWindowDto): Promise<Result<DeliveryWindowDto, HttpError>> {
+  async execute(dto: CreateDeliveryWindowDto): Promise<Result<DeliveryWindow, HttpError>> {
     const deliveryWindowResult = DeliveryWindow.create(dto);
 
-    if (!deliveryWindowResult.success) {
+    if (deliveryWindowResult.success === false) {
       return failure(HttpError.internalServerError(deliveryWindowResult.error.message));
     }
 
@@ -20,7 +18,6 @@ export class CreateDeliveryWindowUseCase {
 
     await this.deliveryWindowRepository.save(deliveryWindow);
 
-    const deliveryWindowDto = DeliveryWindowMapper.toDto(deliveryWindow);
-    return success(deliveryWindowDto);
+    return success(deliveryWindow);
   }
 }
