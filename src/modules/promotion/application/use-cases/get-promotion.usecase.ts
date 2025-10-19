@@ -1,20 +1,15 @@
-import { IPromotionRepository } from '../../domain/promotion.repository';
-import { PromotionDto } from '../dtos/promotion.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { PromotionMapper } from '../../infrastructure/promotion.mapper';
+import { IPromotionRepository } from '@/modules/promotion/domain/promotion.repository';
+import { Promotion } from '@/modules/promotion/domain/promotion.entity';
+import { Result } from '@/core/utils/result';
+
+type GetPromotionRequest = {
+  id: string;
+};
 
 export class GetPromotionUseCase {
-  constructor(private readonly promotionRepository: IPromotionRepository) {}
+  constructor(private promotionRepository: IPromotionRepository) {}
 
-  async execute(id: string): Promise<Result<PromotionDto, HttpError>> {
-    const promotion = await this.promotionRepository.findById(id);
-
-    if (!promotion) {
-      return failure(HttpError.notFound('Promotion not found.'));
-    }
-
-    const promotionDto = PromotionMapper.toDto(promotion);
-    return success(promotionDto);
+  async execute(request: GetPromotionRequest): Promise<Result<Promotion, Error>> {
+    return this.promotionRepository.findById(request.id);
   }
 }
