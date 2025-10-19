@@ -64,7 +64,7 @@ modules/
 | 15 | product | ✅ Done | ✅ Done | ✅ Done | ✅ Done | CRUD; filter by vendorId; pagination. |
 | 16 | product-image | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Metadata only; upload later. |
 | 17 | promotion | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Validate start/end dates. |
-| 18 | order-status | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Read-only; display transitions. |
+| 18 | order-status | ✅ Done | ✅ Done | ✅ Done | ✅ Done | Read-only; display transitions. |
 | 19 | order-promotion | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Join with promotion in presenter. |
 | 20 | order | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | CRUD + `/confirm` + `/cancel` endpoints. |
 | 21 | payment | 🕒 Pending | 🕒 Pending | 🕒 Pending | 🕒 Pending | Add `/verify` endpoint; use idempotency key. |
