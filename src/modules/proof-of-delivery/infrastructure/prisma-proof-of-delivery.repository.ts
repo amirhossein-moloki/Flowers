@@ -1,29 +1,97 @@
-import { IProofOfDeliveryRepository } from '../domain/proof-of-delivery.repository';
+import { PrismaClient } from '@prisma/client';
 import { ProofOfDelivery } from '../domain/proof-of-delivery.entity';
-import prisma from '../../../infrastructure/database/prisma/prisma-client';
-import { ProofOfDeliveryMapper } from './proof-of-delivery.mapper';
+import { ProofOfDeliveryRepository } from '../domain/proof-of-delivery.repository';
+import { Result, success, failure } from '@/core/utils/result';
 
-export class PrismaProofOfDeliveryRepository implements IProofOfDeliveryRepository {
-  async findById(id: string): Promise<ProofOfDelivery | null> {
-    const proofOfDelivery = await prisma.proofOfDelivery.findUnique({ where: { id } });
-    return proofOfDelivery ? ProofOfDeliveryMapper.toDomain(proofOfDelivery) : null;
+export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepository {
+  constructor(private readonly prisma: PrismaClient) {}
+
+  async create(data: ProofOfDelivery): Promise<Result<ProofOfDelivery, Error>> {
+    try {
+      const proofOfDelivery = await this.prisma.proofOfDelivery.create({
+        data: {
+          delivery_id: data.delivery_id,
+          signature_url: data.signature_url,
+          photo_url: data.photo_url,
+          notes: data.notes,
+        },
+      });
+      return success(
+        ProofOfDelivery.create(
+          {
+            delivery_id: proofOfDelivery.delivery_id,
+            signature_url: proofOfDelivery.signature_url,
+            photo_url: proofOfDelivery.photo_url,
+            notes: proofOfDelivery.notes,
+            is_verified: proofOfDelivery.is_verified,
+          },
+          proofOfDelivery.id
+        ).value
+      );
+    } catch (error) {
+      return failure(error as Error);
+    }
   }
 
-  async findAll(): Promise<ProofOfDelivery[]> {
-    const proofOfDeliveries = await prisma.proofOfDelivery.findMany();
-    return proofOfDeliveries.map(ProofOfDeliveryMapper.toDomain);
+  async findById(id: string): Promise<Result<ProofOfDelivery, Error>> {
+    try {
+      const proofOfDelivery = await this.prisma.proofOfDelivery.findUnique({
+        where: { id },
+      });
+      if (!proofOfDelivery) {
+        return failure(new Error('Proof of delivery not found'));
+      }
+      return success(
+        ProofOfDelivery.create(
+          {
+            delivery_id: proofOfDelivery.delivery_id,
+            signature_url: proofOfDelivery.signature_url,
+            photo_url: proofOfDelivery.photo_url,
+            notes: proofOfDelivery.notes,
+            is_verified: proofOfDelivery.is_verified,
+          },
+          proofOfDelivery.id
+        ).value
+      );
+    } catch (error) {
+      return failure(error as Error);
+    }
   }
 
-  async save(proofOfDelivery: ProofOfDelivery): Promise<void> {
-    const data = ProofOfDeliveryMapper.toPersistence(proofOfDelivery);
-    await prisma.proofOfDelivery.upsert({
-      where: { id: proofOfDelivery.id },
-      update: data,
-      create: data,
-    });
+  async update(id: string, data: ProofOfDelivery): Promise<Result<ProofOfDelivery, Error>> {
+    try {
+      const proofOfDelivery = await this.prisma.proofOfDelivery.update({
+        where: { id },
+        data: {
+          signature_url: data.signature_url,
+          photo_url: data.photo_url,
+          notes: data.notes,
+          is_verified: data.is_verified,
+        },
+      });
+      return success(
+        ProofOfDelivery.create(
+          {
+            delivery_id: proofOfDelivery.delivery_id,
+            signature_url: proofOfDelivery.signature_url,
+            photo_url: proofOfDelivery.photo_url,
+            notes: proofOfDelivery.notes,
+            is_verified: proofOfDelivery.is_verified,
+          },
+          proofOfDelivery.id
+        ).value
+      );
+    } catch (error) {
+      return failure(error as Error);
+    }
   }
 
-  async delete(id: string): Promise<void> {
-    await prisma.proofOfDelivery.delete({ where: { id } });
+  async delete(id: string): Promise<Result<void, Error>> {
+    try {
+      await this.prisma.proofOfDelivery.delete({ where: { id } });
+      return success(undefined);
+    } catch (error) {
+      return failure(error as Error);
+    }
   }
 }
