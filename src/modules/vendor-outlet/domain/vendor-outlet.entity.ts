@@ -1,5 +1,6 @@
 import { Entity } from '@/core/domain/entity';
 import { Result, success, failure } from '@/core/utils/result';
+import { Vendor } from '@/modules/vendor/domain/vendor.entity';
 
 export class VendorOutletCreationError extends Error {
   constructor(message: string) {
@@ -17,6 +18,7 @@ export interface IVendorOutletProps {
   is_active: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  vendor?: Vendor;
 }
 
 export class VendorOutlet extends Entity<IVendorOutletProps> {
@@ -48,9 +50,20 @@ export class VendorOutlet extends Entity<IVendorOutletProps> {
     return this.props.is_active;
   }
 
-  public static create(props: IVendorOutletProps, id?: string): Result<VendorOutlet, VendorOutletCreationError> {
+  get vendor(): Vendor | undefined {
+    return this.props.vendor;
+  }
+
+  public static create(
+    props: IVendorOutletProps,
+    id?: string,
+  ): Result<VendorOutlet, VendorOutletCreationError> {
     if (!props.vendor_id || !props.name || !props.address) {
-      return failure(new VendorOutletCreationError('Vendor ID, name, and address are required.'));
+      return failure(
+        new VendorOutletCreationError(
+          'Vendor ID, name, and address are required.',
+        ),
+      );
     }
 
     const vendorOutlet = new VendorOutlet(
