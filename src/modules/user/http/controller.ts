@@ -4,75 +4,81 @@ import { GetUserUseCase } from '../application/use-cases/get-user.usecase';
 import { UpdateUserUseCase } from '../application/use-cases/update-user.usecase';
 import { DeleteUserUseCase } from '../application/use-cases/delete-user.usecase';
 import { ListUsersUseCase } from '../application/use-cases/list-users.usecase';
-import { UserPresenter } from './presenters/user.presenter';
-import { CreateUserInput } from './dto/create-user.schema';
+import { UserPresenter } from './presenter/user.presenter';
 import { PrismaUserRepository } from '../infrastructure/prisma-user.repository';
 
 export class UserController {
-  async create(req: Request, res: Response): Promise<Response> {
-    const createUserUseCase = new CreateUserUseCase(new PrismaUserRepository());
-    const result = await createUserUseCase.execute(req.body as CreateUserInput);
+  private readonly createUserUseCase: CreateUserUseCase;
+  private readonly getUserUseCase: GetUserUseCase;
+  private readonly updateUserUseCase: UpdateUserUseCase;
+  private readonly deleteUserUseCase: DeleteUserUseCase;
+  private readonly listUsersUseCase: ListUsersUseCase;
 
-    if (!result.success) {
-      return res.status(400).json({ error: result.error.message });
-    }
-
-    return res.status(201).json(UserPresenter.toJSON(result.value));
+  constructor() {
+    const userRepository = new PrismaUserRepository();
+    this.createUserUseCase = new CreateUserUseCase(userRepository);
+    this.getUserUseCase = new GetUserUseCase(userRepository);
+    this.updateUserUseCase = new UpdateUserUseCase(userRepository);
+    this.deleteUserUseCase = new DeleteUserUseCase(userRepository);
+    this.listUsersUseCase = new ListUsersUseCase(userRepository);
   }
 
-  async findById(req: Request, res: Response): Promise<Response> {
-    const { id } = req.params;
-    const getUserUseCase = new GetUserUseCase(new PrismaUserRepository());
-    const result = await getUserUseCase.execute({ id });
-
-    if (!result.success) {
-      return res.status(404).json({ error: 'User not found' });
+  create = async (req: Request, res: Response) => {
+    const result = await this.createUserUseCase.execute(req.body);
+    if (result.success) {
+      res.status(201).json(UserPresenter.toHttp(result.value));
+    } else {
+      res.status(400).json({ error: result.error.message });
     }
+  };
 
-    return res.status(200).json(UserPresenter.toJSON(result.value));
-  }
+  findAll = async (req: Request, res: Response) => {
+    const result = await this.listUsersUseCase.execute();
+    if (result.success) {
+      res.status(200).json(result.value.map(UserPresenter.toHttp));
+    } else {
+      res.status(400).json({ error: result.error.message });
+    }
+  };
 
-  async me(req: Request, res: Response): Promise<Response> {
+  me = async (req: Request, res: Response) => {
     // @ts-ignore
-    const userId = req.user.id;
-    const getUserUseCase = new GetUserUseCase(new PrismaUserRepository());
-    const result = await getUserUseCase.execute({ id: userId });
-
-    if (!result.success) {
-      return res.status(404).json({ error: 'User not found' });
+    const { id } = req.user;
+    const result = await this.getUserUseCase.execute({ id });
+    if (result.success) {
+      res.status(200).json(UserPresenter.toHttp(result.value));
+    } else {
+      res.status(404).json({ error: 'User not found' });
     }
+  };
 
-    return res.status(200).json(UserPresenter.toJSON(result.value));
-  }
-
-  async update(req: Request, res: Response): Promise<Response> {
+  findById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const updateUserUseCase = new UpdateUserUseCase(new PrismaUserRepository());
-    const result = await updateUserUseCase.execute(id, req.body);
-
-    if (!result.success) {
-      return res.status(404).json({ error: 'User not found' });
+    const result = await this.getUserUseCase.execute({ id });
+    if (result.success) {
+      res.status(200).json(UserPresenter.toHttp(result.value));
+    } else {
+      res.status(404).json({ error: 'User not found' });
     }
+  };
 
-    return res.status(200).json(UserPresenter.toJSON(result.value));
-  }
-
-  async delete(req: Request, res: Response): Promise<Response> {
+  update = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const deleteUserUseCase = new DeleteUserUseCase(new PrismaUserRepository());
-    const result = await deleteUserUseCase.execute(id);
-
-    if (!result.success) {
-      return res.status(404).json({ error: 'User not found' });
+    const result = await this.updateUserUseCase.execute(id, req.body);
+    if (result.success) {
+      res.status(200).json(UserPresenter.toHttp(result.value));
+    } else {
+      res.status(400).json({ error: result.error.message });
     }
+  };
 
-    return res.status(204).send();
-  }
-
-  async findAll(req: Request, res: Response): Promise<Response> {
-    const listUsersUseCase = new ListUsersUseCase(new PrismaUserRepository());
-    const result = await listUsersUseCase.execute();
-
-    return res.status(200).json(result.value.map(UserPresenter.toJSON));
-  }
+  delete = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await this.deleteUserUseCase.execute(id);
+    if (result.success) {
+      res.status(204).send();
+    } else {
+      res.status(400).json({ error: result.error.message });
+    }
+  };
 }

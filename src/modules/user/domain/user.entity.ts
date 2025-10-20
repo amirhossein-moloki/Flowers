@@ -4,10 +4,9 @@ import { UserRole } from '@/core/domain/enums';
 
 export interface IUserProps {
   username: string;
-  full_name: string;
-  phone: string;
   email: string;
   role: UserRole;
+  password?: string;
   is_active?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
@@ -22,13 +21,10 @@ export class User extends Entity<IUserProps> {
     return this.props.username;
   }
 
-  get full_name(): string {
-    return this.props.full_name;
+  get password(): string {
+    return this.props.password;
   }
 
-  get phone(): string {
-    return this.props.phone;
-  }
 
   get email(): string {
     return this.props.email;

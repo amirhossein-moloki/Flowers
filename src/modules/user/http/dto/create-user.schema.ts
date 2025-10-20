@@ -1,14 +1,11 @@
-import { UserRole } from '@prisma/client';
 import { z } from 'zod';
+import { UserRole } from '@/core/domain/enums';
 
 export const createUserSchema = z.object({
   body: z.object({
-    username: z.string().min(3, 'Username must be at least 3 characters long'),
-    full_name: z.string().min(3, 'Full name must be at least 3 characters long'),
-    phone: z.string().regex(/^\+[1-9]\d{1,14}$/, 'Phone number must be a valid E.164 number'),
-    email: z.string().email('Invalid email address'),
+    username: z.string().min(3),
+    email: z.string().email(),
+    password: z.string().min(8),
     role: z.nativeEnum(UserRole),
   }),
 });
-
-export type CreateUserInput = z.infer<typeof createUserSchema>['body'];

@@ -1,9 +1,9 @@
 export enum UserRole {
-  CUSTOMER = 'customer',
-  VENDOR_ADMIN = 'vendor_admin',
-  COURIER = 'courier',
-  OPS = 'ops',
-  ADMIN = 'admin',
+  CUSTOMER = 'CUSTOMER',
+  VENDOR_ADMIN = 'VENDOR_ADMIN',
+  COURIER = 'COURIER',
+  OPS = 'OPS',
+  ADMIN = 'ADMIN',
 }
 
 export enum VehicleType {
