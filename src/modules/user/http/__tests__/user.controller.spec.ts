@@ -1,6 +1,5 @@
 import request from 'supertest';
 import express from 'express';
-import { userRoutes } from '../routes';
 import { CreateUserUseCase } from '../../application/use-cases/create-user.usecase';
 import { GetUserUseCase } from '../../application/use-cases/get-user.usecase';
 import { UpdateUserUseCase } from '../../application/use-cases/update-user.usecase';
@@ -102,6 +101,8 @@ jest.mock('../../application/use-cases/get-user.usecase', () => {
   };
 });
 
+import { userRoutes } from '../routes';
+
 const app = express();
 app.use(express.json());
 app.use('/users', userRoutes);
@@ -115,10 +116,9 @@ describe('UserController', () => {
     it('should create a user and return 201', async () => {
       const userInput = {
         username: 'testuser',
-        full_name: 'Test User',
-        phone: '+12345678901',
         email: 'test@example.com',
         role: UserRole.CUSTOMER,
+        password: 'password123',
       };
 
       const userEntity = User.create({ ...userInput, is_active: true }, 'new-user-id').value;
@@ -134,10 +134,9 @@ describe('UserController', () => {
     it('should return 400 if creation fails', async () => {
       const userInput = {
         username: 'testuser',
-        full_name: 'Test User',
-        phone: '+12345678901',
         email: 'test@example.com',
         role: UserRole.CUSTOMER,
+        password: 'password123',
       };
 
       mockCreateUserUseCase.execute.mockResolvedValue(failure(new Error('Creation failed')));
@@ -154,8 +153,6 @@ describe('UserController', () => {
       const userEntity = User.create(
         {
           username: 'testuser',
-          full_name: 'Test User',
-          phone: '+12345678901',
           email: 'test@example.com',
           role: UserRole.CUSTOMER,
           is_active: true
@@ -186,8 +183,6 @@ describe('UserController', () => {
       const userEntity = User.create(
         {
           username: 'me',
-          full_name: 'My Self',
-          phone: '+11111111111',
           email: 'me@example.com',
           role: UserRole.CUSTOMER,
           is_active: true
@@ -207,12 +202,10 @@ describe('UserController', () => {
 
   describe('PUT /users/:id', () => {
     it('should update a user and return 200', async () => {
-      const updateData = { full_name: 'Updated Name' };
+      const updateData = { username: 'updateduser' };
       const userEntity = User.create(
         {
-          username: 'testuser',
-          full_name: 'Updated Name',
-          phone: '+12345678901',
+          username: 'updateduser',
           email: 'test@example.com',
           role: UserRole.CUSTOMER,
           is_active: true
@@ -225,7 +218,7 @@ describe('UserController', () => {
       const response = await request(app).put('/users/user-id').send(updateData);
 
       expect(response.status).toBe(200);
-      expect(response.body.full_name).toBe('Updated Name');
+      expect(response.body.username).toBe('updateduser');
       expect(mockUpdateUserUseCase.execute).toHaveBeenCalledWith('user-id', updateData);
     });
   });
@@ -243,8 +236,8 @@ describe('UserController', () => {
 
   describe('GET /users', () => {
     it('should return a list of users', async () => {
-      const user1 = User.create({ username: 'user1', full_name: 'User One', phone: '+111', email: 'user1@test.com', role: UserRole.CUSTOMER }, '1').value;
-      const user2 = User.create({ username: 'user2', full_name: 'User Two', phone: '+222', email: 'user2@test.com', role: UserRole.CUSTOMER }, '2').value;
+      const user1 = User.create({ username: 'user1', email: 'user1@test.com', role: UserRole.CUSTOMER }, '1').value;
+      const user2 = User.create({ username: 'user2', email: 'user2@test.com', role: UserRole.CUSTOMER }, '2').value;
       mockListUsersUseCase.execute.mockResolvedValue(success([user1, user2]));
 
       const response = await request(app).get('/users');

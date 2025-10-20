@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction, Router } from 'express';
-import { Controller } from '../../../../../core/http/http';
+import { Controller } from '@/core/http/http';
 import { CreateUserUseCase } from '../../application/use-cases/create-user.usecase';
 import { GetUserUseCase } from '../../application/use-cases/get-user.usecase';
-import { validate } from '../../../../../core/http/validators';
+import { validate } from '@/core/middlewares/validate.middleware';
 import { CreateUserSchema } from '../../application/dtos/create-user.dto';
 
 export class UserController extends Controller {
@@ -28,7 +28,7 @@ export class UserController extends Controller {
 
   private async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.createUserUseCase.execute(req.body);
+      const result = await this.createUserUseCase.execute({ body: req.body });
       if (result.success) {
         res.status(201).json(result.value);
       } else {

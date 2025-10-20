@@ -10,13 +10,11 @@ export class UserMapper {
     const userResult = User.create(
       {
         username: raw.username,
-        full_name: raw.full_name,
-        phone: raw.phone,
         email: raw.email,
         role: raw.role, // Assumes role in Prisma is compatible with UserRole enum
-        is_active: raw.is_active,
-        createdAt: raw.created_at,
-        updatedAt: raw.updated_at,
+        password: raw.password,
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
       },
       raw.id,
     );
@@ -36,11 +34,9 @@ export class UserMapper {
     return {
       id: user.id,
       username: props.username,
-      full_name: props.full_name,
-      phone: props.phone,
       email: props.email,
       role: props.role,
-      is_active: props.is_active,
+      password: props.password,
     };
   }
 
@@ -52,11 +48,8 @@ export class UserMapper {
     return {
       id: user.id,
       username: props.username,
-      full_name: props.full_name,
-      phone: props.phone,
       email: props.email,
       role: props.role,
-      is_active: props.is_active,
       createdAt: user.props.createdAt,
     };
   }

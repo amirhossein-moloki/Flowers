@@ -10,18 +10,19 @@ export class CreateUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
   async execute(dto: CreateUserDto): Promise<Result<UserDto, HttpError>> {
+    const { email, username } = dto.body;
     // 1. Check for existing user by email or username
-    const existingByEmail = await this.userRepository.findByEmail(dto.email);
+    const existingByEmail = await this.userRepository.findByEmail(email);
     if (existingByEmail) {
       return failure(HttpError.badRequest('Email already in use.'));
     }
-    const existingByUsername = await this.userRepository.findByUsername(dto.username);
+    const existingByUsername = await this.userRepository.findByUsername(username);
     if (existingByUsername) {
       return failure(HttpError.badRequest('Username already taken.'));
     }
 
     // 2. Create the User entity
-    const userProps: IUserProps = { ...dto };
+    const userProps: IUserProps = { ...dto.body };
     const userResult = User.create(userProps);
 
     if (!userResult.success) {
