@@ -1,4 +1,4 @@
-import { PaymentMethod, PaymentStatus } from '../../../../../core/domain/enums';
+import { PaymentMethod, PaymentStatus } from '@/core/domain/enums';
 
 export class PaymentDto {
   id: string;
@@ -9,4 +9,5 @@ export class PaymentDto {
   gateway_ref: string;
   amount: number;
   paid_at: Date;
+  created_at: Date;
 }

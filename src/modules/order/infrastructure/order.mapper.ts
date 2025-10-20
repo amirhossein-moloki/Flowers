@@ -51,6 +51,23 @@ export class OrderMapper {
     return orderResult.value;
   }
 
+  public static toDto(order: Order) {
+    return {
+      id: order.id,
+      user_id: order.props.userId,
+      status: order.props.status,
+      total: order.props.total,
+      created_at: order.props.createdAt,
+      updated_at: order.props.updatedAt,
+      items: order.props.items.map((item) => ({
+        id: item.id,
+        product_id: item.props.productId,
+        quantity: item.props.quantity,
+        price: item.props.price,
+      })),
+    };
+  }
+
   public static toPersistence(order: Order) {
     const orderData = {
       id: order.id,

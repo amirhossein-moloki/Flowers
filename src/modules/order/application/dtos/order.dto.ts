@@ -1,20 +1,12 @@
 import { OrderItemDto } from './order-item.dto';
+import { OrderStatus } from '../../domain/order.entity';
 
 export interface OrderDto {
   id: string;
-  customer_id: string;
-  vendor_id: string;
-  outlet_id: string;
-  status_id: string;
-  note: string;
-  subtotal: number;
-  delivery_fee: number;
-  service_fee: number;
-  discount_total: number;
-  tax_total: number;
-  total_payable: number;
-  currency: string;
-  scheduled_at: Date;
+  user_id: string;
+  status: OrderStatus;
+  total: number;
   created_at: Date;
+  updated_at: Date;
   items: OrderItemDto[];
 }
