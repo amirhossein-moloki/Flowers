@@ -5,7 +5,7 @@ export class VendorOutletMapper {
   static toDomain(prismaVendorOutlet: PrismaVendorOutlet): VendorOutlet {
     const vendorOutletResult = VendorOutlet.create(
       {
-        vendor_id: prismaVendorOutlet.vendor_id,
+        vendorId: prismaVendorOutlet.vendor_id,
         name: prismaVendorOutlet.name,
         address: prismaVendorOutlet.address,
         latitude: prismaVendorOutlet.latitude,
@@ -27,7 +27,6 @@ export class VendorOutletMapper {
   static toPersistence(vendorOutlet: VendorOutlet) {
     return {
       id: vendorOutlet.id,
-      vendor_id: vendorOutlet.vendor_id,
       name: vendorOutlet.name,
       address: vendorOutlet.address,
       latitude: vendorOutlet.latitude,

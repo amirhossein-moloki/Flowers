@@ -1,7 +1,7 @@
 import { INotificationRepository } from '../../domain/notification.repository';
 import { NotificationDto } from '../dtos/notification.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { NotificationMapper } from '../../infrastructure/notification.mapper';
 
 export class GetNotificationUseCase {

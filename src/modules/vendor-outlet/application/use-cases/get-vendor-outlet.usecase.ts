@@ -15,7 +15,7 @@ export class GetVendorOutletUseCase {
       if (!outlet) {
         return failure(new Error('Vendor outlet not found'));
       }
-      const vendor = await this.vendorRepository.findById(outlet.vendor_id);
+      const vendor = await this.vendorRepository.findById(outlet.vendorId);
       if (vendor) {
         outlet.props.vendor = vendor;
       }

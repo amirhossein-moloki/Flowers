@@ -13,12 +13,8 @@ export const validate =
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        console.error('Zod Validation Error:', error.flatten());
-        return res.status(400).json({
-          errors: error.errors.map((e) => ({
-            path: e.path.join('.'),
-            message: e.message,
-          })),
+        return res.status(422).json({
+          errors: error.flatten().fieldErrors,
         });
       }
       return res.status(500).json({ error: 'Internal Server Error' });

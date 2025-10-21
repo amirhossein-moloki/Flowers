@@ -12,9 +12,16 @@ export class UpdateVendorUseCase {
       return failure(HttpError.notFound('Vendor not found.'));
     }
 
-    const updatedVendor = Object.assign(vendor, data);
+    const updatedProps = { ...vendor.props, ...data };
+    const updatedVendorResult = Vendor.create(updatedProps, vendor.id);
 
-    await this.vendorRepository.update(updatedVendor);
+    if (updatedVendorResult.failure) {
+      return failure(HttpError.internalServerError(updatedVendorResult.error.message));
+    }
+
+    const updatedVendor = updatedVendorResult.value;
+
+    await this.vendorRepository.save(updatedVendor);
 
     return success(updatedVendor);
   }

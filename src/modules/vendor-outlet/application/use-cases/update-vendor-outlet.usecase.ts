@@ -24,9 +24,15 @@ export class UpdateVendorOutletUseCase {
           ...input,
         },
         id,
-      ).value;
+      );
 
-      const savedOutlet = await this.vendorOutletRepository.save(updatedOutlet);
+      if (updatedOutlet.failure) {
+        return failure(updatedOutlet.error);
+      }
+
+      const savedOutlet = await this.vendorOutletRepository.save(
+        updatedOutlet.value,
+      );
       return success(savedOutlet);
     } catch (error) {
       return failure(new Error(error.message));

@@ -1,8 +1,8 @@
 import { INotificationRepository } from '../../domain/notification.repository';
 import { UpdateNotificationDto } from '../dtos/update-notification.dto';
 import { NotificationDto } from '../dtos/notification.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { NotificationMapper } from '../../infrastructure/notification.mapper';
 import { Notification } from '../../domain/notification.entity';
 

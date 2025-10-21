@@ -10,7 +10,7 @@ export class VendorOutletCreationError extends Error {
 }
 
 export interface IVendorOutletProps {
-  vendor_id: string;
+  vendorId: string;
   name: string;
   address: string;
   latitude: number;
@@ -26,8 +26,8 @@ export class VendorOutlet extends Entity<IVendorOutletProps> {
     super(props, id);
   }
 
-  get vendor_id(): string {
-    return this.props.vendor_id;
+  get vendorId(): string {
+    return this.props.vendorId;
   }
 
   get name(): string {
@@ -58,7 +58,7 @@ export class VendorOutlet extends Entity<IVendorOutletProps> {
     props: IVendorOutletProps,
     id?: string,
   ): Result<VendorOutlet, VendorOutletCreationError> {
-    if (!props.vendor_id || !props.name || !props.address) {
+    if (!props.vendorId || !props.name || !props.address) {
       return failure(
         new VendorOutletCreationError(
           'Vendor ID, name, and address are required.',

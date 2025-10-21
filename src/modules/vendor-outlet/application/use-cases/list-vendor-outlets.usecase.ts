@@ -13,7 +13,7 @@ export class ListVendorOutletsUseCase {
     try {
       const outlets = await this.vendorOutletRepository.findAll();
       for (const outlet of outlets) {
-        const vendor = await this.vendorRepository.findById(outlet.vendor_id);
+        const vendor = await this.vendorRepository.findById(outlet.vendorId);
         if (vendor) {
           outlet.props.vendor = vendor;
         }

@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./test.db"
 }
 
 // --- Enums ---
@@ -172,7 +172,7 @@ model VendorOutlet {
 model ServiceZone {
   id             String         @id @default(uuid())
   name           String
-  geo_json       Json
+  geo_json       String
   is_active      Boolean        @default(true)
   created_at     DateTime       @default(now())
   updated_at     DateTime       @updatedAt

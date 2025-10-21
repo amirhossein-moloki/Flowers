@@ -27,8 +27,18 @@ export class PrismaVendorOutletRepository implements IVendorOutletRepository {
     const data = VendorOutletMapper.toPersistence(vendorOutlet);
     const savedOutlet = await this.prisma.vendorOutlet.upsert({
       where: { id: vendorOutlet.id },
-      update: data,
-      create: data,
+      update: {
+        ...data,
+        vendor: {
+          connect: { id: vendorOutlet.vendorId },
+        },
+      },
+      create: {
+        ...data,
+        vendor: {
+          connect: { id: vendorOutlet.vendorId },
+        },
+      },
     });
     return VendorOutletMapper.toDomain(savedOutlet);
   }
