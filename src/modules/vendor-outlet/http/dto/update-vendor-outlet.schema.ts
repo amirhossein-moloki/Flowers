@@ -5,7 +5,7 @@ export const updateVendorOutletSchema = z.object({
   address: z.string().min(1).optional(),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
-  isActive: z.boolean().optional(),
+  is_active: z.boolean().optional(),
 });
 
 export type UpdateVendorOutletInput = z.infer<

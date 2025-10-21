@@ -6,7 +6,7 @@ export const createVendorOutletSchema = z.object({
   address: z.string().min(1),
   latitude: z.number(),
   longitude: z.number(),
-  isActive: z.boolean().optional().default(true),
+  is_active: z.boolean().optional().default(true),
 });
 
 export type CreateVendorOutletInput = z.infer<

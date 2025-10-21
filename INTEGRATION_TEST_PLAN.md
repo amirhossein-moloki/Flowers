@@ -39,8 +39,8 @@ The AI Agent or CI process must **read this file sequentially (top → bottom)**
 | # | Module | Status | Notes / Dependencies |
 |---|---------|---------|----------------------|
 | 1 | user | ✅ Done | Needs `/me` and auth tests |
-| 2 | vendor | 🕒 Pending | Admin-only actions |
-| 3 | vendor-outlet | 🕒 Pending | Joins vendor & zone |
+| 2 | vendor | ✅ Done | Admin-only actions |
+| 3 | vendor-outlet | ✅ Done | Joins vendor & zone |
 | 4 | address | 🕒 Pending | CRUD only |
 | 5 | customer-address | 🕒 Pending | Must link to address |
 | 6 | service-zone | 🕒 Pending | Read-only |

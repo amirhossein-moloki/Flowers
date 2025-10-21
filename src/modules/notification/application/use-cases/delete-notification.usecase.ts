@@ -1,6 +1,6 @@
 import { INotificationRepository } from '../../domain/notification.repository';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 
 export class DeleteNotificationUseCase {
   constructor(private readonly notificationRepository: INotificationRepository) {}

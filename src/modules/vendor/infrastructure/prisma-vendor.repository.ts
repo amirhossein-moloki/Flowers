@@ -28,7 +28,26 @@ export class PrismaVendorRepository implements IVendorRepository {
 
   async save(vendor: Vendor): Promise<Vendor> {
     const data = VendorMapper.toPersistence(vendor);
-    const newVendor = await this.prisma.vendor.create({ data });
+    const newVendor = await this.prisma.vendor.upsert({
+      where: { id: vendor.id },
+      create: {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        is_active: data.is_active,
+      },
+      update: {
+        name: data.name,
+        description: data.description,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        is_active: data.is_active,
+      },
+    });
     return VendorMapper.toDomain(newVendor);
   }
 
