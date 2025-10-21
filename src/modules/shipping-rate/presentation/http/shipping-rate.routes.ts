@@ -5,6 +5,8 @@ import { createShippingRateSchema } from './dto/create-shipping-rate.schema';
 import { updateShippingRateSchema } from './dto/update-shipping-rate.schema';
 import { calculateShippingRateSchema } from './dto/calculate-shipping-rate.schema';
 import { Dependencies } from '@/infrastructure/di';
+import { isAuthenticated, hasRole } from '@/core/middlewares/auth.middleware';
+import { UserRole } from '@prisma/client';
 
 export function createShippingRateRoutes(dependencies: Dependencies): Router {
   const router = Router();
@@ -18,9 +20,21 @@ export function createShippingRateRoutes(dependencies: Dependencies): Router {
     dependencies.calculateShippingRateUseCase,
   );
 
-  router.post('/', validate(createShippingRateSchema), controller.create.bind(controller));
-  router.put('/:id', validate(updateShippingRateSchema), controller.update.bind(controller));
-  router.delete('/:id', controller.delete.bind(controller));
+  router.use(isAuthenticated);
+
+  router.post(
+    '/',
+    hasRole([UserRole.ADMIN]),
+    validate(createShippingRateSchema),
+    controller.create.bind(controller),
+  );
+  router.put(
+    '/:id',
+    hasRole([UserRole.ADMIN]),
+    validate(updateShippingRateSchema),
+    controller.update.bind(controller),
+  );
+  router.delete('/:id', hasRole([UserRole.ADMIN]), controller.delete.bind(controller));
   router.get('/:id', controller.findById.bind(controller));
   router.get('/', controller.findAll.bind(controller));
   router.post('/calculate', validate(calculateShippingRateSchema), controller.calculate.bind(controller));

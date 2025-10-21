@@ -44,7 +44,7 @@ The AI Agent or CI process must **read this file sequentially (top → bottom)**
 | 4 | address | ✅ Done | CRUD only |
 | 5 | customer-address | ✅ Done | Must link to address |
 | 6 | service-zone | ✅ Done | Read-only |
-| 7 | shipping-rate | 🕒 Pending | Includes `/calculate` test |
+| 7 | shipping-rate | ✅ Done | Includes `/calculate` test |
 | 8 | courier | 🕒 Pending | Auth + create/update driver |
 | 9 | driver-location | 🕒 Pending | Update endpoint test |
 | 10 | delivery-status | 🕒 Pending | Label verification only |
