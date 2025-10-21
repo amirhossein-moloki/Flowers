@@ -14,7 +14,6 @@ import { ListVendorsUseCase } from '@/modules/vendor/application/use-cases/list-
 import { PrismaVendorRepository } from '@/modules/vendor/infrastructure/prisma-vendor.repository';
 import { GetServiceZoneUseCase } from '@/modules/service-zone/application/use-cases/get-service-zone.usecase';
 import { ListServiceZonesUseCase } from '@/modules/service-zone/application/use-cases/list-service-zones.usecase';
-import { IServiceZoneRepository } from '@/modules/service-zone/domain/service-zone.repository';
 import { PrismaServiceZoneRepository } from '@/modules/service-zone/infrastructure/prisma-service-zone.repository';
 import { CreateProofOfDeliveryUseCase } from '@/modules/proof-of-delivery/application/use-cases/create-proof-of-delivery.usecase';
 import { FindProofOfDeliveryByIdUseCase } from '@/modules/proof-of-delivery/application/use-cases/find-proof-of-delivery-by-id.usecase';
@@ -58,7 +57,6 @@ export interface Dependencies {
   vendorOutletRepository: IVendorOutletRepository;
   addressRepository: IAddressRepository;
   customerAddressRepository: ICustomerAddressRepository;
-  serviceZoneRepository: IServiceZoneRepository;
   createNotificationUseCase: CreateNotificationUseCase;
   getNotificationUseCase: GetNotificationUseCase;
   updateNotificationUseCase: UpdateNotificationUseCase;
@@ -157,7 +155,6 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
     vendorOutletRepository,
     addressRepository,
     customerAddressRepository,
-    serviceZoneRepository,
     createNotificationUseCase,
     getNotificationUseCase,
     updateNotificationUseCase,

@@ -1,21 +1,26 @@
 import { PrismaServiceZoneRepository } from '../../service-zone/infrastructure/prisma-service-zone.repository';
 import { ServiceZone } from '../../service-zone/domain/service-zone.entity';
-import prisma from '../../../infrastructure/database/prisma/prisma-client';
+import { PrismaClient } from '@prisma/client';
+import { mockDeep, mockReset } from 'jest-mock-extended';
 import { ServiceZoneMapper } from '../../service-zone/infrastructure/service-zone.mapper';
 
-import { PrismaClient } from '@prisma/client';
-import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
-import { PrismaServiceZoneRepository } from '../../service-zone/infrastructure/prisma-service-zone.repository';
-import { ServiceZone } from '../../service-zone/domain/service-zone.entity';
-import { ServiceZoneMapper } from '../../service-zone/infrastructure/service-zone.mapper';
+const prismaMock = mockDeep<PrismaClient>();
+
+jest.mock('../../service-zone/infrastructure/service-zone.mapper', () => ({
+  ServiceZoneMapper: {
+    toDomain: jest.fn(),
+    toPersistence: jest.fn(),
+  },
+}));
 
 describe('PrismaServiceZoneRepository', () => {
   let repository: PrismaServiceZoneRepository;
-  let mockPrisma: DeepMockProxy<PrismaClient>;
+  let mockMapper;
 
   beforeEach(() => {
-    mockPrisma = mockDeep<PrismaClient>();
-    repository = new PrismaServiceZoneRepository(mockPrisma);
+    mockReset(prismaMock);
+    repository = new PrismaServiceZoneRepository(prismaMock);
+    mockMapper = ServiceZoneMapper;
   });
 
   afterEach(() => {
@@ -25,64 +30,63 @@ describe('PrismaServiceZoneRepository', () => {
   describe('findById', () => {
     it('should return a service zone if found', async () => {
       const serviceZoneId = 'some-id';
-      const prismaServiceZone = { id: serviceZoneId, name: 'SZ 1', geo_json: 'points', is_active: true, created_at: new Date(), updated_at: new Date() };
-      // @ts-ignore
-      mockPrisma.serviceZone.findUnique.mockResolvedValue(prismaServiceZone);
+      const prismaServiceZone = { id: serviceZoneId, name: 'SZ 1', geo_json: '{}', is_active: true, created_at: new Date(), updated_at: new Date() };
+      const domainServiceZone = ServiceZone.create({ name: 'SZ 1', geojson: {}, is_active: true }, serviceZoneId).value;
+
+      prismaMock.serviceZone.findUnique.mockResolvedValue(prismaServiceZone);
+      mockMapper.toDomain.mockReturnValue(domainServiceZone);
 
       const result = await repository.findById(serviceZoneId);
 
-      expect(result.id).toEqual(serviceZoneId);
-      expect(mockPrisma.serviceZone.findUnique).toHaveBeenCalledWith({ where: { id: serviceZoneId } });
+      expect(result).toEqual(domainServiceZone);
+      expect(prismaMock.serviceZone.findUnique).toHaveBeenCalledWith({ where: { id: serviceZoneId } });
+      expect(mockMapper.toDomain).toHaveBeenCalledWith(prismaServiceZone);
     });
 
     it('should return null if service zone not found', async () => {
       const serviceZoneId = 'non-existent-id';
-      // @ts-ignore
-      mockPrisma.serviceZone.findUnique.mockResolvedValue(null);
+      prismaMock.serviceZone.findUnique.mockResolvedValue(null);
 
       const result = await repository.findById(serviceZoneId);
 
       expect(result).toBeNull();
-      expect(mockPrisma.serviceZone.findUnique).toHaveBeenCalledWith({ where: { id: serviceZoneId } });
+      expect(prismaMock.serviceZone.findUnique).toHaveBeenCalledWith({ where: { id: serviceZoneId } });
     });
   });
 
   describe('findAll', () => {
     it('should return all service zones', async () => {
       const prismaServiceZones = [
-        { id: '1', name: 'SZ 1', geo_json: 'points 1', is_active: true, created_at: new Date(), updated_at: new Date() },
-        { id: '2', name: 'SZ 2', geo_json: 'points 2', is_active: true, created_at: new Date(), updated_at: new Date() },
+        { id: '1', name: 'SZ 1', geo_json: '{}', is_active: true, created_at: new Date(), updated_at: new Date() },
+        { id: '2', name: 'SZ 2', geo_json: '{}', is_active: true, created_at: new Date(), updated_at: new Date() },
       ];
-      // @ts-ignore
-      mockPrisma.serviceZone.findMany.mockResolvedValue(prismaServiceZones);
+      const domainServiceZones = prismaServiceZones.map(sz => ServiceZone.create({ name: sz.name, geojson: {}, is_active: sz.is_active }, sz.id).value);
+
+      prismaMock.serviceZone.findMany.mockResolvedValue(prismaServiceZones);
+      mockMapper.toDomain.mockImplementation(sz => domainServiceZones.find(dsz => dsz.id === sz.id));
 
       const result = await repository.findAll();
 
-      expect(result).toHaveLength(2);
-      expect(mockPrisma.serviceZone.findMany).toHaveBeenCalled();
+      expect(result).toEqual(domainServiceZones);
+      expect(prismaMock.serviceZone.findMany).toHaveBeenCalled();
+      expect(mockMapper.toDomain).toHaveBeenCalledTimes(2);
     });
   });
 
   describe('save', () => {
     it('should upsert a service zone', async () => {
-      const serviceZone = ServiceZone.create({ name: 'SZ 1', points: 'points', is_active: true }, 'some-id').value;
+      const serviceZone = ServiceZone.create({ name: 'SZ 1', geojson: {}, is_active: true }, 'some-id').value;
+      const persistenceServiceZone = { id: 'some-id', name: 'SZ 1', geo_json: '{}', is_active: true, created_at: new Date(), updated_at: new Date() };
+
+      mockMapper.toPersistence.mockReturnValue(persistenceServiceZone);
 
       await repository.save(serviceZone);
 
-      expect(mockPrisma.serviceZone.upsert).toHaveBeenCalledWith({
+      expect(mockMapper.toPersistence).toHaveBeenCalledWith(serviceZone);
+      expect(prismaMock.serviceZone.upsert).toHaveBeenCalledWith({
         where: { id: serviceZone.id },
-        update: {
-          id: serviceZone.id,
-          name: serviceZone.name,
-          geo_json: serviceZone.points,
-          is_active: serviceZone.is_active,
-        },
-        create: {
-          id: serviceZone.id,
-          name: serviceZone.name,
-          geo_json: serviceZone.points,
-          is_active: serviceZone.is_active,
-        },
+        update: persistenceServiceZone,
+        create: persistenceServiceZone,
       });
     });
   });
@@ -91,7 +95,7 @@ describe('PrismaServiceZoneRepository', () => {
     it('should delete a service zone', async () => {
       const serviceZoneId = 'some-id';
       await repository.delete(serviceZoneId);
-      expect(mockPrisma.serviceZone.delete).toHaveBeenCalledWith({ where: { id: serviceZoneId } });
+      expect(prismaMock.serviceZone.delete).toHaveBeenCalledWith({ where: { id: serviceZoneId } });
     });
   });
 });

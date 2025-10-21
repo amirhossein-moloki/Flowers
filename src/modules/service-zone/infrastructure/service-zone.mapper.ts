@@ -8,7 +8,8 @@ export class ServiceZoneMapper {
     const serviceZoneResult = ServiceZone.create(
       {
         name: prismaServiceZone.name,
-        points: prismaServiceZone.geo_json,
+        city: prismaServiceZone.city,
+        polygon_geojson: prismaServiceZone.polygon_geojson,
         is_active: prismaServiceZone.is_active,
       },
       prismaServiceZone.id,
@@ -21,12 +22,15 @@ export class ServiceZoneMapper {
 
   static toPersistence(
     serviceZone: ServiceZone,
-  ): Omit<PrismaServiceZone, 'created_at' | 'updated_at'> {
+  ): PrismaServiceZone {
     return {
       id: serviceZone.id,
       name: serviceZone.name,
-      geo_json: serviceZone.points,
-      is_active: serviceZone.is_active
+      city: serviceZone.city,
+      polygon_geojson: serviceZone.polygon_geojson as Prisma.JsonValue,
+      is_active: serviceZone.is_active,
+      created_at: new Date(),
+      updated_at: new Date(),
     };
   }
 }
