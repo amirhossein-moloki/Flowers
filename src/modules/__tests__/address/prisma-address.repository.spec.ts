@@ -7,7 +7,7 @@ describe('PrismaAddressRepository', () => {
   let repository: PrismaAddressRepository;
 
   beforeEach(() => {
-    repository = new PrismaAddressRepository();
+    repository = new PrismaAddressRepository(prismaMock);
   });
 
   const addressProps = {

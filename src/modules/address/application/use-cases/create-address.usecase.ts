@@ -2,8 +2,8 @@ import { IAddressRepository } from '../../domain/address.repository';
 import { Address } from '../../domain/address.entity';
 import { CreateAddressDto } from '../dtos/create-address.dto';
 import { AddressDto } from '../dtos/address.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { AddressMapper } from '../../infrastructure/address.mapper';
 
 export class CreateAddressUseCase {

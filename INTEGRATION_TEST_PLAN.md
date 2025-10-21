@@ -42,7 +42,7 @@ The AI Agent or CI process must **read this file sequentially (top → bottom)**
 | 2 | vendor | ✅ Done | Admin-only actions |
 | 3 | vendor-outlet | ✅ Done | Joins vendor & zone |
 | 4 | address | ✅ Done | CRUD only |
-| 5 | customer-address | 🕒 Pending | Must link to address |
+| 5 | customer-address | ✅ Done | Must link to address |
 | 6 | service-zone | 🕒 Pending | Read-only |
 | 7 | shipping-rate | 🕒 Pending | Includes `/calculate` test |
 | 8 | courier | 🕒 Pending | Auth + create/update driver |

@@ -1,13 +1,19 @@
 import { Router } from 'express';
 import { CustomerAddressController } from './controller';
+import { CustomerAddressDependencies } from '../customer-address.dependencies';
+import { isAuthenticated } from '@/core/middlewares/auth.middleware';
 
-const customerAddressRouter = Router();
-const customerAddressController = new CustomerAddressController();
+export const createCustomerAddressRoutes = (dependencies: CustomerAddressDependencies): Router => {
+  const router = Router();
+  const customerAddressController = new CustomerAddressController(dependencies);
 
-customerAddressRouter.post('/', (req, res) => customerAddressController.create(req, res));
-customerAddressRouter.get('/', (req, res) => customerAddressController.list(req, res));
-customerAddressRouter.get('/:id', (req, res) => customerAddressController.findById(req, res));
-customerAddressRouter.put('/:id', (req, res) => customerAddressController.update(req, res));
-customerAddressRouter.delete('/:id', (req, res) => customerAddressController.delete(req, res));
+  router.use(isAuthenticated);
 
-export { customerAddressRouter };
+  router.post('/', (req, res) => customerAddressController.create(req, res));
+  router.get('/', (req, res) => customerAddressController.list(req, res));
+  router.get('/:id', (req, res) => customerAddressController.findById(req, res));
+  router.put('/:id', (req, res) => customerAddressController.update(req, res));
+  router.delete('/:id', (req, res) => customerAddressController.delete(req, res));
+
+  return router;
+};

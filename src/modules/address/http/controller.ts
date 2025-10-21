@@ -2,82 +2,15 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 import { CreateAddressDTO, createAddressSchema } from './dto/create-address.schema';
 import { UpdateAddressDTO, updateAddressSchema } from './dto/update-address.schema';
-import { AddressPresenter } from './presenters/address.presenter';
-import { Address } from '../domain/address.entity';
-import { Result, success, failure } from '@/core/utils/result';
-import { randomUUID } from 'crypto';
-
-// In-memory store for testing purposes
-let addresses: Address[] = [];
-
-// Export a function to clear the store for test isolation
-export const clearAddressStore = () => {
-  addresses = [];
-};
-
-const mockCreateAddressUseCase = {
-  execute: async (dto: CreateAddressDTO): Promise<Result<Address, Error>> => {
-    const id = randomUUID();
-    const addressResult = Address.create({ ...dto }, id);
-    if (addressResult.success) {
-      addresses.push(addressResult.value);
-      return success(addressResult.value);
-    }
-    return addressResult;
-  },
-};
-
-const mockFindAddressByIdUseCase = {
-  execute: async (id: string): Promise<Result<Address | null, Error>> => {
-    const address = addresses.find(a => a.id === id);
-    return success(address || null);
-  },
-};
-
-const mockUpdateAddressUseCase = {
-  execute: async (id: string, dto: UpdateAddressDTO): Promise<Result<Address, Error>> => {
-    const addressIndex = addresses.findIndex(a => a.id === id);
-    if (addressIndex === -1) {
-      return failure(new Error('Address not found'));
-    }
-    const existingAddress = addresses[addressIndex];
-    const updatedAddressResult = Address.create({
-        street: existingAddress.street,
-        city: existingAddress.city,
-        state: existingAddress.state,
-        zipCode: existingAddress.zipCode,
-        country: existingAddress.country,
-        ...dto
-    }, id);
-    if (updatedAddressResult.success) {
-        addresses[addressIndex] = updatedAddressResult.value;
-        return success(updatedAddressResult.value);
-    }
-    return updatedAddressResult;
-  },
-};
-
-const mockDeleteAddressUseCase = {
-  execute: async (id: string): Promise<Result<void, Error>> => {
-    const addressIndex = addresses.findIndex(a => a.id === id);
-    if (addressIndex > -1) {
-      addresses.splice(addressIndex, 1);
-    }
-    return success(undefined);
-  },
-};
-
-const mockListAddressesUseCase = {
-    execute: async (): Promise<Result<Address[], Error>> => {
-        return success([...addresses]);
-    }
-}
+import { AddressPresenter } from '../presentation/address.presenter';
+import { AddressDependencies } from '../address.dependencies';
 
 export class AddressController {
+    constructor(private readonly dependencies: AddressDependencies) {}
   async create(req: Request, res: Response) {
     try {
       const addressDTO = createAddressSchema.parse(req.body);
-      const result = await mockCreateAddressUseCase.execute(addressDTO);
+      const result = await this.dependencies.createAddressUseCase.execute(addressDTO);
 
       if (result.success) {
         return res.status(201).json(AddressPresenter.toJSON(result.value));
@@ -94,7 +27,7 @@ export class AddressController {
 
   async findById(req: Request, res: Response) {
     const { id } = req.params;
-    const result = await mockFindAddressByIdUseCase.execute(id);
+    const result = await this.dependencies.getAddressUseCase.execute(id);
 
     if (result.success && result.value) {
       return res.status(200).json(AddressPresenter.toJSON(result.value));
@@ -106,7 +39,7 @@ export class AddressController {
   }
 
   async list(req: Request, res: Response) {
-    const result = await mockListAddressesUseCase.execute();
+    const result = await this.dependencies.listAddressesUseCase.execute();
 
     if (result.success) {
         const addressesJSON = result.value.map(AddressPresenter.toJSON);
@@ -120,7 +53,10 @@ export class AddressController {
     try {
       const { id } = req.params;
       const addressDTO = updateAddressSchema.parse(req.body);
-      const result = await mockUpdateAddressUseCase.execute(id, addressDTO);
+      const result = await this.dependencies.updateAddressUseCase.execute({
+        id,
+        ...addressDTO,
+      });
 
       if (result.success) {
         return res.status(200).json(AddressPresenter.toJSON(result.value));
@@ -137,7 +73,7 @@ export class AddressController {
 
   async delete(req: Request, res: Response) {
     const { id } = req.params;
-    const result = await mockDeleteAddressUseCase.execute(id);
+    const result = await this.dependencies.deleteAddressUseCase.execute(id);
 
     if (result.success) {
       return res.status(204).send();

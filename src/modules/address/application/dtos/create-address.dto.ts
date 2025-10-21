@@ -1,25 +1,8 @@
-import { IsString, IsNumber, IsOptional, IsObject } from 'class-validator';
-
-export class CreateAddressDto {
-  @IsString()
-  formatted: string;
-
-  @IsString()
-  city: string;
-
-  @IsString()
-  province: string;
-
-  @IsString()
-  postal_code: string;
-
-  @IsNumber()
-  lat: number;
-
-  @IsNumber()
-  lng: number;
-
-  @IsOptional()
-  @IsObject()
-  extra?: any;
+export interface CreateAddressDto {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+    isResidential?: boolean;
 }

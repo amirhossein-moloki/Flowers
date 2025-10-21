@@ -1,7 +1,7 @@
 import { ICustomerAddressRepository } from '../../domain/customer-address.repository';
 import { CustomerAddressDto } from '../dtos/customer-address.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { CustomerAddressMapper } from '../../infrastructure/customer-address.mapper';
 
 export class GetCustomerAddressUseCase {

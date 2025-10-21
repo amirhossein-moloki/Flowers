@@ -1,10 +1,65 @@
 import request from 'supertest';
 import express from 'express';
-import { customerAddressRouter } from '../routes';
+import { createCustomerAddressRoutes } from '../routes';
+import { CustomerAddressDependencies } from '../../customer-address.dependencies';
+import { Result, success } from '@/core/utils/result';
+import { CustomerAddress } from '../../domain/customer-address.entity';
+
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+    isAuthenticated: jest.fn((req, res, next) => {
+        // @ts-ignore
+        req.user = { id: 'user-1', role: 'CUSTOMER' };
+        next();
+    }),
+}));
+
+const mockDependencies: CustomerAddressDependencies = {
+  createCustomerAddressUseCase: {
+    execute: jest.fn(async (dto) => {
+        const customerAddressResult = CustomerAddress.create({
+            ...dto,
+        }, 'mock-id');
+      return success(customerAddressResult.value);
+    }),
+  },
+  getCustomerAddressUseCase: {
+      execute: jest.fn(async (id) => {
+        const customerAddressResult = CustomerAddress.create({
+            user_id: 'user-1',
+            address_id: 'address-1',
+            label: 'Home',
+        }, id);
+      return success(customerAddressResult.value);
+    }),
+  },
+  listCustomerAddressesUseCase: {
+      execute: jest.fn(async () => {
+      const customerAddressResult = CustomerAddress.create({
+        user_id: 'user-1',
+        address_id: 'address-1',
+        label: 'Home',
+      }, 'mock-id');
+      return success([customerAddressResult.value]);
+    }),
+  },
+  updateCustomerAddressUseCase: {
+      execute: jest.fn(async (dto) => {
+        const customerAddressResult = CustomerAddress.create({
+            user_id: 'user-1',
+            address_id: 'address-1',
+            label: 'Work',
+        }, 'mock-id');
+      return success(customerAddressResult.value);
+    }),
+  },
+  deleteCustomerAddressUseCase: {
+    execute: jest.fn(async () => success(undefined)),
+  },
+};
 
 const app = express();
 app.use(express.json());
-app.use('/customer-address', customerAddressRouter);
+app.use('/customer-address', createCustomerAddressRoutes(mockDependencies));
 
 describe('CustomerAddress Controller', () => {
   it('should create a new customer address and return 201', async () => {
@@ -25,7 +80,7 @@ describe('CustomerAddress Controller', () => {
       .send({
         user_id: 'user-1',
       });
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(422);
   });
 
   it('should get a list of customer addresses and return 200', async () => {

@@ -1,10 +1,9 @@
-export class AddressDto {
-  id: string;
-  formatted: string;
-  city: string;
-  province: string;
-  postal_code: string;
-  lat: number;
-  lng: number;
-  extra?: any;
+export interface AddressDto {
+    id: string;
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+    isResidential: boolean | null;
 }

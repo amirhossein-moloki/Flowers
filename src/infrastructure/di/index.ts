@@ -36,11 +36,27 @@ import { GetVendorOutletUseCase } from '@/modules/vendor-outlet/application/use-
 import { UpdateVendorOutletUseCase } from '@/modules/vendor-outlet/application/use-cases/update-vendor-outlet.usecase';
 import { DeleteVendorOutletUseCase } from '@/modules/vendor-outlet/application/use-cases/delete-vendor-outlet.usecase';
 import { ListVendorOutletsUseCase } from '@/modules/vendor-outlet/application/use-cases/list-vendor-outlets.usecase';
+import { CreateCustomerAddressUseCase } from '@/modules/customer-address/application/use-cases/create-customer-address.usecase';
+import { GetCustomerAddressUseCase } from '@/modules/customer-address/application/use-cases/get-customer-address.usecase';
+import { UpdateCustomerAddressUseCase } from '@/modules/customer-address/application/use-cases/update-customer-address.usecase';
+import { DeleteCustomerAddressUseCase } from '@/modules/customer-address/application/use-cases/delete-customer-address.usecase';
+import { ListCustomerAddressesUseCase } from '@/modules/customer-address/application/use-cases/list-customer-addresses.usecase';
+import { CreateAddressUseCase } from '@/modules/address/application/use-cases/create-address.usecase';
+import { GetAddressUseCase } from '@/modules/address/application/use-cases/get-address.usecase';
+import { UpdateAddressUseCase } from '@/modules/address/application/use-cases/update-address.usecase';
+import { DeleteAddressUseCase } from '@/modules/address/application/use-cases/delete-address.usecase';
+import { ListAddressesUseCase } from '@/modules/address/application/use-cases/list-addresses.usecase';
+import { IAddressRepository } from '@/modules/address/domain/address.repository.interface';
+import { ICustomerAddressRepository } from '@/modules/customer-address/domain/customer-address.repository.interface';
+import { PrismaAddressRepository } from '@/modules/address/infrastructure/prisma-address.repository';
+import { PrismaCustomerAddressRepository } from '@/modules/customer-address/infrastructure/prisma-customer-address.repository';
 
 export interface Dependencies {
   userRepository: IUserRepository;
   vendorRepository: IVendorRepository;
   vendorOutletRepository: IVendorOutletRepository;
+  addressRepository: IAddressRepository;
+  customerAddressRepository: ICustomerAddressRepository;
   createNotificationUseCase: CreateNotificationUseCase;
   getNotificationUseCase: GetNotificationUseCase;
   updateNotificationUseCase: UpdateNotificationUseCase;
@@ -67,6 +83,16 @@ export interface Dependencies {
   updateVendorOutletUseCase: UpdateVendorOutletUseCase;
   deleteVendorOutletUseCase: DeleteVendorOutletUseCase;
   listVendorOutletsUseCase: ListVendorOutletsUseCase;
+  createCustomerAddressUseCase: CreateCustomerAddressUseCase;
+  getCustomerAddressUseCase: GetCustomerAddressUseCase;
+  updateCustomerAddressUseCase: UpdateCustomerAddressUseCase;
+  deleteCustomerAddressUseCase: DeleteCustomerAddressUseCase;
+  listCustomerAddressesUseCase: ListCustomerAddressesUseCase;
+  createAddressUseCase: CreateAddressUseCase;
+  getAddressUseCase: GetAddressUseCase;
+  updateAddressUseCase: UpdateAddressUseCase;
+  deleteAddressUseCase: DeleteAddressUseCase;
+  listAddressesUseCase: ListAddressesUseCase;
 }
 
 export function createDependencies(prisma: PrismaClient): Dependencies {
@@ -77,6 +103,8 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const notificationRepository = new PrismaNotificationRepository(prisma);
   const userRepository = new PrismaUserRepository(prisma);
   const vendorOutletRepository = new PrismaVendorOutletRepository(prisma);
+  const addressRepository = new PrismaAddressRepository(prisma);
+  const customerAddressRepository = new PrismaCustomerAddressRepository(prisma);
 
   const createNotificationUseCase = new CreateNotificationUseCase(notificationRepository);
   const getNotificationUseCase = new GetNotificationUseCase(notificationRepository);
@@ -109,10 +137,24 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const deleteVendorOutletUseCase = new DeleteVendorOutletUseCase(vendorOutletRepository);
   const listVendorOutletsUseCase = new ListVendorOutletsUseCase(vendorOutletRepository, vendorRepository);
 
+  const createCustomerAddressUseCase = new CreateCustomerAddressUseCase(customerAddressRepository);
+  const getCustomerAddressUseCase = new GetCustomerAddressUseCase(customerAddressRepository);
+  const updateCustomerAddressUseCase = new UpdateCustomerAddressUseCase(customerAddressRepository);
+  const deleteCustomerAddressUseCase = new DeleteCustomerAddressUseCase(customerAddressRepository);
+  const listCustomerAddressesUseCase = new ListCustomerAddressesUseCase(customerAddressRepository);
+
+  const createAddressUseCase = new CreateAddressUseCase(addressRepository);
+  const getAddressUseCase = new GetAddressUseCase(addressRepository);
+  const updateAddressUseCase = new UpdateAddressUseCase(addressRepository);
+  const deleteAddressUseCase = new DeleteAddressUseCase(addressRepository);
+  const listAddressesUseCase = new ListAddressesUseCase(addressRepository);
+
   return {
     userRepository,
     vendorRepository,
     vendorOutletRepository,
+    addressRepository,
+    customerAddressRepository,
     createNotificationUseCase,
     getNotificationUseCase,
     updateNotificationUseCase,
@@ -139,5 +181,15 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
     updateVendorOutletUseCase,
     deleteVendorOutletUseCase,
     listVendorOutletsUseCase,
+    createCustomerAddressUseCase,
+    getCustomerAddressUseCase,
+    updateCustomerAddressUseCase,
+    deleteCustomerAddressUseCase,
+    listCustomerAddressesUseCase,
+    createAddressUseCase,
+    getAddressUseCase,
+    updateAddressUseCase,
+    deleteAddressUseCase,
+    listAddressesUseCase,
   };
 }

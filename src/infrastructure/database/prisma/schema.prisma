@@ -103,6 +103,7 @@ model Address {
   isResidential Boolean?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  customerAddresses CustomerAddress[]
 }
 
 model Promotion {
@@ -263,6 +264,7 @@ model CustomerAddress {
   id         String   @id @default(uuid())
   user_id    String
   address_id String
+  address    Address  @relation(fields: [address_id], references: [id])
   is_default Boolean  @default(false)
   label      String
   createdAt  DateTime @default(now())
