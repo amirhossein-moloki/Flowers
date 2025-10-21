@@ -14,6 +14,11 @@ import { MockVendorRepository } from './mocks/vendor.repository.mock';
 import { VendorOutlet } from '../../domain/vendor-outlet.entity';
 import { Vendor } from '../../../vendor/domain/vendor.entity';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: jest.fn((req, res, next) => next()),
+  hasRole: jest.fn(() => (req, res, next) => next()),
+}));
+
 describe('VendorOutletController', () => {
   let app: express.Express;
   let mockOutletRepository: MockVendorOutletRepository;
@@ -86,7 +91,7 @@ describe('VendorOutletController', () => {
       await mockVendorRepository.save(vendor);
 
       const outlet = VendorOutlet.create({
-        vendor_id: vendor.id,
+        vendorId: vendor.id,
         name: 'Test Outlet',
         address: '123 Test St',
         latitude: 0,
@@ -105,7 +110,7 @@ describe('VendorOutletController', () => {
   describe('PUT /vendor-outlets/:id', () => {
     it('should return 200', async () => {
       const outlet = VendorOutlet.create({
-        vendor_id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+        vendorId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
         name: 'Test Outlet',
         address: '123 Test St',
         latitude: 0,
@@ -125,7 +130,7 @@ describe('VendorOutletController', () => {
   describe('DELETE /vendor-outlets/:id', () => {
     it('should return 204', async () => {
       const outlet = VendorOutlet.create({
-        vendor_id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+        vendorId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
         name: 'Test Outlet',
         address: '123 Test St',
         latitude: 0,
@@ -152,7 +157,7 @@ describe('VendorOutletController', () => {
       await mockVendorRepository.save(vendor);
 
       const outlet = VendorOutlet.create({
-        vendor_id: vendor.id,
+        vendorId: vendor.id,
         name: 'Test Outlet',
         address: '123 Test St',
         latitude: 0,

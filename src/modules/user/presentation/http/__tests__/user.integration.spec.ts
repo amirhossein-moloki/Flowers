@@ -10,25 +10,37 @@ import { UserRole } from '@/core/domain/enums';
 const app = express();
 app.use(express.json());
 
+// This instance is now shared between the test and the repository
 const prisma = new PrismaClient();
 const userRepository = new PrismaUserRepository(prisma);
-const createUserUseCase = new CreateUserUseCase(userRepository);
-const getUserUseCase = new GetUserUseCase(userRepository);
-const userController = new UserController(createUserUseCase, getUserUseCase);
+const userController = new UserController(
+  new CreateUserUseCase(userRepository),
+  new GetUserUseCase(userRepository),
+);
 
 app.use('/users', userController.router);
 
 describe('User Integration Tests', () => {
   beforeAll(async () => {
     await prisma.$connect();
+    await prisma.$executeRawUnsafe(`DROP TABLE IF EXISTS "User";`);
+    await prisma.$executeRawUnsafe(`CREATE TABLE "User" (
+      "id" TEXT NOT NULL PRIMARY KEY,
+      "username" TEXT NOT NULL UNIQUE,
+      "email" TEXT NOT NULL UNIQUE,
+      "password" TEXT NOT NULL,
+      "role" TEXT NOT NULL,
+      "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" DATETIME NOT NULL
+    );`);
+  });
+
+  beforeEach(async () => {
+    await prisma.user.deleteMany({});
   });
 
   afterAll(async () => {
     await prisma.$disconnect();
-  });
-
-  afterEach(async () => {
-    await prisma.user.deleteMany();
   });
 
   describe('POST /users', () => {
@@ -40,28 +52,23 @@ describe('User Integration Tests', () => {
         password: 'password123',
       };
 
-      const response = await request(app)
-        .post('/users')
-        .send(newUser);
+      const response = await request(app).post('/users').send(newUser);
 
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
       expect(response.body.username).toBe(newUser.username);
     });
 
-    it('should return 400 for missing required fields', async () => {
+    it('should return 422 for missing required fields', async () => {
       const newUser = {
         username: 'testuser',
       };
 
-      const response = await request(app)
-        .post('/users')
-        .send(newUser);
-
-      expect(response.status).toBe(400);
+      const response = await request(app).post('/users').send(newUser);
+      expect(response.status).toBe(422);
     });
 
-    it('should return 400 for invalid email', async () => {
+    it('should return 422 for invalid email', async () => {
       const newUser = {
         username: 'testuser',
         email: 'not-an-email',
@@ -69,17 +76,15 @@ describe('User Integration Tests', () => {
         password: 'password123',
       };
 
-      const response = await request(app)
-        .post('/users')
-        .send(newUser);
+      const response = await request(app).post('/users').send(newUser);
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(422);
     });
   });
 
   describe('GET /users/:id', () => {
     it('should return a user by id', async () => {
-      const newUser = await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           username: 'gettest',
           email: 'gettest@example.com',
@@ -88,10 +93,10 @@ describe('User Integration Tests', () => {
         },
       });
 
-      const response = await request(app).get(`/users/${newUser.id}`);
+      const response = await request(app).get(`/users/${user.id}`);
 
       expect(response.status).toBe(200);
-      expect(response.body.id).toBe(newUser.id);
+      expect(response.body.id).toBe(user.id);
     });
 
     it('should return 404 for a non-existent user', async () => {

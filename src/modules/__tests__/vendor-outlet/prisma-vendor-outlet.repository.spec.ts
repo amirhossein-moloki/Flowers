@@ -1,28 +1,19 @@
-import { PrismaClient, VendorOutlet as PrismaVendorOutlet } from '@prisma/client';
+import { prismaMock } from '../helpers/prisma-mock.helper';
 import { PrismaVendorOutletRepository } from '../../vendor-outlet/infrastructure/prisma-vendor-outlet.repository';
 import { VendorOutlet } from '../../vendor-outlet/domain/vendor-outlet.entity';
 import { VendorOutletMapper } from '../../vendor-outlet/infrastructure/vendor-outlet.mapper';
-
-const mockPrisma = {
-  vendorOutlet: {
-    findUnique: jest.fn(),
-    findMany: jest.fn(),
-    upsert: jest.fn(),
-    delete: jest.fn(),
-  },
-};
-
-jest.mock('@prisma/client', () => ({
-  PrismaClient: jest.fn(() => mockPrisma),
-}));
+import { PrismaClient, VendorOutlet as PrismaVendorOutlet } from '@prisma/client';
 
 describe('PrismaVendorOutletRepository', () => {
   let repository: PrismaVendorOutletRepository;
-  let prisma: PrismaClient;
+
+  beforeEach(() => {
+    repository = new PrismaVendorOutletRepository(prismaMock as unknown as PrismaClient);
+  });
 
   const now = new Date();
   const outletProps = {
-    vendor_id: 'vendor-id',
+    vendorId: 'vendor-id',
     name: 'Test Outlet',
     address: '456 Test Ave',
     latitude: 40.7128,
@@ -40,7 +31,7 @@ describe('PrismaVendorOutletRepository', () => {
 
   const prismaOutlet: PrismaVendorOutlet = {
     id: 'outlet-id',
-    vendor_id: outletProps.vendor_id,
+    vendor_id: outletProps.vendorId,
     name: outletProps.name,
     address: outletProps.address,
     latitude: outletProps.latitude,
@@ -50,41 +41,44 @@ describe('PrismaVendorOutletRepository', () => {
     updated_at: outletProps.updatedAt,
   };
 
-  beforeEach(() => {
-    prisma = new PrismaClient();
-    repository = new PrismaVendorOutletRepository(prisma);
-    jest.clearAllMocks();
-  });
-
   it('should find an outlet by id', async () => {
-    mockPrisma.vendorOutlet.findUnique.mockResolvedValue(prismaOutlet);
+    prismaMock.vendorOutlet.findUnique.mockResolvedValue(prismaOutlet);
     const result = await repository.findById('outlet-id');
     expect(result).toEqual(outletEntity);
-    expect(mockPrisma.vendorOutlet.findUnique).toHaveBeenCalledWith({ where: { id: 'outlet-id' } });
+    expect(prismaMock.vendorOutlet.findUnique).toHaveBeenCalledWith({ where: { id: 'outlet-id' } });
   });
 
   it('should find outlets by vendor id', async () => {
-    mockPrisma.vendorOutlet.findMany.mockResolvedValue([prismaOutlet]);
+    prismaMock.vendorOutlet.findMany.mockResolvedValue([prismaOutlet]);
     const result = await repository.findByVendorId('vendor-id');
     expect(result).toEqual([outletEntity]);
-    expect(mockPrisma.vendorOutlet.findMany).toHaveBeenCalledWith({ where: { vendor_id: 'vendor-id' } });
+    expect(prismaMock.vendorOutlet.findMany).toHaveBeenCalledWith({ where: { vendor_id: 'vendor-id' } });
   });
 
   it('should save an outlet', async () => {
-    mockPrisma.vendorOutlet.upsert.mockResolvedValue(prismaOutlet);
-    const result = await repository.save(outletEntity);
-    expect(result).toEqual(outletEntity);
-    expect(mockPrisma.vendorOutlet.upsert).toHaveBeenCalledWith({
+    const persistenceData = VendorOutletMapper.toPersistence(outletEntity);
+    const { vendor_id, ...createData } = persistenceData;
+    const { id, ...updateData } = createData;
+    prismaMock.vendorOutlet.upsert.mockResolvedValue(prismaOutlet);
+    await repository.save(outletEntity);
+
+    expect(prismaMock.vendorOutlet.upsert).toHaveBeenCalledWith({
       where: { id: 'outlet-id' },
-      update: VendorOutletMapper.toPersistence(outletEntity),
-      create: VendorOutletMapper.toPersistence(outletEntity),
+      create: {
+        ...createData,
+        vendor: { connect: { id: outletEntity.vendorId } },
+      },
+      update: {
+        ...updateData,
+        vendor: { connect: { id: outletEntity.vendorId } },
+      },
     });
   });
 
   it('should delete an outlet', async () => {
-    mockPrisma.vendorOutlet.delete.mockResolvedValue(prismaOutlet);
+    prismaMock.vendorOutlet.delete.mockResolvedValue(prismaOutlet);
     const result = await repository.delete('outlet-id');
     expect(result).toBe(true);
-    expect(mockPrisma.vendorOutlet.delete).toHaveBeenCalledWith({ where: { id: 'outlet-id' } });
+    expect(prismaMock.vendorOutlet.delete).toHaveBeenCalledWith({ where: { id: 'outlet-id' } });
   });
 });

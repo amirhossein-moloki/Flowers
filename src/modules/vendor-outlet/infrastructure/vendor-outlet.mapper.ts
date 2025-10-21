@@ -27,6 +27,7 @@ export class VendorOutletMapper {
   static toPersistence(vendorOutlet: VendorOutlet) {
     return {
       id: vendorOutlet.id,
+      vendor_id: vendorOutlet.vendorId,
       name: vendorOutlet.name,
       address: vendorOutlet.address,
       latitude: vendorOutlet.latitude,

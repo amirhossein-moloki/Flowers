@@ -71,22 +71,16 @@ describe('PrismaVendorRepository', () => {
     expect(vendors[0]).toBeInstanceOf(Vendor);
   });
 
-  test('save should call create on prisma client', async () => {
-    prismaMock.vendor.create.mockResolvedValue(prismaVendor);
+  test('save should call upsert on prisma client', async () => {
+    const persistenceData = VendorMapper.toPersistence(vendorEntity);
+    const { id, ...updateData } = persistenceData;
+    prismaMock.vendor.upsert.mockResolvedValue(prismaVendor);
     await repository.save(vendorEntity);
 
-    expect(prismaMock.vendor.create).toHaveBeenCalledWith({
-      data: VendorMapper.toPersistence(vendorEntity),
-    });
-  });
-
-  test('update should call update on prisma client', async () => {
-    prismaMock.vendor.update.mockResolvedValue(prismaVendor);
-    await repository.update(vendorEntity);
-
-    expect(prismaMock.vendor.update).toHaveBeenCalledWith({
+    expect(prismaMock.vendor.upsert).toHaveBeenCalledWith({
       where: { id: vendorEntity.id },
-      data: VendorMapper.toPersistence(vendorEntity),
+      create: persistenceData,
+      update: updateData,
     });
   });
 

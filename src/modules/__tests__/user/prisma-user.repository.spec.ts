@@ -3,21 +3,20 @@ import { PrismaUserRepository } from '@/modules/user/infrastructure/prisma-user.
 import { User } from '@/modules/user/domain/user.entity';
 import { UserMapper } from '@/modules/user/infrastructure/user.mapper';
 import { UserRole } from '@/core/domain/enums';
+import { PrismaClient } from '@prisma/client';
 
 describe('PrismaUserRepository', () => {
   let repository: PrismaUserRepository;
 
   beforeEach(() => {
-    repository = new PrismaUserRepository();
+    repository = new PrismaUserRepository(prismaMock as unknown as PrismaClient);
   });
 
   const userProps = {
     username: 'testuser',
-    full_name: 'Test User',
-    phone: '123-456-7890',
+    password: 'password123',
     email: 'test@example.com',
     role: UserRole.CUSTOMER,
-    is_active: true,
   };
   const userResult = User.create(userProps, 'user-id-1');
   if (!userResult.success) {

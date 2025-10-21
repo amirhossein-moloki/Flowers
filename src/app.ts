@@ -9,10 +9,12 @@ import { createServiceZoneRoutes } from './modules/service-zone/http/routes';
 import { createShippingRateRoutes } from './modules/shipping-rate/presentation/http/shipping-rate.routes';
 import { createProofOfDeliveryRoutes } from './modules/proof-of-delivery/presentation/http/routes';
 import { PrismaClient } from '@prisma/client';
+import { createVendorOutletRoutes } from './modules/vendor-outlet/http/routes';
+import { VendorOutletDependencies } from './modules/vendor-outlet/vendor-outlet.dependencies';
 
 class App {
   public express: Application;
-  private dependencies: Dependencies;
+  public dependencies: Dependencies;
 
   constructor(prisma: PrismaClient) {
     this.express = express();
@@ -35,6 +37,7 @@ class App {
     this.express.use('/api/v1/service-zones', createServiceZoneRoutes(this.dependencies));
     this.express.use('/api/v1/shipping-rates', createShippingRateRoutes(this.dependencies));
     this.express.use('/api/v1/proof-of-delivery', createProofOfDeliveryRoutes(this.dependencies));
+    this.express.use('/api/v1/vendor-outlets', createVendorOutletRoutes(this.dependencies as unknown as VendorOutletDependencies));
   }
 
   private setupErrorHandlers(): void {
@@ -42,8 +45,12 @@ class App {
     this.express.use(errorHandler);
   }
 
-  public start(port: number, cb: () => void): void {
-    this.express.listen(port, cb);
+  public start(port: number): import('http').Server {
+    return this.express.listen(port);
+  }
+
+  public getServer(): Application {
+    return this.express;
   }
 }
 
