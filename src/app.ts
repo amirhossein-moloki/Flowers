@@ -11,6 +11,7 @@ import { createProofOfDeliveryRoutes } from './modules/proof-of-delivery/present
 import { PrismaClient } from '@prisma/client';
 import { createVendorOutletRoutes } from './modules/vendor-outlet/http/routes';
 import { VendorOutletDependencies } from './modules/vendor-outlet/vendor-outlet.dependencies';
+import { addressRouter } from './modules/address/http/routes';
 
 class App {
   public express: Application;
@@ -38,6 +39,7 @@ class App {
     this.express.use('/api/v1/shipping-rates', createShippingRateRoutes(this.dependencies));
     this.express.use('/api/v1/proof-of-delivery', createProofOfDeliveryRoutes(this.dependencies));
     this.express.use('/api/v1/vendor-outlets', createVendorOutletRoutes(this.dependencies as unknown as VendorOutletDependencies));
+    this.express.use('/api/v1/address', addressRouter);
   }
 
   private setupErrorHandlers(): void {

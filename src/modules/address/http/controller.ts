@@ -5,12 +5,22 @@ import { UpdateAddressDTO, updateAddressSchema } from './dto/update-address.sche
 import { AddressPresenter } from './presenters/address.presenter';
 import { Address } from '../domain/address.entity';
 import { Result, success, failure } from '@/core/utils/result';
+import { randomUUID } from 'crypto';
 
-// Mock Use Cases - In a real application, these would be injected
+// In-memory store for testing purposes
+let addresses: Address[] = [];
+
+// Export a function to clear the store for test isolation
+export const clearAddressStore = () => {
+  addresses = [];
+};
+
 const mockCreateAddressUseCase = {
   execute: async (dto: CreateAddressDTO): Promise<Result<Address, Error>> => {
-    const addressResult = Address.create({ ...dto }, 'mock-id');
+    const id = randomUUID();
+    const addressResult = Address.create({ ...dto }, id);
     if (addressResult.success) {
+      addresses.push(addressResult.value);
       return success(addressResult.value);
     }
     return addressResult;
@@ -19,66 +29,47 @@ const mockCreateAddressUseCase = {
 
 const mockFindAddressByIdUseCase = {
   execute: async (id: string): Promise<Result<Address | null, Error>> => {
-    const addressResult = Address.create({
-      street: '123 Main St',
-      city: 'Anytown',
-      state: 'CA',
-      zipCode: '12345',
-      country: 'USA',
-    }, id);
-    if (addressResult.success) {
-      return success(addressResult.value);
-    }
-    return success(null);
+    const address = addresses.find(a => a.id === id);
+    return success(address || null);
   },
 };
 
 const mockUpdateAddressUseCase = {
   execute: async (id: string, dto: UpdateAddressDTO): Promise<Result<Address, Error>> => {
-    const addressResult = Address.create({
-      street: '123 Main St',
-      city: 'Anytown',
-      state: 'CA',
-      zipCode: '12345',
-      country: 'USA',
-      ...dto
-    }, id);
-    if (addressResult.success) {
-        return success(addressResult.value);
+    const addressIndex = addresses.findIndex(a => a.id === id);
+    if (addressIndex === -1) {
+      return failure(new Error('Address not found'));
     }
-    return addressResult;
+    const existingAddress = addresses[addressIndex];
+    const updatedAddressResult = Address.create({
+        street: existingAddress.street,
+        city: existingAddress.city,
+        state: existingAddress.state,
+        zipCode: existingAddress.zipCode,
+        country: existingAddress.country,
+        ...dto
+    }, id);
+    if (updatedAddressResult.success) {
+        addresses[addressIndex] = updatedAddressResult.value;
+        return success(updatedAddressResult.value);
+    }
+    return updatedAddressResult;
   },
 };
 
 const mockDeleteAddressUseCase = {
   execute: async (id: string): Promise<Result<void, Error>> => {
-    console.log(`Address ${id} deleted`);
+    const addressIndex = addresses.findIndex(a => a.id === id);
+    if (addressIndex > -1) {
+      addresses.splice(addressIndex, 1);
+    }
     return success(undefined);
   },
 };
 
 const mockListAddressesUseCase = {
     execute: async (): Promise<Result<Address[], Error>> => {
-        const address1Result = Address.create({
-            street: '123 Main St',
-            city: 'Anytown',
-            state: 'CA',
-            zipCode: '12345',
-            country: 'USA',
-        }, '1');
-        const address2Result = Address.create({
-            street: '456 Oak Ave',
-            city: 'Otherville',
-            state: 'TX',
-            zipCode: '67890',
-            country: 'USA',
-        }, '2');
-
-        if (address1Result.success && address2Result.success) {
-            return success([address1Result.value, address2Result.value]);
-        }
-
-        return success([]);
+        return success([...addresses]);
     }
 }
 
@@ -134,7 +125,7 @@ export class AddressController {
       if (result.success) {
         return res.status(200).json(AddressPresenter.toJSON(result.value));
       } else {
-        return res.status(400).json({ error: result.error.message });
+        return res.status(404).json({ error: 'Address not found' });
       }
     } catch (error) {
       if (error instanceof z.ZodError) {

@@ -41,7 +41,7 @@ The AI Agent or CI process must **read this file sequentially (top → bottom)**
 | 1 | user | ✅ Done | Needs `/me` and auth tests |
 | 2 | vendor | ✅ Done | Admin-only actions |
 | 3 | vendor-outlet | ✅ Done | Joins vendor & zone |
-| 4 | address | 🕒 Pending | CRUD only |
+| 4 | address | ✅ Done | CRUD only |
 | 5 | customer-address | 🕒 Pending | Must link to address |
 | 6 | service-zone | 🕒 Pending | Read-only |
 | 7 | shipping-rate | 🕒 Pending | Includes `/calculate` test |
