@@ -5,6 +5,7 @@ import { securityMiddleware } from './infrastructure/http/middlewares/security';
 import { createDependencies, Dependencies } from './infrastructure/di';
 import { userRoutes } from './modules/user/http/routes';
 import { createVendorRoutes } from './modules/vendor/http/routes';
+import { isAuthenticated } from './core/middlewares/auth.middleware';
 import { createServiceZoneRoutes } from './modules/service-zone/http/routes';
 import { createShippingRateRoutes } from './modules/shipping-rate/presentation/http/shipping-rate.routes';
 import { createProofOfDeliveryRoutes } from './modules/proof-of-delivery/presentation/http/routes';
@@ -36,7 +37,7 @@ class App {
     });
     this.express.use('/api/v1/users', userRoutes);
     this.express.use('/api/v1/vendors', createVendorRoutes(this.dependencies));
-    this.express.use('/api/v1/service-zones', createServiceZoneRoutes(this.dependencies));
+    this.express.use('/api/v1/service-zones', isAuthenticated, createServiceZoneRoutes(this.dependencies));
     this.express.use('/api/v1/shipping-rates', createShippingRateRoutes(this.dependencies));
     this.express.use('/api/v1/proof-of-delivery', createProofOfDeliveryRoutes(this.dependencies));
     this.express.use('/api/v1/vendor-outlets', createVendorOutletRoutes(this.dependencies as unknown as VendorOutletDependencies));

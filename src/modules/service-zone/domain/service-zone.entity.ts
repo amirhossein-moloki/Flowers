@@ -3,8 +3,7 @@ import { Result, success } from '../../../core/utils/result';
 
 interface ServiceZoneProps {
   name: string;
-  city: string;
-  polygon_geojson: any;
+  points: string;
   is_active?: boolean;
 }
 
@@ -17,12 +16,8 @@ export class ServiceZone extends Entity<ServiceZoneProps> {
     return this.props.name;
   }
 
-  get city(): string {
-    return this.props.city;
-  }
-
-  get polygon_geojson(): any {
-    return this.props.polygon_geojson;
+  get points(): string {
+    return this.props.points;
   }
 
   get is_active(): boolean {
