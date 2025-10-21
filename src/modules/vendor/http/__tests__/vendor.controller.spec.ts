@@ -7,6 +7,11 @@ import { success, failure } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';
 import { Vendor } from '../../domain/vendor.entity';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: jest.fn((req, res, next) => next()),
+  hasRole: jest.fn(() => (req, res, next) => next()),
+}));
+
 describe('VendorController', () => {
   let app: Express;
   let dependencies: Partial<Dependencies>;

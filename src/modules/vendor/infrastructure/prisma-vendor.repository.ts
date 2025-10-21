@@ -51,15 +51,6 @@ export class PrismaVendorRepository implements IVendorRepository {
     return VendorMapper.toDomain(newVendor);
   }
 
-  async update(vendor: Vendor): Promise<Vendor> {
-    const data = VendorMapper.toPersistence(vendor);
-    const updatedVendor = await this.prisma.vendor.update({
-      where: { id: vendor.id },
-      data,
-    });
-    return VendorMapper.toDomain(updatedVendor);
-  }
-
   async delete(id: string): Promise<boolean> {
     await this.prisma.vendor.delete({ where: { id } });
     return true;

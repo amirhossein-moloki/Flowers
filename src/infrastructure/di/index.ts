@@ -26,8 +26,21 @@ import { PrismaNotificationRepository } from '@/modules/notification/infrastruct
 import { GetNotificationUseCase } from '@/modules/notification/application/use-cases/get-notification.usecase';
 import { UpdateNotificationUseCase } from '@/modules/notification/application/use-cases/update-notification.usecase';
 import { DeleteNotificationUseCase } from '@/modules/notification/application/use-cases/delete-notification.usecase';
+import { IUserRepository } from '@/modules/user/domain/user.repository.interface';
+import { PrismaUserRepository } from '@/modules/user/infrastructure/prisma-user.repository';
+import { IVendorRepository } from '@/modules/vendor/domain/vendor.repository';
+import { IVendorOutletRepository } from '@/modules/vendor-outlet/domain/vendor-outlet.repository';
+import { PrismaVendorOutletRepository } from '@/modules/vendor-outlet/infrastructure/prisma-vendor-outlet.repository';
+import { CreateVendorOutletUseCase } from '@/modules/vendor-outlet/application/use-cases/create-vendor-outlet.usecase';
+import { GetVendorOutletUseCase } from '@/modules/vendor-outlet/application/use-cases/get-vendor-outlet.usecase';
+import { UpdateVendorOutletUseCase } from '@/modules/vendor-outlet/application/use-cases/update-vendor-outlet.usecase';
+import { DeleteVendorOutletUseCase } from '@/modules/vendor-outlet/application/use-cases/delete-vendor-outlet.usecase';
+import { ListVendorOutletsUseCase } from '@/modules/vendor-outlet/application/use-cases/list-vendor-outlets.usecase';
 
 export interface Dependencies {
+  userRepository: IUserRepository;
+  vendorRepository: IVendorRepository;
+  vendorOutletRepository: IVendorOutletRepository;
   createNotificationUseCase: CreateNotificationUseCase;
   getNotificationUseCase: GetNotificationUseCase;
   updateNotificationUseCase: UpdateNotificationUseCase;
@@ -49,6 +62,11 @@ export interface Dependencies {
   listVendorsUseCase: ListVendorsUseCase;
   getServiceZoneUseCase: GetServiceZoneUseCase;
   listServiceZonesUseCase: ListServiceZonesUseCase;
+  createVendorOutletUseCase: CreateVendorOutletUseCase;
+  getVendorOutletUseCase: GetVendorOutletUseCase;
+  updateVendorOutletUseCase: UpdateVendorOutletUseCase;
+  deleteVendorOutletUseCase: DeleteVendorOutletUseCase;
+  listVendorOutletsUseCase: ListVendorOutletsUseCase;
 }
 
 export function createDependencies(prisma: PrismaClient): Dependencies {
@@ -57,6 +75,8 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const vendorRepository = new PrismaVendorRepository(prisma);
   const serviceZoneRepository = new PrismaServiceZoneRepository(prisma);
   const notificationRepository = new PrismaNotificationRepository(prisma);
+  const userRepository = new PrismaUserRepository(prisma);
+  const vendorOutletRepository = new PrismaVendorOutletRepository(prisma);
 
   const createNotificationUseCase = new CreateNotificationUseCase(notificationRepository);
   const getNotificationUseCase = new GetNotificationUseCase(notificationRepository);
@@ -83,7 +103,16 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const updateProofOfDeliveryUseCase = new UpdateProofOfDeliveryUseCase(proofOfDeliveryRepository);
   const deleteProofOfDeliveryUseCase = new DeleteProofOfDeliveryUseCase(proofOfDeliveryRepository);
 
+  const createVendorOutletUseCase = new CreateVendorOutletUseCase(vendorOutletRepository);
+  const getVendorOutletUseCase = new GetVendorOutletUseCase(vendorOutletRepository, vendorRepository);
+  const updateVendorOutletUseCase = new UpdateVendorOutletUseCase(vendorOutletRepository);
+  const deleteVendorOutletUseCase = new DeleteVendorOutletUseCase(vendorOutletRepository);
+  const listVendorOutletsUseCase = new ListVendorOutletsUseCase(vendorOutletRepository, vendorRepository);
+
   return {
+    userRepository,
+    vendorRepository,
+    vendorOutletRepository,
     createNotificationUseCase,
     getNotificationUseCase,
     updateNotificationUseCase,
@@ -105,5 +134,10 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
     listVendorsUseCase,
     getServiceZoneUseCase,
     listServiceZonesUseCase,
+    createVendorOutletUseCase,
+    getVendorOutletUseCase,
+    updateVendorOutletUseCase,
+    deleteVendorOutletUseCase,
+    listVendorOutletsUseCase,
   };
 }

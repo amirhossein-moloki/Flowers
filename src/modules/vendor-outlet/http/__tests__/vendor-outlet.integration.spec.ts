@@ -39,12 +39,14 @@ describe('Vendor Outlet Integration Tests', () => {
   let adminUser: User;
   let testVendor: Vendor;
   let testVendorOutlet: VendorOutlet;
+  let server: import('http').Server;
 
   beforeAll(async () => {
     execSync('npx prisma migrate reset --force --schema=src/infrastructure/database/prisma/schema.prisma');
     prisma = new PrismaClient();
     await prisma.$connect();
     app = new App(prisma);
+    server = app.start(env.PORT);
     dependencies = app.dependencies;
 
     userRepository = dependencies.userRepository;
@@ -69,8 +71,8 @@ describe('Vendor Outlet Integration Tests', () => {
     const vendorResult = Vendor.create({
       name: 'Test Vendor',
       description: 'Test Description',
-      email: 'vendor@test.com',
-      phone: '+15555555556',
+      email: `vendor${Math.floor(Math.random() * 10000)}@test.com`,
+      phone: `+1555555${Math.floor(Math.random() * 10000)}`,
       address: '123 Test St',
     });
 
@@ -98,7 +100,7 @@ describe('Vendor Outlet Integration Tests', () => {
 
   afterAll(async () => {
     await prisma.$disconnect();
-    await app.close();
+    await new Promise<void>((resolve) => server.close(() => resolve()));
   });
 
   describe('POST /vendor-outlets', () => {
