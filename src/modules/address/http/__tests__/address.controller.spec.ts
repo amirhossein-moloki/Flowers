@@ -1,10 +1,71 @@
 import request from 'supertest';
 import express from 'express';
-import { addressRouter } from '../routes';
+import { createAddressRoutes } from '../routes';
+import { AddressDependencies } from '../../address.dependencies';
+import { Result, success } from '@/core/utils/result';
+import { Address } from '../../domain/address.entity';
+
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+    isAuthenticated: jest.fn((req, res, next) => {
+        // @ts-ignore
+        req.user = { id: 'user-1', role: 'CUSTOMER' };
+        next();
+    }),
+}));
+
+const mockDependencies: AddressDependencies = {
+    createAddressUseCase: {
+        execute: jest.fn(async (dto) => {
+            const addressResult = Address.create({
+                ...dto,
+            }, 'mock-id');
+            return success(addressResult.value);
+        }),
+    },
+    getAddressUseCase: {
+        execute: jest.fn(async (id) => {
+            const addressResult = Address.create({
+                street: '123 Test St',
+                city: 'Testville',
+                state: 'TS',
+                zipCode: '12345',
+                country: 'Testland',
+            }, id);
+            return success(addressResult.value);
+        }),
+    },
+    listAddressesUseCase: {
+        execute: jest.fn(async () => {
+            const addressResult = Address.create({
+                street: '123 Test St',
+                city: 'Testville',
+                state: 'TS',
+                zipCode: '12345',
+                country: 'Testland',
+            }, 'mock-id');
+            return success([addressResult.value]);
+        }),
+    },
+    updateAddressUseCase: {
+        execute: jest.fn(async (dto) => {
+            const addressResult = Address.create({
+                street: '123 Test St',
+                city: 'New Testville',
+                state: 'TS',
+                zipCode: '12345',
+                country: 'Testland',
+            }, 'mock-id');
+            return success(addressResult.value);
+        }),
+    },
+    deleteAddressUseCase: {
+        execute: jest.fn(async () => success(undefined)),
+    },
+};
 
 const app = express();
 app.use(express.json());
-app.use('/address', addressRouter);
+app.use('/address', createAddressRoutes(mockDependencies));
 
 describe('Address Controller', () => {
   it('should create a new address and return 201', async () => {

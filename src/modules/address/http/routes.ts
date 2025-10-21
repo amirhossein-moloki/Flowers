@@ -1,13 +1,19 @@
 import { Router } from 'express';
 import { AddressController } from './controller';
+import { AddressDependencies } from '../address.dependencies';
+import { isAuthenticated } from '@/core/middlewares/auth.middleware';
 
-const addressRouter = Router();
-const controller = new AddressController();
+export const createAddressRoutes = (dependencies: AddressDependencies): Router => {
+    const router = Router();
+    const controller = new AddressController(dependencies);
 
-addressRouter.post('/', (req, res) => controller.create(req, res));
-addressRouter.get('/', (req, res) => controller.list(req, res));
-addressRouter.get('/:id', (req, res) => controller.findById(req, res));
-addressRouter.put('/:id', (req, res) => controller.update(req, res));
-addressRouter.delete('/:id', (req, res) => controller.delete(req, res));
+    router.use(isAuthenticated);
 
-export { addressRouter };
+    router.post('/', (req, res) => controller.create(req, res));
+    router.get('/', (req, res) => controller.list(req, res));
+    router.get('/:id', (req, res) => controller.findById(req, res));
+    router.put('/:id', (req, res) => controller.update(req, res));
+    router.delete('/:id', (req, res) => controller.delete(req, res));
+
+    return router;
+}

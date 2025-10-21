@@ -7,7 +7,7 @@ describe('PrismaCustomerAddressRepository', () => {
   let repository: PrismaCustomerAddressRepository;
 
   beforeEach(() => {
-    repository = new PrismaCustomerAddressRepository();
+    repository = new PrismaCustomerAddressRepository(prismaMock);
   });
 
   const customerAddressProps = {
@@ -36,7 +36,7 @@ describe('PrismaCustomerAddressRepository', () => {
 
     expect(foundAddress).toBeInstanceOf(CustomerAddress);
     expect(foundAddress?.id).toBe('ca-id-1');
-    expect(prismaMock.customerAddress.findUnique).toHaveBeenCalledWith({ where: { id: 'ca-id-1' } });
+    expect(prismaMock.customerAddress.findUnique).toHaveBeenCalledWith({ where: { id: 'ca-id-1' }, include: { address: true } });
   });
 
   test('findById should return null when address is not found', async () => {
@@ -54,7 +54,7 @@ describe('PrismaCustomerAddressRepository', () => {
 
     expect(addresses).toHaveLength(1);
     expect(addresses[0]).toBeInstanceOf(CustomerAddress);
-    expect(prismaMock.customerAddress.findMany).toHaveBeenCalledWith();
+    expect(prismaMock.customerAddress.findMany).toHaveBeenCalledWith({ include: { address: true } });
   });
 
   test('save should call upsert on prisma client', async () => {

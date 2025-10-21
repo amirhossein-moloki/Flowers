@@ -1,7 +1,7 @@
 import { IAddressRepository } from '../../domain/address.repository';
 import { AddressDto } from '../dtos/address.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { AddressMapper } from '../../infrastructure/address.mapper';
 
 export class GetAddressUseCase {

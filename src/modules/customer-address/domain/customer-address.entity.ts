@@ -1,11 +1,13 @@
 import { Entity } from '@/core/domain/entity';
 import { Result, success } from '@/core/utils/result';
+import { Address } from '@/modules/address/domain/address.entity';
 
 interface CustomerAddressProps {
   user_id: string;
   address_id: string;
   is_default?: boolean;
   label: string;
+  address?: Address;
 }
 
 export class CustomerAddress extends Entity<CustomerAddressProps> {
@@ -27,6 +29,10 @@ export class CustomerAddress extends Entity<CustomerAddressProps> {
 
   get label(): string {
     return this.props.label;
+  }
+
+  get address(): Address {
+    return this.props.address;
   }
 
   public static create(
