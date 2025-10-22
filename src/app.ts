@@ -55,6 +55,9 @@ class App {
       ),
     );
     this.express.use('/api/v1/driver-locations', driverLocationRoutes(this.dependencies));
+
+    const { createDeliveryStatusRoutes } = require('./modules/delivery-status/http/routes');
+    this.express.use('/api/v1/delivery-status', createDeliveryStatusRoutes(this.dependencies));
   }
 
   private setupErrorHandlers(): void {

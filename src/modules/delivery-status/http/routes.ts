@@ -1,10 +1,16 @@
 import { Router } from 'express';
 import { DeliveryStatusController } from './controller';
+import { Dependencies } from '@/infrastructure/di';
 
-const deliveryStatusRouter = Router();
-const deliveryStatusController = new DeliveryStatusController();
+export const createDeliveryStatusRoutes = (dependencies: Dependencies): Router => {
+  const router = Router();
+  const controller = new DeliveryStatusController(
+    dependencies.getDeliveryStatusUseCase,
+    dependencies.listDeliveryStatusesUseCase,
+  );
 
-deliveryStatusRouter.get('/', (req, res) => deliveryStatusController.list(req, res));
-deliveryStatusRouter.get('/:id', (req, res) => deliveryStatusController.findById(req, res));
+  router.get('/', (req, res) => controller.list(req, res));
+  router.get('/:id', (req, res) => controller.findById(req, res));
 
-export { deliveryStatusRouter };
+  return router;
+};
