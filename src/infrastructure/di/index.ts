@@ -57,8 +57,21 @@ import { GetCourierUseCase } from '@/modules/courier/application/use-cases/get-c
 import { UpdateCourierUseCase } from '@/modules/courier/application/use-cases/update-courier.usecase';
 import { DeleteCourierUseCase } from '@/modules/courier/application/use-cases/delete-courier.usecase';
 import { ListCouriersUseCase } from '@/modules/courier/application/use-cases/list-couriers.usecase';
+import { IDriverLocationRepository } from '@/modules/driver-location/domain/driver-location.repository.interface';
+import { PrismaDriverLocationRepository } from '@/modules/driver-location/infrastructure/prisma-driver-location.repository';
+import {
+  CreateDriverLocationUseCase,
+  DeleteDriverLocationUseCase,
+  GetDriverLocationUseCase,
+  UpdateDriverLocationUseCase,
+} from '@/modules/driver-location/application/use-cases';
 
 export interface Dependencies {
+  driverLocationRepository: IDriverLocationRepository;
+  createDriverLocationUseCase: CreateDriverLocationUseCase;
+  getDriverLocationUseCase: GetDriverLocationUseCase;
+  updateDriverLocationUseCase: UpdateDriverLocationUseCase;
+  deleteDriverLocationUseCase: DeleteDriverLocationUseCase;
   courierRepository: ICourierRepository;
   createCourierUseCase: CreateCourierUseCase;
   getCourierUseCase: GetCourierUseCase;
@@ -119,7 +132,12 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const addressRepository = new PrismaAddressRepository(prisma);
   const customerAddressRepository = new PrismaCustomerAddressRepository(prisma);
   const courierRepository = new PrismaCourierRepository(prisma);
+  const driverLocationRepository = new PrismaDriverLocationRepository(prisma);
 
+  const createDriverLocationUseCase = new CreateDriverLocationUseCase(driverLocationRepository);
+  const getDriverLocationUseCase = new GetDriverLocationUseCase(driverLocationRepository);
+  const updateDriverLocationUseCase = new UpdateDriverLocationUseCase(driverLocationRepository);
+  const deleteDriverLocationUseCase = new DeleteDriverLocationUseCase(driverLocationRepository);
   const createCourierUseCase = new CreateCourierUseCase(courierRepository);
   const getCourierUseCase = new GetCourierUseCase(courierRepository);
   const updateCourierUseCase = new UpdateCourierUseCase(courierRepository);
@@ -161,7 +179,6 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const updateCustomerAddressUseCase = new UpdateCustomerAddressUseCase(customerAddressRepository);
   const deleteCustomerAddressUseCase = new DeleteCustomerAddressUseCase(customerAddressRepository);
   const listCustomerAddressesUseCase = new ListCustomerAddressesUseCase(customerAddressRepository);
-
   const createAddressUseCase = new CreateAddressUseCase(addressRepository);
   const getAddressUseCase = new GetAddressUseCase(addressRepository);
   const updateAddressUseCase = new UpdateAddressUseCase(addressRepository);
@@ -169,6 +186,11 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const listAddressesUseCase = new ListAddressesUseCase(addressRepository);
 
   return {
+    driverLocationRepository,
+    createDriverLocationUseCase,
+    getDriverLocationUseCase,
+    updateDriverLocationUseCase,
+    deleteDriverLocationUseCase,
     courierRepository,
     createCourierUseCase,
     getCourierUseCase,

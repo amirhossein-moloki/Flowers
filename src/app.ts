@@ -14,6 +14,7 @@ import { VendorOutletDependencies } from './modules/vendor-outlet/vendor-outlet.
 import { createAddressRoutes } from './modules/address/http/routes';
 import { createCustomerAddressRoutes } from './modules/customer-address/http/routes';
 import { createCourierRoutes } from './modules/courier/http/routes';
+import { driverLocationRoutes } from './modules/driver-location/http/routes';
 
 class App {
   public express: Application;
@@ -53,6 +54,7 @@ class App {
         this.dependencies.listCouriersUseCase,
       ),
     );
+    this.express.use('/api/v1/driver-locations', driverLocationRoutes(this.dependencies));
   }
 
   private setupErrorHandlers(): void {

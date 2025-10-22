@@ -3,7 +3,6 @@ import { CreateDriverLocationUseCase } from '../application/use-cases/create-dri
 import { GetDriverLocationUseCase } from '../application/use-cases/get-driver-location.usecase';
 import { UpdateDriverLocationUseCase } from '../application/use-cases/update-driver-location.usecase';
 import { DeleteDriverLocationUseCase } from '../application/use-cases/delete-driver-location.usecase';
-import { DriverLocationPresenter } from './presenters/driver-location.presenter';
 import { DIContainer } from '@/infrastructure/di';
 import { StatusCodes } from 'http-status-codes';
 
@@ -14,10 +13,10 @@ export class DriverLocationController {
   private readonly deleteDriverLocationUseCase: DeleteDriverLocationUseCase;
 
   constructor(diContainer: DIContainer) {
-    this.createDriverLocationUseCase = diContainer.resolve<CreateDriverLocationUseCase>('createDriverLocationUseCase');
-    this.getDriverLocationUseCase = diContainer.resolve<GetDriverLocationUseCase>('getDriverLocationUseCase');
-    this.updateDriverLocationUseCase = diContainer.resolve<UpdateDriverLocationUseCase>('updateDriverLocationUseCase');
-    this.deleteDriverLocationUseCase = diContainer.resolve<DeleteDriverLocationUseCase>('deleteDriverLocationUseCase');
+    this.createDriverLocationUseCase = diContainer.createDriverLocationUseCase;
+    this.getDriverLocationUseCase = diContainer.getDriverLocationUseCase;
+    this.updateDriverLocationUseCase = diContainer.updateDriverLocationUseCase;
+    this.deleteDriverLocationUseCase = diContainer.deleteDriverLocationUseCase;
   }
 
   create = async (req: Request, res: Response, next: NextFunction) => {

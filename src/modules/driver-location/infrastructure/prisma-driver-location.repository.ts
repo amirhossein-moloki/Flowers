@@ -1,22 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import { IDriverLocationRepository } from '@/modules/driver-location/domain/driver-location.repository';
-import { DriverLocation } from '@/modules/driver-location/domain/driver-location.entity';
-import { DriverLocationMapper } from '@/modules/driver-location/infrastructure/driver-location.mapper';
+import { DriverLocation } from '../domain/driver-location.entity';
+import { IDriverLocationRepository } from '../domain/driver-location.repository.interface';
+import { DriverLocationMapper } from '../presentation/mappers/driver-location.mapper';
 
 export class PrismaDriverLocationRepository implements IDriverLocationRepository {
   constructor(private readonly prisma: PrismaClient) {}
-
-  async findById(id: string): Promise<DriverLocation | null> {
-    const driverLocation = await this.prisma.driverLocation.findUnique({
-      where: { id },
-    });
-    return driverLocation ? DriverLocationMapper.toDomain(driverLocation) : null;
-  }
-
-  async findAll(): Promise<DriverLocation[]> {
-    const driverLocations = await this.prisma.driverLocation.findMany();
-    return driverLocations.map(DriverLocationMapper.toDomain);
-  }
 
   async save(driverLocation: DriverLocation): Promise<void> {
     const data = DriverLocationMapper.toPersistence(driverLocation);
@@ -27,7 +15,16 @@ export class PrismaDriverLocationRepository implements IDriverLocationRepository
     });
   }
 
+  async findById(id: string): Promise<DriverLocation | null> {
+    const found = await this.prisma.driverLocation.findUnique({
+      where: { id },
+    });
+    return found ? DriverLocationMapper.toDomain(found) : null;
+  }
+
   async delete(id: string): Promise<void> {
-    await this.prisma.driverLocation.delete({ where: { id } });
+    await this.prisma.driverLocation.delete({
+      where: { id },
+    });
   }
 }
