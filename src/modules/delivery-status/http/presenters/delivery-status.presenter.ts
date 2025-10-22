@@ -4,10 +4,9 @@ export class DeliveryStatusPresenter {
   static toJSON(deliveryStatus: DeliveryStatus) {
     return {
       id: deliveryStatus.id,
-      code: deliveryStatus.code,
-      name: deliveryStatus.name,
-      display_order: deliveryStatus.display_order,
-      label: `${deliveryStatus.code} - ${deliveryStatus.name}`,
+      delivery_id: deliveryStatus.delivery_id,
+      status: deliveryStatus.status,
+      notes: deliveryStatus.notes,
     };
   }
 }

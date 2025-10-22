@@ -65,6 +65,10 @@ import {
   GetDriverLocationUseCase,
   UpdateDriverLocationUseCase,
 } from '@/modules/driver-location/application/use-cases';
+import { IDeliveryStatusRepository } from '@/modules/delivery-status/domain/delivery-status.repository';
+import { PrismaDeliveryStatusRepository } from '@/modules/delivery-status/infrastructure/prisma-delivery-status.repository';
+import { GetDeliveryStatusUseCase } from '@/modules/delivery-status/application/use-cases/get-delivery-status.usecase';
+import { ListDeliveryStatusesUseCase } from '@/modules/delivery-status/application/use-cases/list-delivery-statuses.usecase';
 
 export interface Dependencies {
   driverLocationRepository: IDriverLocationRepository;
@@ -119,6 +123,9 @@ export interface Dependencies {
   updateAddressUseCase: UpdateAddressUseCase;
   deleteAddressUseCase: DeleteAddressUseCase;
   listAddressesUseCase: ListAddressesUseCase;
+  deliveryStatusRepository: IDeliveryStatusRepository;
+  getDeliveryStatusUseCase: GetDeliveryStatusUseCase;
+  listDeliveryStatusesUseCase: ListDeliveryStatusesUseCase;
 }
 
 export function createDependencies(prisma: PrismaClient): Dependencies {
@@ -133,7 +140,10 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const customerAddressRepository = new PrismaCustomerAddressRepository(prisma);
   const courierRepository = new PrismaCourierRepository(prisma);
   const driverLocationRepository = new PrismaDriverLocationRepository(prisma);
+  const deliveryStatusRepository = new PrismaDeliveryStatusRepository(prisma);
 
+  const getDeliveryStatusUseCase = new GetDeliveryStatusUseCase(deliveryStatusRepository);
+  const listDeliveryStatusesUseCase = new ListDeliveryStatusesUseCase(deliveryStatusRepository);
   const createDriverLocationUseCase = new CreateDriverLocationUseCase(driverLocationRepository);
   const getDriverLocationUseCase = new GetDriverLocationUseCase(driverLocationRepository);
   const updateDriverLocationUseCase = new UpdateDriverLocationUseCase(driverLocationRepository);
@@ -238,5 +248,8 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
     updateAddressUseCase,
     deleteAddressUseCase,
     listAddressesUseCase,
+    deliveryStatusRepository,
+    getDeliveryStatusUseCase,
+    listDeliveryStatusesUseCase,
   };
 }

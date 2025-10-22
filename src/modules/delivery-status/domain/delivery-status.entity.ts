@@ -2,26 +2,26 @@ import { Entity } from '@/core/domain/entity';
 import { Result, success } from '@/core/utils/result';
 
 interface DeliveryStatusProps {
-  code: string;
-  name: string;
-  display_order: number;
+  delivery_id: string;
+  status: string;
+  notes?: string;
 }
 
 export class DeliveryStatus extends Entity<DeliveryStatusProps> {
+  get delivery_id(): string {
+    return this.props.delivery_id;
+  }
+
+  get status(): string {
+    return this.props.status;
+  }
+
+  get notes(): string | undefined {
+    return this.props.notes;
+  }
+
   private constructor(props: DeliveryStatusProps, id?: string) {
     super(props, id);
-  }
-
-  get code(): string {
-    return this.props.code;
-  }
-
-  get name(): string {
-    return this.props.name;
-  }
-
-  get display_order(): number {
-    return this.props.display_order;
   }
 
   public static create(
