@@ -1,43 +1,30 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import { driverLocationRoutes } from '../routes';
-import { DIContainer } from '@/infrastructure/di';
-import { CreateDriverLocationUseCase } from '../../application/use-cases/create-driver-location.usecase';
-import { GetDriverLocationUseCase } from '../../application/use-cases/get-driver-location.usecase';
-import { UpdateDriverLocationUseCase } from '../../application/use-cases/update-driver-location.usecase';
-import { DeleteDriverLocationUseCase } from '../../application/use-cases/delete-driver-location.usecase';
-import { success, failure } from '@/core/utils/result';
-import { DriverLocation } from '../../domain/driver-location.entity';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { HttpError } from '@/core/errors/http-error';
 import { StatusCodes } from 'http-status-codes';
+import {
+  CreateDriverLocationUseCase,
+  DeleteDriverLocationUseCase,
+  GetDriverLocationUseCase,
+  UpdateDriverLocationUseCase,
+} from '../../application/use-cases';
+import { Result, success, failure } from '@/core/logic/result';
+import { DriverLocation } from '../../domain/driver-location.entity';
+import { Dependencies } from '@/infrastructure/di';
+import { DriverLocationDto } from '../dto/driver-location.dto';
+import { DriverLocationMapper } from '../../presentation/mappers/driver-location.mapper';
 
 describe('DriverLocationController', () => {
   let app: Express;
-  let diContainer: DeepMockProxy<DIContainer>;
-  let createDriverLocationUseCase: DeepMockProxy<CreateDriverLocationUseCase>;
-  let getDriverLocationUseCase: DeepMockProxy<GetDriverLocationUseCase>;
-  let updateDriverLocationUseCase: DeepMockProxy<UpdateDriverLocationUseCase>;
-  let deleteDriverLocationUseCase: DeepMockProxy<DeleteDriverLocationUseCase>;
+  let dependencies: DeepMockProxy<Dependencies>;
 
   beforeEach(() => {
-    diContainer = mockDeep<DIContainer>();
-    createDriverLocationUseCase = mockDeep<CreateDriverLocationUseCase>();
-    getDriverLocationUseCase = mockDeep<GetDriverLocationUseCase>();
-    updateDriverLocationUseCase = mockDeep<UpdateDriverLocationUseCase>();
-    deleteDriverLocationUseCase = mockDeep<DeleteDriverLocationUseCase>();
-
-    diContainer.resolve.mockImplementation((token: any) => {
-      if (token === 'createDriverLocationUseCase') return createDriverLocationUseCase;
-      if (token === 'getDriverLocationUseCase') return getDriverLocationUseCase;
-      if (token === 'updateDriverLocationUseCase') return updateDriverLocationUseCase;
-      if (token === 'deleteDriverLocationUseCase') return deleteDriverLocationUseCase;
-      throw new Error(`Token not mocked: ${token}`);
-    });
-
+    dependencies = mockDeep<Dependencies>();
     app = express();
     app.use(express.json());
-    app.use('/driver-locations', driverLocationRoutes(diContainer));
+    app.use('/driver-locations', driverLocationRoutes(dependencies));
   });
 
   afterEach(() => {
@@ -54,8 +41,8 @@ describe('DriverLocationController', () => {
     recorded_at: new Date('2023-10-27T10:00:00Z'),
   };
 
-  const mockDriverLocation = DriverLocation.create(mockDriverLocationProps, 'a4a1b4b0-5a4d-4a1e-8b0a-3e1b4a1b4a1a').value as DriverLocation;
-
+  const mockDriverLocationResult = DriverLocation.create(mockDriverLocationProps);
+  const mockDriverLocation = mockDriverLocationResult.value as DriverLocation;
 
   describe('POST /driver-locations', () => {
     it('should create a driver location and return 201', async () => {
@@ -63,7 +50,7 @@ describe('DriverLocationController', () => {
         ...mockDriverLocationProps,
         recorded_at: mockDriverLocationProps.recorded_at.toISOString(),
       };
-      createDriverLocationUseCase.execute.mockResolvedValue(success(mockDriverLocation));
+      dependencies.createDriverLocationUseCase.execute.mockResolvedValue(success(DriverLocationMapper.toDto(mockDriverLocation)));
 
       const response = await request(app)
         .post('/driver-locations')
@@ -71,16 +58,16 @@ describe('DriverLocationController', () => {
 
       expect(response.status).toBe(StatusCodes.CREATED);
       expect(response.body.id).toBe(mockDriverLocation.id);
-      expect(createDriverLocationUseCase.execute).toHaveBeenCalledWith(createDto);
+      expect(dependencies.createDriverLocationUseCase.execute).toHaveBeenCalledWith(createDto);
     });
 
     it('should return 400 if creation fails', async () => {
-        const createDto = {
-            ...mockDriverLocationProps,
-            recorded_at: mockDriverLocationProps.recorded_at.toISOString(),
-          };
+      const createDto = {
+        ...mockDriverLocationProps,
+        recorded_at: mockDriverLocationProps.recorded_at.toISOString(),
+      };
       const error = HttpError.badRequest('Creation failed');
-      createDriverLocationUseCase.execute.mockResolvedValue(failure(error));
+      dependencies.createDriverLocationUseCase.execute.mockResolvedValue(failure(error));
 
       const response = await request(app)
         .post('/driver-locations')
@@ -92,17 +79,17 @@ describe('DriverLocationController', () => {
 
   describe('GET /driver-locations/:id', () => {
     it('should return a driver location by id', async () => {
-      getDriverLocationUseCase.execute.mockResolvedValue(success(mockDriverLocation as any));
+      dependencies.getDriverLocationUseCase.execute.mockResolvedValue(success(DriverLocationMapper.toDto(mockDriverLocation)));
 
       const response = await request(app).get(`/driver-locations/${mockDriverLocation.id}`);
 
       expect(response.status).toBe(StatusCodes.OK);
       expect(response.body.id).toBe(mockDriverLocation.id);
-      expect(getDriverLocationUseCase.execute).toHaveBeenCalledWith(mockDriverLocation.id);
+      expect(dependencies.getDriverLocationUseCase.execute).toHaveBeenCalledWith(mockDriverLocation.id);
     });
 
     it('should return 404 if driver location not found', async () => {
-      getDriverLocationUseCase.execute.mockResolvedValue(success(null));
+      dependencies.getDriverLocationUseCase.execute.mockResolvedValue(failure(HttpError.notFound('')));
 
       const response = await request(app).get(`/driver-locations/non-existent-id`);
 
@@ -113,9 +100,9 @@ describe('DriverLocationController', () => {
   describe('PUT /driver-locations/:id', () => {
     it('should update a driver location and return 200', async () => {
       const updateDto = { lat: 35.1234, lng: -119.5678 };
-      const updatedDto = { ...mockDriverLocationProps, ...updateDto };
-
-      updateDriverLocationUseCase.execute.mockResolvedValue(success(updatedDto as any));
+      const updatedEntityResult = DriverLocation.create({ ...mockDriverLocationProps, ...updateDto });
+      const updatedEntity = updatedEntityResult.value as DriverLocation;
+      dependencies.updateDriverLocationUseCase.execute.mockResolvedValue(success(DriverLocationMapper.toDto(updatedEntity)));
 
       const response = await request(app)
         .put(`/driver-locations/${mockDriverLocation.id}`)
@@ -123,18 +110,18 @@ describe('DriverLocationController', () => {
 
       expect(response.status).toBe(StatusCodes.OK);
       expect(response.body.lat).toBe(updateDto.lat);
-      expect(updateDriverLocationUseCase.execute).toHaveBeenCalledWith(mockDriverLocation.id, updateDto);
+      expect(dependencies.updateDriverLocationUseCase.execute).toHaveBeenCalledWith(mockDriverLocation.id, updateDto);
     });
   });
 
   describe('DELETE /driver-locations/:id', () => {
     it('should delete a driver location and return 204', async () => {
-      deleteDriverLocationUseCase.execute.mockResolvedValue(success(undefined));
+      dependencies.deleteDriverLocationUseCase.execute.mockResolvedValue(success(undefined));
 
       const response = await request(app).delete(`/driver-locations/${mockDriverLocation.id}`);
 
       expect(response.status).toBe(StatusCodes.NO_CONTENT);
-      expect(deleteDriverLocationUseCase.execute).toHaveBeenCalledWith(mockDriverLocation.id);
+      expect(dependencies.deleteDriverLocationUseCase.execute).toHaveBeenCalledWith(mockDriverLocation.id);
     });
   });
 });

@@ -1,10 +1,10 @@
-import { IDriverLocationRepository } from '../../domain/driver-location.repository';
+import { IDriverLocationRepository } from '../../domain/driver-location.repository.interface';
 import { DriverLocation } from '../../domain/driver-location.entity';
-import { CreateDriverLocationDto } from '../dtos/create-driver-location.dto';
-import { DriverLocationDto } from '../dtos/driver-location.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { DriverLocationMapper } from '../../infrastructure/driver-location.mapper';
+import { CreateDriverLocationDto } from '../../http/dto/create-driver-location.dto';
+import { DriverLocationDto } from '../../http/dto/driver-location.dto';
+import { Result, success, failure } from '@/core/logic/result';
+import { HttpError } from '@/core/errors/http-error';
+import { DriverLocationMapper } from '../../presentation/mappers/driver-location.mapper';
 
 export class CreateDriverLocationUseCase {
   constructor(private readonly driverLocationRepository: IDriverLocationRepository) {}

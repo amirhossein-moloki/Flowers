@@ -1,10 +1,9 @@
-import { IDriverLocationRepository } from '../../domain/driver-location.repository';
-import { UpdateDriverLocationDto } from '../dtos/update-driver-location.dto';
-import { DriverLocationDto } from '../dtos/driver-location.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { DriverLocationMapper } from '../../infrastructure/driver-location.mapper';
-import { DriverLocation } from '../../domain/driver-location.entity';
+import { IDriverLocationRepository } from '../../domain/driver-location.repository.interface';
+import { UpdateDriverLocationDto } from '../../http/dto/update-driver-location.dto';
+import { DriverLocationDto } from '../../http/dto/driver-location.dto';
+import { Result, success, failure } from '@/core/logic/result';
+import { HttpError } from '@/core/errors/http-error';
+import { DriverLocationMapper } from '../../presentation/mappers/driver-location.mapper';
 
 export class UpdateDriverLocationUseCase {
   constructor(private readonly driverLocationRepository: IDriverLocationRepository) {}
@@ -13,21 +12,14 @@ export class UpdateDriverLocationUseCase {
     const driverLocation = await this.driverLocationRepository.findById(id);
 
     if (!driverLocation) {
-      return failure(HttpError.notFound('DriverLocation not found.'));
+      return failure(HttpError.notFound('Driver location not found'));
     }
 
-    const updatedDriverLocationProps = { ...driverLocation.props, ...dto };
-    const updatedDriverLocationResult = DriverLocation.create(updatedDriverLocationProps, driverLocation.id);
+    Object.assign(driverLocation.props, dto);
 
-    if(!updatedDriverLocationResult.success){
-        return failure(HttpError.internalServerError(updatedDriverLocationResult.error.message));
-    }
+    await this.driverLocationRepository.save(driverLocation);
 
-    const updatedDriverLocation = updatedDriverLocationResult.value;
-
-    await this.driverLocationRepository.save(updatedDriverLocation);
-
-    const driverLocationDto = DriverLocationMapper.toDto(updatedDriverLocation);
+    const driverLocationDto = DriverLocationMapper.toDto(driverLocation);
     return success(driverLocationDto);
   }
 }
