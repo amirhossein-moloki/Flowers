@@ -7,7 +7,7 @@ describe('PrismaCourierRepository', () => {
   let repository: PrismaCourierRepository;
 
   beforeEach(() => {
-    repository = new PrismaCourierRepository();
+    repository = new PrismaCourierRepository(prismaMock);
   });
 
   const courierProps = {

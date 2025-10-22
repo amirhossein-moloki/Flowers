@@ -1,7 +1,7 @@
-import { Courier } from '@/modules/courier/domain/courier.entity';
+import { CourierDto } from '@/modules/courier/application/dtos/courier.dto';
 
 export class CourierPresenter {
-  static toJSON(courier: Courier) {
+  static toJSON(courier: CourierDto) {
     return {
       id: courier.id,
       name: courier.name,
@@ -9,8 +9,8 @@ export class CourierPresenter {
       email: courier.email,
       vehicle: courier.vehicle,
       isAvailable: courier.isAvailable,
-      createdAt: courier.props.createdAt,
-      updatedAt: courier.props.updatedAt,
+      createdAt: courier.createdAt,
+      updatedAt: courier.updatedAt,
     };
   }
 }
