@@ -7,6 +7,11 @@ import { success, failure } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';
 import { ShippingRate } from '../../../domain/shipping-rate.entity';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: (req, res, next) => next(),
+  hasRole: (roles) => (req, res, next) => next(),
+}));
+
 const validUUID = '123e4567-e89b-12d3-a456-426614174000';
 
 jest.mock('uuid', () => ({

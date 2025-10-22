@@ -1,6 +1,6 @@
 import { ICourierRepository } from '../../domain/courier.repository';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 
 export class DeleteCourierUseCase {
   constructor(private readonly courierRepository: ICourierRepository) {}

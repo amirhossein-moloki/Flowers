@@ -13,6 +13,7 @@ import { createVendorOutletRoutes } from './modules/vendor-outlet/http/routes';
 import { VendorOutletDependencies } from './modules/vendor-outlet/vendor-outlet.dependencies';
 import { createAddressRoutes } from './modules/address/http/routes';
 import { createCustomerAddressRoutes } from './modules/customer-address/http/routes';
+import { createCourierRoutes } from './modules/courier/http/routes';
 
 class App {
   public express: Application;
@@ -42,6 +43,16 @@ class App {
     this.express.use('/api/v1/vendor-outlets', createVendorOutletRoutes(this.dependencies as unknown as VendorOutletDependencies));
     this.express.use('/api/v1/addresses', createAddressRoutes(this.dependencies));
     this.express.use('/api/v1/customer-addresses', createCustomerAddressRoutes(this.dependencies));
+    this.express.use(
+      '/api/v1/couriers',
+      createCourierRoutes(
+        this.dependencies.createCourierUseCase,
+        this.dependencies.getCourierUseCase,
+        this.dependencies.updateCourierUseCase,
+        this.dependencies.deleteCourierUseCase,
+        this.dependencies.listCouriersUseCase,
+      ),
+    );
   }
 
   private setupErrorHandlers(): void {

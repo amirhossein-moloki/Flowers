@@ -1,7 +1,7 @@
 import { ICourierRepository } from '../../domain/courier.repository';
 import { CourierDto } from '../dtos/courier.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { CourierMapper } from '../../infrastructure/courier.mapper';
 
 export class GetCourierUseCase {

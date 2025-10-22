@@ -1,7 +1,19 @@
 import { Courier as PrismaCourier } from '@prisma/client';
 import { Courier } from '../domain/courier.entity';
+import { CourierDto } from '../application/dtos/courier.dto';
 
 export class CourierMapper {
+  public static toDto(courier: Courier): CourierDto {
+    return {
+      id: courier.id,
+      name: courier.props.name,
+      phone: courier.props.phone,
+      email: courier.props.email,
+      vehicle: courier.props.vehicle,
+      isAvailable: courier.props.isAvailable,
+    };
+  }
+
   public static toDomain(raw: PrismaCourier): Courier {
     const courierResult = Courier.create(
       {
