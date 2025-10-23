@@ -58,6 +58,9 @@ class App {
 
     const { createDeliveryStatusRoutes } = require('./modules/delivery-status/http/routes');
     this.express.use('/api/v1/delivery-status', createDeliveryStatusRoutes(this.dependencies));
+
+    const { createDeliveryWindowRoutes } = require('./modules/delivery-window/http/routes');
+    this.express.use('/api/v1/delivery-windows', createDeliveryWindowRoutes(this.dependencies));
   }
 
   private setupErrorHandlers(): void {

@@ -1,16 +1,30 @@
 import { PrismaClient } from '@prisma/client';
 import { IDeliveryWindowRepository } from '../domain/delivery-window.repository';
 import { DeliveryWindow } from '../domain/delivery-window.entity';
-import { DeliveryWindowMapper } from './delivery-window.mapper';
+import { DeliveryWindowMapper } from '../presentation/mappers/delivery-window.mapper';
 
 export class PrismaDeliveryWindowRepository implements IDeliveryWindowRepository {
   constructor(private readonly prisma: PrismaClient) {}
+
+  async save(deliveryWindow: DeliveryWindow): Promise<void> {
+    const data = DeliveryWindowMapper.toPersistence(deliveryWindow);
+    await this.prisma.deliveryWindow.upsert({
+      where: { id: deliveryWindow.id },
+      create: data,
+      update: data,
+    });
+  }
 
   async findById(id: string): Promise<DeliveryWindow | null> {
     const deliveryWindow = await this.prisma.deliveryWindow.findUnique({
       where: { id },
     });
-    return deliveryWindow ? DeliveryWindowMapper.toDomain(deliveryWindow) : null;
+
+    if (!deliveryWindow) {
+      return null;
+    }
+
+    return DeliveryWindowMapper.toDomain(deliveryWindow);
   }
 
   async findAll(): Promise<DeliveryWindow[]> {
@@ -18,17 +32,17 @@ export class PrismaDeliveryWindowRepository implements IDeliveryWindowRepository
     return deliveryWindows.map(DeliveryWindowMapper.toDomain);
   }
 
-  async save(deliveryWindow: DeliveryWindow): Promise<void> {
+  async update(deliveryWindow: DeliveryWindow): Promise<void> {
     const data = DeliveryWindowMapper.toPersistence(deliveryWindow);
-    const { id, ...updateData } = data;
-    await this.prisma.deliveryWindow.upsert({
+    await this.prisma.deliveryWindow.update({
       where: { id: deliveryWindow.id },
-      update: updateData,
-      create: data,
+      data,
     });
   }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.deliveryWindow.delete({ where: { id } });
+    await this.prisma.deliveryWindow.delete({
+      where: { id },
+    });
   }
 }

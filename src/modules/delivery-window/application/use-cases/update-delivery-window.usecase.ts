@@ -23,7 +23,7 @@ export class UpdateDeliveryWindowUseCase {
 
     const updatedDeliveryWindow = updatedDeliveryWindowResult.value;
 
-    await this.deliveryWindowRepository.save(updatedDeliveryWindow);
+    await this.deliveryWindowRepository.update(updatedDeliveryWindow);
 
     return success(updatedDeliveryWindow);
   }
