@@ -49,7 +49,7 @@ The AI Agent or CI process must **read this file sequentially (top → bottom)**
 | 9 | driver-location | ✅ Done | Update endpoint test |
 | 10 | delivery-status | ✅ Done | Label verification only |
 | 11 | delivery-window | ✅ Done | Validate time range |
-| 12 | delivery | 🕒 Pending | Includes `/assign-driver` |
+| 12 | delivery | ✅ Done | Includes `/assign-driver` |
 | 13 | proof-of-delivery | 🕒 Pending | Signature upload test |
 | 14 | notification | 🕒 Pending | Manual trigger endpoint |
 | 15 | product | 🕒 Pending | CRUD + vendorId filter |

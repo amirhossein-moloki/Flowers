@@ -1,37 +1,14 @@
-import { IsString, IsEnum, IsDate, IsNumber, IsOptional } from 'class-validator';
-import { VehicleType } from '../../../../../core/domain/enums';
+import { VehicleType } from '@/core/domain/enums';
 
-export class CreateDeliveryDto {
-  @IsString()
+export interface CreateDeliveryDto {
   order_id: string;
-
-  @IsString()
   courier_id: string;
-
-  @IsString()
   status_id: string;
-
-  @IsEnum(VehicleType)
   vehicle_type: VehicleType;
-
-  @IsDate()
   assigned_at: Date;
-
-  @IsOptional()
-  @IsDate()
-  pickup_at?: Date;
-
-  @IsOptional()
-  @IsDate()
-  dropoff_at?: Date;
-
-  @IsNumber()
+  pickup_at: Date;
+  dropoff_at: Date;
   distance_meters: number;
-
-  @IsNumber()
   eta_seconds: number;
-
-  @IsOptional()
-  @IsString()
-  failure_reason?: string;
+  failure_reason: string;
 }
