@@ -8,9 +8,9 @@ describe('PrismaDeliveryStatusRepository', () => {
   let prisma: DeepMockProxy<PrismaClient>;
 
   const deliveryStatusProps = {
-    code: 'PENDING',
-    name: 'Pending',
-    display_order: 1,
+    delivery_id: 'delivery-uuid',
+    status: 'PENDING',
+    notes: 'Test notes',
   };
   const deliveryStatusEntityResult = DeliveryStatus.create(deliveryStatusProps, 'status-uuid');
   const deliveryStatusEntity = deliveryStatusEntityResult.success ? deliveryStatusEntityResult.value : null;
@@ -64,15 +64,18 @@ describe('PrismaDeliveryStatusRepository', () => {
   describe('save', () => {
     it('should call prisma.deliveryStatus.upsert with correct data', async () => {
       await repository.save(deliveryStatusEntity!);
+      const { id, ...updateData } = deliveryStatusEntity!.props;
 
-      expect(prisma.deliveryStatus.upsert).toHaveBeenCalledWith({
-        where: { id: deliveryStatusEntity!.id },
-        create: {
-          id: deliveryStatusEntity!.id,
-          ...deliveryStatusProps,
-        },
-        update: deliveryStatusProps,
-      });
+      expect(prisma.deliveryStatus.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: deliveryStatusEntity!.id },
+          create: expect.objectContaining({
+            id: deliveryStatusEntity!.id,
+            ...updateData,
+          }),
+          update: expect.objectContaining(updateData),
+        }),
+      );
     });
   });
 

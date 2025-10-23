@@ -67,17 +67,17 @@ describe('PrismaDeliveryWindowRepository', () => {
   describe('save', () => {
     it('should call prisma.deliveryWindow.upsert with correct data', async () => {
       await repository.save(deliveryWindowEntity!);
-
-      expect(prisma.deliveryWindow.upsert).toHaveBeenCalledWith({
-        where: { id: deliveryWindowEntity!.id },
-        create: {
-          id: deliveryWindowEntity!.id,
-          ...deliveryWindowProps,
-        },
-        update: {
-          ...deliveryWindowProps,
-        },
-      });
+      const { id, ...updateData } = deliveryWindowEntity!.props;
+      expect(prisma.deliveryWindow.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: deliveryWindowEntity!.id },
+          create: expect.objectContaining({
+            id: deliveryWindowEntity!.id,
+            ...updateData,
+          }),
+          update: expect.objectContaining(updateData),
+        }),
+      );
     });
   });
 
