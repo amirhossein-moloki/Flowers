@@ -1,7 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { ProofOfDelivery } from '../domain/proof-of-delivery.entity';
 import { ProofOfDeliveryRepository } from '../domain/proof-of-delivery.repository';
 import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 
 export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -29,6 +30,9 @@ export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepositor
         ).value
       );
     } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        return failure(HttpError.notFound('Proof of delivery not found'));
+      }
       return failure(error as Error);
     }
   }
@@ -39,7 +43,7 @@ export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepositor
         where: { id },
       });
       if (!proofOfDelivery) {
-        return failure(new Error('Proof of delivery not found'));
+        return failure(HttpError.notFound('Proof of delivery not found'));
       }
       return success(
         ProofOfDelivery.create(
@@ -54,6 +58,9 @@ export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepositor
         ).value
       );
     } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        return failure(HttpError.notFound('Proof of delivery not found'));
+      }
       return failure(error as Error);
     }
   }
@@ -82,6 +89,9 @@ export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepositor
         ).value
       );
     } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        return failure(HttpError.notFound('Proof of delivery not found'));
+      }
       return failure(error as Error);
     }
   }
@@ -91,6 +101,9 @@ export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepositor
       await this.prisma.proofOfDelivery.delete({ where: { id } });
       return success(undefined);
     } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        return failure(HttpError.notFound('Proof of delivery not found'));
+      }
       return failure(error as Error);
     }
   }
