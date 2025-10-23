@@ -70,6 +70,13 @@ import { PrismaDeliveryStatusRepository } from '@/modules/delivery-status/infras
 import { GetDeliveryStatusUseCase } from '@/modules/delivery-status/application/use-cases/get-delivery-status.usecase';
 import { ListDeliveryStatusesUseCase } from '@/modules/delivery-status/application/use-cases/list-delivery-statuses.usecase';
 import { PrismaDeliveryWindowRepository } from '@/modules/delivery-window/infrastructure/prisma-delivery-window.repository';
+import { IDeliveryRepository } from '@/modules/delivery/domain/delivery.repository.interface';
+import { PrismaDeliveryRepository } from '@/modules/delivery/infrastructure/prisma-delivery.repository';
+import { CreateDeliveryUseCase } from '@/modules/delivery/application/use-cases/create-delivery.usecase';
+import { GetDeliveryUseCase } from '@/modules/delivery/application/use-cases/get-delivery.usecase';
+import { UpdateDeliveryUseCase } from '@/modules/delivery/application/use-cases/update-delivery.usecase';
+import { DeleteDeliveryUseCase } from '@/modules/delivery/application/use-cases/delete-delivery.usecase';
+import { ListDeliveriesUseCase } from '@/modules/delivery/application/use-cases/list-deliveries.usecase';
 
 export interface Dependencies {
   driverLocationRepository: IDriverLocationRepository;
@@ -128,6 +135,12 @@ export interface Dependencies {
   getDeliveryStatusUseCase: GetDeliveryStatusUseCase;
   listDeliveryStatusesUseCase: ListDeliveryStatusesUseCase;
   deliveryWindowRepository: any;
+  deliveryRepository: IDeliveryRepository;
+  createDeliveryUseCase: CreateDeliveryUseCase;
+  getDeliveryUseCase: GetDeliveryUseCase;
+  updateDeliveryUseCase: UpdateDeliveryUseCase;
+  deleteDeliveryUseCase: DeleteDeliveryUseCase;
+  listDeliveriesUseCase: ListDeliveriesUseCase;
 }
 
 export function createDependencies(prisma: PrismaClient): Dependencies {
@@ -144,6 +157,7 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const driverLocationRepository = new PrismaDriverLocationRepository(prisma);
   const deliveryStatusRepository = new PrismaDeliveryStatusRepository(prisma);
   const deliveryWindowRepository = new PrismaDeliveryWindowRepository(prisma);
+  const deliveryRepository = new PrismaDeliveryRepository(prisma);
 
   const getDeliveryStatusUseCase = new GetDeliveryStatusUseCase(deliveryStatusRepository);
   const listDeliveryStatusesUseCase = new ListDeliveryStatusesUseCase(deliveryStatusRepository);
@@ -197,6 +211,12 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const updateAddressUseCase = new UpdateAddressUseCase(addressRepository);
   const deleteAddressUseCase = new DeleteAddressUseCase(addressRepository);
   const listAddressesUseCase = new ListAddressesUseCase(addressRepository);
+
+  const createDeliveryUseCase = new CreateDeliveryUseCase(deliveryRepository);
+  const getDeliveryUseCase = new GetDeliveryUseCase(deliveryRepository);
+  const updateDeliveryUseCase = new UpdateDeliveryUseCase(deliveryRepository);
+  const deleteDeliveryUseCase = new DeleteDeliveryUseCase(deliveryRepository);
+  const listDeliveriesUseCase = new ListDeliveriesUseCase(deliveryRepository);
 
   return {
     driverLocationRepository,
@@ -255,5 +275,11 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
     getDeliveryStatusUseCase,
     listDeliveryStatusesUseCase,
     deliveryWindowRepository,
+    deliveryRepository,
+    createDeliveryUseCase,
+    getDeliveryUseCase,
+    updateDeliveryUseCase,
+    deleteDeliveryUseCase,
+    listDeliveriesUseCase,
   };
 }

@@ -1,10 +1,10 @@
-import { IDeliveryRepository } from '../../domain/delivery.repository';
+import { IDeliveryRepository } from '../../domain/delivery.repository.interface';
 import { UpdateDeliveryDto } from '../dtos/update-delivery.dto';
 import { DeliveryDto } from '../dtos/delivery.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { DeliveryMapper } from '../../infrastructure/delivery.mapper';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { Delivery } from '../../domain/delivery.entity';
+import { DeliveryPresenter } from '../../http/presenters/delivery.presenter';
 
 export class UpdateDeliveryUseCase {
   constructor(private readonly deliveryRepository: IDeliveryRepository) {}
@@ -27,7 +27,7 @@ export class UpdateDeliveryUseCase {
 
     await this.deliveryRepository.save(updatedDelivery);
 
-    const deliveryDto = DeliveryMapper.toDto(updatedDelivery);
+    const deliveryDto = DeliveryPresenter.toDto(updatedDelivery);
     return success(deliveryDto);
   }
 }

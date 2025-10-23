@@ -1,6 +1,6 @@
-import { IDeliveryRepository } from '../../domain/delivery.repository';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { IDeliveryRepository } from '../../domain/delivery.repository.interface';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 
 export class DeleteDeliveryUseCase {
   constructor(private readonly deliveryRepository: IDeliveryRepository) {}

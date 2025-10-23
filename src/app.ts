@@ -15,6 +15,9 @@ import { createAddressRoutes } from './modules/address/http/routes';
 import { createCustomerAddressRoutes } from './modules/customer-address/http/routes';
 import { createCourierRoutes } from './modules/courier/http/routes';
 import { driverLocationRoutes } from './modules/driver-location/http/routes';
+import { createDeliveryStatusRoutes } from './modules/delivery-status/http/routes';
+import { createDeliveryWindowRoutes } from './modules/delivery-window/http/routes';
+import { createDeliveryRoutes } from './modules/delivery/http/routes';
 
 class App {
   public express: Application;
@@ -55,12 +58,9 @@ class App {
       ),
     );
     this.express.use('/api/v1/driver-locations', driverLocationRoutes(this.dependencies));
-
-    const { createDeliveryStatusRoutes } = require('./modules/delivery-status/http/routes');
     this.express.use('/api/v1/delivery-status', createDeliveryStatusRoutes(this.dependencies));
-
-    const { createDeliveryWindowRoutes } = require('./modules/delivery-window/http/routes');
     this.express.use('/api/v1/delivery-windows', createDeliveryWindowRoutes(this.dependencies));
+    this.express.use('/api/v1/deliveries', createDeliveryRoutes(this.dependencies));
   }
 
   private setupErrorHandlers(): void {

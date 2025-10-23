@@ -1,8 +1,8 @@
-import { IDeliveryRepository } from '../../domain/delivery.repository';
+import { IDeliveryRepository } from '../../domain/delivery.repository.interface';
 import { DeliveryDto } from '../dtos/delivery.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { DeliveryMapper } from '../../infrastructure/delivery.mapper';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
+import { DeliveryPresenter } from '../../http/presenters/delivery.presenter';
 
 export class GetDeliveryUseCase {
   constructor(private readonly deliveryRepository: IDeliveryRepository) {}
@@ -14,7 +14,7 @@ export class GetDeliveryUseCase {
       return failure(HttpError.notFound('Delivery not found.'));
     }
 
-    const deliveryDto = DeliveryMapper.toDto(delivery);
+    const deliveryDto = DeliveryPresenter.toDto(delivery);
     return success(deliveryDto);
   }
 }

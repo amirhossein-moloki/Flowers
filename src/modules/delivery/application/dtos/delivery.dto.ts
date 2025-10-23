@@ -1,6 +1,6 @@
-import { VehicleType } from '../../../../../core/domain/enums';
+import { VehicleType } from '@/core/domain/enums';
 
-export class DeliveryDto {
+export interface DeliveryDto {
   id: string;
   order_id: string;
   courier_id: string;
