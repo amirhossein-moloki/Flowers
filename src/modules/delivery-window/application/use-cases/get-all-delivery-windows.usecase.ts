@@ -6,7 +6,7 @@ export class GetAllDeliveryWindowsUseCase {
   constructor(private readonly deliveryWindowRepository: IDeliveryWindowRepository) {}
 
   async execute(): Promise<Result<DeliveryWindow[], Error>> {
-    const deliveryWindows = await this.deliveryWindowRepository.getAll();
+    const deliveryWindows = await this.deliveryWindowRepository.findAll();
     return success(deliveryWindows);
   }
 }

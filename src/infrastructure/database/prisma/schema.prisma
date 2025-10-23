@@ -171,13 +171,27 @@ model VendorOutlet {
 }
 
 model ServiceZone {
-  id             String         @id @default(uuid())
-  name           String
-  geo_json       String
-  is_active      Boolean        @default(true)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-  shipping_rates ShippingRate[]
+  id               String           @id @default(uuid())
+  name             String
+  geo_json         String
+  is_active        Boolean          @default(true)
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+  shipping_rates   ShippingRate[]
+  delivery_windows DeliveryWindow[]
+}
+
+model DeliveryWindow {
+  id          String      @id @default(uuid())
+  label       String
+  start_time  String
+  end_time    String
+  cutoff_time String
+  zone_id     String
+  service_zone ServiceZone @relation(fields: [zone_id], references: [id])
+  is_active   Boolean     @default(true)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
 }
 
 model ShippingRate {

@@ -74,7 +74,9 @@ describe('PrismaDeliveryWindowRepository', () => {
           id: deliveryWindowEntity!.id,
           ...deliveryWindowProps,
         },
-        update: deliveryWindowProps,
+        update: {
+          ...deliveryWindowProps,
+        },
       });
     });
   });
