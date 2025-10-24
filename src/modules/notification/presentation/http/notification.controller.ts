@@ -39,7 +39,7 @@ export class NotificationController {
     if (result.success) {
       res.status(200).json(NotificationPresenter.toJson(result.value));
     } else {
-      res.status(400).json({ error: result.error.message });
+      res.status(result.error.statusCode).json({ error: result.error.message });
     }
   }
 

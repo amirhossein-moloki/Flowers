@@ -25,21 +25,6 @@ enum DiscountType {
   FIXED_AMOUNT
 }
 
-enum NotificationChannel {
-  PUSH
-  SMS
-  EMAIL
-  IN_APP
-}
-
-enum NotificationStatus {
-  PENDING
-  SENT
-  FAILED
-  DELIVERED
-  READ
-}
-
 enum UserRole {
   ADMIN
   CUSTOMER
@@ -262,16 +247,12 @@ model ProofOfDelivery {
 }
 
 model Notification {
-  id           String             @id @default(uuid())
-  user_id      String
-  order_id     String
-  channel      NotificationChannel
-  template     String
-  payload_json Json
-  status       NotificationStatus @default(PENDING)
-  sent_at      DateTime?
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
+  id         String   @id @default(uuid())
+  title      String
+  message    String
+  recipient  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model CustomerAddress {
