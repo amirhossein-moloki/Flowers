@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
+import {
+  CreateProductImageUseCase,
+  DeleteProductImageUseCase,
+  GetProductImageUseCase,
+  UpdateProductImageUseCase,
+  FindAllProductImageUseCase,
+} from '../../application/use-cases';
 import { ProductImagePresenter } from './presenters/product-image.presenter';
-import { CreateProductImageDto } from './dto/create-product-image.schema';
-import { UpdateProductImageDto } from './dto/update-product-image.schema';
-import { StatusCodes } from 'http-status-codes';
-import { CreateProductImageUseCase } from '@/modules/product-image/application/use-cases/create-product-image.usecase';
-import { DeleteProductImageUseCase } from '@/modules/product-image/application/use-cases/delete-product-image.usecase';
-import { GetProductImageUseCase } from '@/modules/product-image/application/use-cases/get-product-image.usecase';
-import { UpdateProductImageUseCase } from '@/modules/product-image/application/use-cases/update-product-image.usecase';
-import { FindAllProductImageUseCase } from '@/modules/product-image/application/use-cases/find-all-product-image.usecase';
+import { NotFoundError } from '@/core/errors/not-found.error';
 
 export class ProductImageController {
   constructor(
@@ -18,80 +18,81 @@ export class ProductImageController {
     private readonly findAllProductImageUseCase: FindAllProductImageUseCase,
   ) {}
 
-  async create(
-    req: Request<unknown, unknown, CreateProductImageDto>,
-    res: Response,
-  ) {
+  async create(req: Request, res: Response): Promise<Response> {
     const result = await this.createProductImageUseCase.execute(req.body);
 
-    if (!result.success) {
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ error: result.error.message });
+    if (result.success) {
+      const presenter = new ProductImagePresenter(result.value);
+      return res.status(201).json(presenter.toJSON());
     }
 
-    return res
-      .status(StatusCodes.CREATED)
-      .json(ProductImagePresenter.toJSON(result.value));
+    return res.status(500).json({ error: result.error.message });
   }
 
-  async delete(req: Request<{ id: string }>, res: Response) {
-    const result = await this.deleteProductImageUseCase.execute(req.params.id);
+  async delete(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const result = await this.deleteProductImageUseCase.execute(id);
 
-    if (!result.success) {
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ error: result.error.message });
+    if (result.success) {
+      return res.status(204).send();
     }
 
-    return res.status(StatusCodes.NO_CONTENT).send();
-  }
-
-  async findById(req: Request<{ id: string }>, res: Response) {
-    const result = await this.getProductImageUseCase.execute(req.params.id);
-
-    if (!result.success) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ error: result.error.message });
+    if (result.error.name === 'NotFoundError') {
+      return res.status(404).json({ error: result.error.message });
     }
 
-    return res
-      .status(StatusCodes.OK)
-      .json(ProductImagePresenter.toJSON(result.value));
+    return res.status(500).json({ error: result.error.message });
   }
 
-  async findAll(req: Request, res: Response) {
+  async findById(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const result = await this.getProductImageUseCase.execute(id);
+
+    if (result.success) {
+      if (result.value) {
+        const presenter = new ProductImagePresenter(result.value);
+        return res.status(200).json(presenter.toJSON());
+      }
+    }
+
+    if (result.error.name === 'NotFoundError') {
+      return res.status(404).json({ error: result.error.message });
+    }
+
+    return res.status(500).json({ error: result.error.message });
+  }
+
+  async findAll(req: Request, res: Response): Promise<Response> {
     const result = await this.findAllProductImageUseCase.execute();
 
-    if (!result.success) {
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ error: result.error.message });
+    if (result.success) {
+      const presenters = result.value.map(
+        (image) => new ProductImagePresenter(image),
+      );
+      return res.status(200).json(presenters.map((p) => p.toJSON()));
     }
 
-    return res
-      .status(StatusCodes.OK)
-      .json(result.value.map(ProductImagePresenter.toJSON));
+    return res.status(500).json({ error: result.error.message });
   }
 
-  async update(
-    req: Request<{ id: string }, unknown, UpdateProductImageDto>,
-    res: Response,
-  ) {
+  async update(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const { product_id } = req.body;
     const result = await this.updateProductImageUseCase.execute({
-      id: req.params.id,
-      ...req.body,
+      id,
+      product_id,
+      data: req.body,
     });
 
-    if (!result.success) {
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ error: result.error.message });
+    if (result.success) {
+      const presenter = new ProductImagePresenter(result.value);
+      return res.status(200).json(presenter.toJSON());
     }
 
-    return res
-      .status(StatusCodes.OK)
-      .json(ProductImagePresenter.toJSON(result.value));
+    if (result.error.name === 'NotFoundError') {
+      return res.status(404).json({ error: result.error.message });
+    }
+
+    return res.status(500).json({ error: result.error.message });
   }
 }
