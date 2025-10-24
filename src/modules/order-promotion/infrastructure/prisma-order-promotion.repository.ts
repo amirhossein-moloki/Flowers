@@ -5,7 +5,7 @@ import { OrderPromotionMapper } from '@/modules/order-promotion/infrastructure/o
 
 export class PrismaOrderPromotionRepository implements IOrderPromotionRepository {
   async findById(id: string): Promise<OrderPromotion | null> {
-    const orderPromotion = await prisma.orderPromotion.findUnique({ where: { id } });
+    const orderPromotion = await prisma.orderPromotion.findUnique({ where: { id: id } });
     return orderPromotion ? OrderPromotionMapper.toDomain(orderPromotion) : null;
   }
 

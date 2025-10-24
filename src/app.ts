@@ -23,6 +23,7 @@ import { createProductRoutes } from './modules/product/presentation/http/routes'
 import { createProductImageRoutes } from './modules/product-image/presentation/http/product-image.routes';
 import { createPromotionRoutes } from './modules/promotion/presentation/http/promotion.routes';
 import orderStatusRouter from './modules/order-status/presentation/http/routes';
+import { orderPromotionRouter } from './modules/order-promotion/presentation/http/order-promotion.routes';
 
 class App {
   public express: Application;
@@ -72,6 +73,7 @@ class App {
     this.express.use('/api/v1/product-image', createProductImageRoutes(this.dependencies));
     this.express.use('/api/v1/promotions', createPromotionRoutes(this.dependencies));
     this.express.use('/api/v1/order-statuses', orderStatusRouter);
+    this.express.use('/api/v1/order-promotions', orderPromotionRouter);
   }
 
   private setupErrorHandlers(): void {

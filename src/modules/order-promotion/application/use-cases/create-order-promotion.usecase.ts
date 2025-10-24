@@ -2,8 +2,8 @@ import { IOrderPromotionRepository } from '../../domain/order-promotion.reposito
 import { OrderPromotion } from '../../domain/order-promotion.entity';
 import { CreateOrderPromotionDto } from '../dtos/create-order-promotion.dto';
 import { OrderPromotionDto } from '../dtos/order-promotion.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { OrderPromotionMapper } from '../../infrastructure/order-promotion.mapper';
 
 export class CreateOrderPromotionUseCase {

@@ -13,11 +13,14 @@ export class OrderPromotionController {
     private deleteOrderPromotionUseCase: DeleteOrderPromotionUseCase,
   ) {}
 
-  private handleError(res: Response, error: Error) {
+  private handleError(res: Response, error: any) {
     if (error.name === 'NotFoundError') {
       return res.status(404).json({ error: error.message });
     }
-    return res.status(400).json({ error: error.message });
+    if (error.statusCode) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
+    return res.status(500).json({ error: 'Internal server error' });
   }
 
   async create(req: Request, res: Response) {
