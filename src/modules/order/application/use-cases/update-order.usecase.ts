@@ -1,15 +1,13 @@
-import { IOrderRepository } from '../../domain/order.repository';
-import { UpdateOrderDto } from '../dtos/update-order.dto';
-import { OrderDto } from '../dtos/order.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { OrderMapper } from '../../infrastructure/order.mapper';
-import { Order } from '../../domain/order.entity';
+import { IOrderRepository } from '@/modules/order/domain/order.repository';
+import { UpdateOrderDto } from '@/modules/order/application/dtos/update-order.dto';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
+import { Order } from '@/modules/order/domain/order.entity';
 
 export class UpdateOrderUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}
 
-  async execute(id: string, dto: UpdateOrderDto): Promise<Result<OrderDto, HttpError>> {
+  async execute(id: string, dto: UpdateOrderDto): Promise<Result<Order, HttpError>> {
     const order = await this.orderRepository.findById(id);
 
     if (!order) {
@@ -27,7 +25,6 @@ export class UpdateOrderUseCase {
 
     await this.orderRepository.save(updatedOrder);
 
-    const orderDto = OrderMapper.toDto(updatedOrder);
-    return success(orderDto);
+    return success(updatedOrder);
   }
 }

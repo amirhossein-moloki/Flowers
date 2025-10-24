@@ -1,17 +1,15 @@
-import { IOrderRepository } from '../../domain/order.repository';
-import { Order, IOrderProps, OrderItem, OrderStatus } from '../../domain/order.entity';
-import { CreateOrderDto } from '../dtos/create-order.dto';
-import { OrderDto } from '../dtos/order.dto';
+import { IOrderRepository } from '@/modules/order/domain/order.repository';
+import { Order, IOrderProps, OrderItem, OrderStatus } from '@/modules/order/domain/order.entity';
+import { CreateOrderDto } from '@/modules/order/application/dtos/create-order.dto';
 import { Result, success, failure } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';
-import { OrderMapper } from '../../infrastructure/order.mapper';
 
 export class CreateOrderUseCase {
   constructor(
     private readonly orderRepository: IOrderRepository,
   ) {}
 
-  async execute(dto: CreateOrderDto): Promise<Result<OrderDto, HttpError>> {
+  async execute(dto: CreateOrderDto): Promise<Result<Order, HttpError>> {
     const orderItemsResult = dto.items.map((item) =>
       OrderItem.create({
         productId: item.productId,
@@ -25,12 +23,12 @@ export class CreateOrderUseCase {
     if (!combinedResult.success) {
       return failure(HttpError.badRequest(combinedResult.error.message));
     }
-    const orderItems = combinedResult.value as OrderItem[];
+    const orderItems = combinedResult.value;
 
     const total = orderItems.reduce((acc, item) => acc + item.props.price * item.props.quantity, 0);
 
     const orderProps: IOrderProps = {
-      ...dto,
+      userId: dto.userId,
       status: OrderStatus.PENDING,
       total,
       items: orderItems,
@@ -44,7 +42,6 @@ export class CreateOrderUseCase {
 
     await this.orderRepository.save(order);
 
-    const orderDto = OrderMapper.toDto(order);
-    return success(orderDto);
+    return success(order);
   }
 }

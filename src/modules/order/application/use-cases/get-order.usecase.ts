@@ -1,20 +1,18 @@
-import { IOrderRepository } from '../../domain/order.repository';
-import { OrderDto } from '../dtos/order.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { OrderMapper } from '../../infrastructure/order.mapper';
+import { IOrderRepository } from '@/modules/order/domain/order.repository';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
+import { Order } from '@/modules/order/domain/order.entity';
 
 export class GetOrderUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}
 
-  async execute(id: string): Promise<Result<OrderDto, HttpError>> {
+  async execute(id: string): Promise<Result<Order, HttpError>> {
     const order = await this.orderRepository.findById(id);
 
     if (!order) {
       return failure(HttpError.notFound('Order not found.'));
     }
 
-    const orderDto = OrderMapper.toDto(order);
-    return success(orderDto);
+    return success(order);
   }
 }

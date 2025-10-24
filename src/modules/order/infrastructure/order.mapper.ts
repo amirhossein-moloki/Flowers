@@ -1,5 +1,6 @@
 import { Order as PrismaOrder, OrderItem as PrismaOrderItem, OrderStatus as PrismaOrderStatus } from '@prisma/client';
 import { Order, OrderItem, IOrderProps, IOrderItemProps, OrderStatus as DomainOrderStatus } from '@/modules/order/domain/order.entity';
+import { Result } from '@/core/utils/result';
 
 type PrismaOrderWithItems = PrismaOrder & {
   items: PrismaOrderItem[];
@@ -25,14 +26,11 @@ export class OrderMapper {
       return OrderItem.create(orderItemProps, item.id);
     });
 
-    const orderItems: OrderItem[] = [];
-    for (const result of orderItemsResult) {
-      if (result.success) {
-        orderItems.push(result.value);
-      } else {
-        throw new Error(`Could not create domain order item from prisma data: ${result.error.message}`);
-      }
+    const combinedResult = Result.combine(orderItemsResult);
+    if (!combinedResult.success) {
+      throw new Error(`Could not create domain order item from prisma data: ${combinedResult.error.message}`);
     }
+    const orderItems = combinedResult.value;
 
     const orderProps: IOrderProps = {
       userId: prismaOrder.userId,
