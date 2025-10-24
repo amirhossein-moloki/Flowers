@@ -8,6 +8,7 @@ export class PaymentDto {
   gateway: string;
   gateway_ref: string;
   amount: number;
-  paid_at: Date;
+  paid_at?: Date;
+  idempotency_key?: string;
   created_at: Date;
 }

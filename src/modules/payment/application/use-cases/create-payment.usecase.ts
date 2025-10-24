@@ -11,6 +11,13 @@ export class CreatePaymentUseCase {
   constructor(private readonly paymentRepository: IPaymentRepository) {}
 
   async execute(dto: CreatePaymentDto): Promise<Result<PaymentDto, HttpError>> {
+    if (dto.idempotencyKey) {
+      const existingPayment = await this.paymentRepository.findByIdempotencyKey(dto.idempotencyKey);
+      if (existingPayment) {
+        return success(PaymentMapper.toDto(existingPayment));
+      }
+    }
+
     const paymentResult = Payment.create({
       order_id: dto.orderId,
       amount: dto.amount,
@@ -18,7 +25,7 @@ export class CreatePaymentUseCase {
       status: PaymentStatus.PENDING,
       gateway: 'test-gateway',
       gateway_ref: 'test-ref',
-      paid_at: new Date(),
+      idempotency_key: dto.idempotencyKey,
     });
 
     if (!paymentResult.success) {

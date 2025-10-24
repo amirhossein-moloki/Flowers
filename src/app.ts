@@ -25,6 +25,7 @@ import { createPromotionRoutes } from './modules/promotion/presentation/http/pro
 import orderStatusRouter from './modules/order-status/presentation/http/routes';
 import { orderPromotionRouter } from './modules/order-promotion/presentation/http/order-promotion.routes';
 import orderRouter from './modules/order/presentation/http/order.routes';
+import paymentRouter from './modules/payment/presentation/http/payment.routes';
 
 class App {
   public express: Application;
@@ -76,6 +77,7 @@ class App {
     this.express.use('/api/v1/order-statuses', orderStatusRouter);
     this.express.use('/api/v1/order-promotions', orderPromotionRouter);
     this.express.use('/api/v1/orders', orderRouter);
+    this.express.use('/api/v1/payments', paymentRouter);
   }
 
   private setupErrorHandlers(): void {

@@ -32,6 +32,19 @@ enum UserRole {
   VENDOR
 }
 
+enum PaymentMethod {
+  ONLINE
+  COD
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  PARTIAL_REFUND
+}
+
 
 // --- Application Models ---
 
@@ -79,6 +92,22 @@ model Order {
   total      Float
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
+  payment    Payment?
+}
+
+model Payment {
+  id              String        @id @default(uuid())
+  order_id        String        @unique
+  order           Order         @relation(fields: [order_id], references: [id])
+  method          PaymentMethod
+  status          PaymentStatus
+  gateway         String
+  gateway_ref     String
+  amount          Float
+  paid_at         DateTime?
+  idempotency_key String?       @unique
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
 }
 
 model OrderItem {

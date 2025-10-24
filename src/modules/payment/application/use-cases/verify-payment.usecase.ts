@@ -10,15 +10,20 @@ export class VerifyPaymentUseCase {
   constructor(private readonly paymentRepository: IPaymentRepository) {}
 
   async execute(dto: VerifyPaymentDto): Promise<Result<PaymentDto, HttpError>> {
-    const payment = await this.paymentRepository.findById(dto.paymentId);
+    const paymentResult = await this.paymentRepository.findById(dto.paymentId);
 
-    if (!payment) {
+    if (!paymentResult) {
       return failure(HttpError.notFound('Payment not found.'));
     }
 
-    // In a real app, you would call the payment gateway to verify the payment
-    // and get the actual status.
+    const payment = paymentResult;
+
+    if (payment.status === PaymentStatus.PAID) {
+      return success(PaymentMapper.toDto(payment));
+    }
+
     payment.props.status = PaymentStatus.PAID;
+    payment.props.paid_at = new Date();
 
     await this.paymentRepository.save(payment);
 

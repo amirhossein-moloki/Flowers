@@ -19,6 +19,4 @@ const paymentController = new PaymentController(
   verifyPaymentUseCase,
 );
 
-router.use('/payments', paymentController.router);
-
-export default router;
+export default paymentController.router;
