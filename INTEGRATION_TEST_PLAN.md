@@ -51,7 +51,7 @@ The AI Agent or CI process must **read this file sequentially (top → bottom)**
 | 11 | delivery-window | ✅ Done | Validate time range |
 | 12 | delivery | ✅ Done | Includes `/assign-driver` |
 | 13 | proof-of-delivery | ✅ Done | Signature upload test |
-| 14 | notification | 🕒 Pending | Manual trigger endpoint |
+| 14 | notification | ✅ Done | Manual trigger endpoint |
 | 15 | product | 🕒 Pending | CRUD + vendorId filter |
 | 16 | product-image | 🕒 Pending | Metadata validation |
 | 17 | promotion | 🕒 Pending | Date range validation |

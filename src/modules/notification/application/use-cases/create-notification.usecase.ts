@@ -10,7 +10,11 @@ export class CreateNotificationUseCase {
   constructor(private readonly notificationRepository: INotificationRepository) {}
 
   async execute(dto: CreateNotificationDto): Promise<Result<NotificationDto, HttpError>> {
-    const notificationResult = Notification.create(dto);
+    const notificationResult = Notification.create({
+      title: dto.title,
+      message: dto.message,
+      recipient: dto.recipient,
+    });
 
     if (!notificationResult.success) {
       return failure(HttpError.internalServerError(notificationResult.error.message));

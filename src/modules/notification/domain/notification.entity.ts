@@ -1,15 +1,11 @@
 import { Entity } from '@/core/domain/entity';
 import { Result, success } from '@/core/utils/result';
-import { NotificationChannel } from '@/core/domain/enums';
 
 interface NotificationProps {
-  user_id: string;
-  order_id: string;
-  channel: NotificationChannel;
-  template: string;
-  payload_json: any;
-  status?: string;
-  sent_at: Date;
+  title: string;
+  message: string;
+  recipient: string;
+  createdAt?: Date;
 }
 
 export class Notification extends Entity<NotificationProps> {
@@ -17,32 +13,20 @@ export class Notification extends Entity<NotificationProps> {
     super(props, id);
   }
 
-  get user_id(): string {
-    return this.props.user_id;
+  get title(): string {
+    return this.props.title;
   }
 
-  get order_id(): string {
-    return this.props.order_id;
+  get message(): string {
+    return this.props.message;
   }
 
-  get channel(): NotificationChannel {
-    return this.props.channel;
+  get recipient(): string {
+    return this.props.recipient;
   }
 
-  get template(): string {
-    return this.props.template;
-  }
-
-  get payload_json(): any {
-    return this.props.payload_json;
-  }
-
-  get status(): string {
-    return this.props.status;
-  }
-
-  get sent_at(): Date {
-    return this.props.sent_at;
+  get createdAt(): Date {
+    return this.props.createdAt;
   }
 
   public static create(
@@ -52,7 +36,7 @@ export class Notification extends Entity<NotificationProps> {
     const notification = new Notification(
       {
         ...props,
-        status: props.status ?? 'sent',
+        createdAt: props.createdAt ?? new Date(),
       },
       id,
     );
