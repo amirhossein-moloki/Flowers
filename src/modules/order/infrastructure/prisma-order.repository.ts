@@ -52,4 +52,15 @@ export class PrismaOrderRepository implements IOrderRepository {
       }
     });
   }
+
+  async delete(id: string): Promise<void> {
+    await prisma.$transaction(async (tx) => {
+      await tx.orderItem.deleteMany({
+        where: { orderId: id },
+      });
+      await tx.order.delete({
+        where: { id },
+      });
+    });
+  }
 }

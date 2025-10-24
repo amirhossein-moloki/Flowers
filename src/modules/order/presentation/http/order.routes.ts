@@ -34,6 +34,6 @@ const orderController = new OrderController(
   cancelOrderUseCase,
 );
 
-router.use('/orders', orderController.router);
+router.use('/', orderController.router);
 
 export default router;

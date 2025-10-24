@@ -7,6 +7,6 @@ export const CreateOrderSchema = z.object({
       productId: z.string(),
       quantity: z.number(),
       price: z.number(),
-    })),
+    })).min(1),
   }),
 });

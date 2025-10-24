@@ -5,4 +5,5 @@ export interface IOrderRepository extends IRepository<Order> {
   findById(id: string): Promise<Order | null>;
   findByUserId(userId: string, page: number, pageSize: number): Promise<Order[]>;
   save(order: Order): Promise<void>;
+  delete(id: string): Promise<void>;
 }

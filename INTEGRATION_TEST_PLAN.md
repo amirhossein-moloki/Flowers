@@ -57,7 +57,7 @@ The AI Agent or CI process must **read this file sequentially (top → bottom)**
 | 17 | promotion | ✅ Done | Date range validation |
 | 18 | order-status | ✅ Done | Read-only flow |
 | 19 | order-promotion | ✅ Done | Promotion join validation |
-| 20 | order | 🕒 Pending | CRUD + confirm/cancel |
+| 20 | order | ✅ Done | CRUD + confirm/cancel |
 | 21 | payment | 🕒 Pending | Verify + idempotency key |
 | 22 | automation-log | 🕒 Pending | Read-only endpoint |
 
