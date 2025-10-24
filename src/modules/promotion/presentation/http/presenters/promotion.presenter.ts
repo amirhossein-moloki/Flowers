@@ -4,6 +4,7 @@ export class PromotionPresenter {
   static toJSON(promotion: Promotion) {
     return {
       id: promotion.id,
+      name: promotion.props.name,
       code: promotion.props.code,
       description: promotion.props.description,
       discount_type: promotion.props.discount_type,

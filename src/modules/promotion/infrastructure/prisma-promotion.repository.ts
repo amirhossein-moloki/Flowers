@@ -48,11 +48,11 @@ export class PrismaPromotionRepository implements IPromotionRepository {
     }
   }
 
-  async save(promotion: Promotion): Promise<Result<void, Error>> {
+  async save(promotion: Promotion): Promise<Result<Promotion, Error>> {
     try {
       const data = PromotionMapper.toPersistence(promotion);
-      await this.prisma.promotion.create({ data });
-      return success(undefined);
+      const createdPromotion = await this.prisma.promotion.create({ data });
+      return PromotionMapper.toDomain(createdPromotion);
     } catch (error) {
       return failure(error as Error);
     }

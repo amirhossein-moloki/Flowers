@@ -21,6 +21,7 @@ import { createDeliveryRoutes } from './modules/delivery/http/routes';
 import { createNotificationRoutes } from './modules/notification/presentation/http/notification.routes';
 import { createProductRoutes } from './modules/product/presentation/http/routes';
 import { createProductImageRoutes } from './modules/product-image/presentation/http/product-image.routes';
+import { createPromotionRoutes } from './modules/promotion/presentation/http/promotion.routes';
 
 class App {
   public express: Application;
@@ -35,6 +36,7 @@ class App {
   }
 
   private setupMiddlewares(): void {
+    this.express.use(express.json());
     securityMiddleware(this.express);
   }
 
@@ -67,6 +69,7 @@ class App {
     this.express.use('/api/v1/notifications', createNotificationRoutes(this.dependencies));
     this.express.use('/api/v1/products', createProductRoutes(this.dependencies));
     this.express.use('/api/v1/product-image', createProductImageRoutes(this.dependencies));
+    this.express.use('/api/v1/promotions', createPromotionRoutes(this.dependencies));
   }
 
   private setupErrorHandlers(): void {

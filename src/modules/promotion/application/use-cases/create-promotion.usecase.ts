@@ -34,10 +34,10 @@ export class CreatePromotionUseCase {
 
     const saveResult = await this.promotionRepository.save(promotion);
 
-    if (!saveResult.success) {
+    if (saveResult.failure) {
       return failure(saveResult.error);
     }
 
-    return success(promotion);
+    return success(saveResult.value);
   }
 }
