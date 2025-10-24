@@ -77,8 +77,20 @@ import { GetDeliveryUseCase } from '@/modules/delivery/application/use-cases/get
 import { UpdateDeliveryUseCase } from '@/modules/delivery/application/use-cases/update-delivery.usecase';
 import { DeleteDeliveryUseCase } from '@/modules/delivery/application/use-cases/delete-delivery.usecase';
 import { ListDeliveriesUseCase } from '@/modules/delivery/application/use-cases/list-deliveries.usecase';
+import { CreateProductUseCase } from '@/modules/product/application/use-cases/create-product.usecase';
+import { DeleteProductUseCase } from '@/modules/product/application/use-cases/delete-product.usecase';
+import { GetAllProductsUseCase } from '@/modules/product/application/use-cases/get-all-products.usecase';
+import { GetProductUseCase } from '@/modules/product/application/use-cases/get-product.usecase';
+import { UpdateProductUseCase } from '@/modules/product/application/use-cases/update-product.usecase';
+import { IProductRepository } from '@/modules/product/domain/product.repository';
+import { PrismaProductRepository } from '@/modules/product/infrastructure/prisma-product.repository';
 
 export interface Dependencies {
+  createProductUseCase: CreateProductUseCase;
+  getAllProductsUseCase: GetAllProductsUseCase;
+  getProductUseCase: GetProductUseCase;
+  updateProductUseCase: UpdateProductUseCase;
+  deleteProductUseCase: DeleteProductUseCase;
   driverLocationRepository: IDriverLocationRepository;
   createDriverLocationUseCase: CreateDriverLocationUseCase;
   getDriverLocationUseCase: GetDriverLocationUseCase;
@@ -158,7 +170,13 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const deliveryStatusRepository = new PrismaDeliveryStatusRepository(prisma);
   const deliveryWindowRepository = new PrismaDeliveryWindowRepository(prisma);
   const deliveryRepository = new PrismaDeliveryRepository(prisma);
+  const productRepository = new PrismaProductRepository(prisma);
 
+  const createProductUseCase = new CreateProductUseCase(productRepository);
+  const getAllProductsUseCase = new GetAllProductsUseCase(productRepository);
+  const getProductUseCase = new GetProductUseCase(productRepository);
+  const updateProductUseCase = new UpdateProductUseCase(productRepository);
+  const deleteProductUseCase = new DeleteProductUseCase(productRepository);
   const getDeliveryStatusUseCase = new GetDeliveryStatusUseCase(deliveryStatusRepository);
   const listDeliveryStatusesUseCase = new ListDeliveryStatusesUseCase(deliveryStatusRepository);
   const createDriverLocationUseCase = new CreateDriverLocationUseCase(driverLocationRepository);
@@ -219,6 +237,11 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const listDeliveriesUseCase = new ListDeliveriesUseCase(deliveryRepository);
 
   return {
+    createProductUseCase,
+    getAllProductsUseCase,
+    getProductUseCase,
+    updateProductUseCase,
+    deleteProductUseCase,
     driverLocationRepository,
     createDriverLocationUseCase,
     getDriverLocationUseCase,

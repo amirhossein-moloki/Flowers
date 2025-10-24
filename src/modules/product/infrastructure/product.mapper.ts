@@ -9,6 +9,7 @@ export class ProductMapper {
       description: prismaProduct.description,
       price: prismaProduct.price,
       stock: prismaProduct.stock,
+      vendorId: prismaProduct.vendorId,
       createdAt: prismaProduct.createdAt,
       updatedAt: prismaProduct.updatedAt,
     };
@@ -30,6 +31,7 @@ export class ProductMapper {
       description: product.description,
       price: product.price,
       stock: product.stock,
+      vendorId: product.props.vendorId,
     };
   }
 

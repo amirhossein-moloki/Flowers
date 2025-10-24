@@ -1,6 +1,6 @@
 import { IProductRepository } from '../../domain/product.repository';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 
 export class DeleteProductUseCase {
   constructor(private readonly productRepository: IProductRepository) {}

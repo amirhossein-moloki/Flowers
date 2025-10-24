@@ -55,6 +55,8 @@ model Product {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   orderItems  OrderItem[]
+  vendorId    String
+  vendor      Vendor      @relation(fields: [vendorId], references: [id])
 }
 
 model Order {
@@ -140,6 +142,7 @@ model Vendor {
   created_at  DateTime       @default(now())
   updated_at  DateTime       @updatedAt
   outlets     VendorOutlet[]
+  products    Product[]
 }
 
 model VendorOutlet {

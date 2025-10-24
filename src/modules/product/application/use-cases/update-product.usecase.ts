@@ -1,8 +1,8 @@
 import { IProductRepository } from '../../domain/product.repository';
 import { UpdateProductDto } from '../dtos/update-product.dto';
 import { ProductDto } from '../dtos/product.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { ProductMapper } from '../../infrastructure/product.mapper';
 import { Product } from '../../domain/product.entity';
 
