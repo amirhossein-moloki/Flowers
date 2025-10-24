@@ -1,32 +1,29 @@
-import { ProductImage as PrismaProductImage } from '@prisma/client';
+import { ProductImage as ProductImageModel } from '@prisma/client';
 import { ProductImage } from '../domain/product-image.entity';
 
 export class ProductImageMapper {
-  static toDomain(
-    prismaProductImage: PrismaProductImage,
-  ): ProductImage {
-    const productImageResult = ProductImage.create(
+  static toEntity(model: ProductImageModel): ProductImage {
+    const entityResult = ProductImage.create(
       {
-        product_id: prismaProductImage.product_id,
-        url: prismaProductImage.url,
-        sort_order: prismaProductImage.sort_order,
+        product_id: model.product_id,
+        url: model.url,
+        sort_order: model.sort_order,
       },
-      prismaProductImage.id,
+      model.id,
     );
-    if (productImageResult.isFailure) {
-      throw new Error('Could not map PrismaProductImage to domain');
+
+    if (entityResult.success) {
+      return entityResult.value;
     }
-    return productImageResult.value;
+    return null;
   }
 
-  static toPersistence(
-    productImage: ProductImage,
-  ): PrismaProductImage {
+  static toModel(entity: ProductImage): ProductImageModel {
     return {
-      id: productImage.id,
-      product_id: productImage.product_id,
-      url: productImage.url,
-      sort_order: productImage.sort_order,
+      id: entity.id,
+      product_id: entity.product_id,
+      url: entity.url,
+      sort_order: entity.sort_order,
       created_at: new Date(),
       updated_at: new Date(),
     };

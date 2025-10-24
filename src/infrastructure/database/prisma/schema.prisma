@@ -57,6 +57,17 @@ model Product {
   orderItems  OrderItem[]
   vendorId    String
   vendor      Vendor      @relation(fields: [vendorId], references: [id])
+  images      ProductImage[]
+}
+
+model ProductImage {
+  id          String   @id @default(uuid())
+  product_id  String
+  product     Product  @relation(fields: [product_id], references: [id])
+  url         String
+  sort_order  Int      @default(0)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
 
 model Order {

@@ -1,14 +1,14 @@
 import { ProductImage } from '@/modules/product-image/domain/product-image.entity';
 
 export class ProductImagePresenter {
-  static toJSON(productImage: ProductImage) {
+  constructor(private readonly productImage: ProductImage) {}
+
+  toJSON() {
     return {
-      id: productImage.id,
-      product_id: productImage.product_id,
-      url: productImage.url,
-      sort_order: productImage.sort_order,
-      created_at: productImage.created_at,
-      updated_at: productImage.updated_at,
+      id: this.productImage.id,
+      product_id: this.productImage.product_id,
+      url: this.productImage.url,
+      sort_order: this.productImage.sort_order,
     };
   }
 }

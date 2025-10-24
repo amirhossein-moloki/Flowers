@@ -84,8 +84,20 @@ import { GetProductUseCase } from '@/modules/product/application/use-cases/get-p
 import { UpdateProductUseCase } from '@/modules/product/application/use-cases/update-product.usecase';
 import { IProductRepository } from '@/modules/product/domain/product.repository';
 import { PrismaProductRepository } from '@/modules/product/infrastructure/prisma-product.repository';
+import { IProductImageRepository } from '@/modules/product-image/domain/product-image.repository.interface';
+import { PrismaProductImageRepository } from '@/modules/product-image/infrastructure/prisma-product-image.repository';
+import { CreateProductImageUseCase } from '@/modules/product-image/application/use-cases/create-product-image.usecase';
+import { DeleteProductImageUseCase } from '@/modules/product-image/application/use-cases/delete-product-image.usecase';
+import { FindAllProductImageUseCase } from '@/modules/product-image/application/use-cases/find-all-product-image.usecase';
+import { GetProductImageUseCase } from '@/modules/product-image/application/use-cases/get-product-image.usecase';
+import { UpdateProductImageUseCase } from '@/modules/product-image/application/use-cases/update-product-image.usecase';
 
 export interface Dependencies {
+  createProductImageUseCase: CreateProductImageUseCase;
+  getProductImageUseCase: GetProductImageUseCase;
+  findAllProductImageUseCase: FindAllProductImageUseCase;
+  updateProductImageUseCase: UpdateProductImageUseCase;
+  deleteProductImageUseCase: DeleteProductImageUseCase;
   createProductUseCase: CreateProductUseCase;
   getAllProductsUseCase: GetAllProductsUseCase;
   getProductUseCase: GetProductUseCase;
@@ -171,7 +183,13 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const deliveryWindowRepository = new PrismaDeliveryWindowRepository(prisma);
   const deliveryRepository = new PrismaDeliveryRepository(prisma);
   const productRepository = new PrismaProductRepository(prisma);
+  const productImageRepository = new PrismaProductImageRepository(prisma);
 
+  const createProductImageUseCase = new CreateProductImageUseCase(productImageRepository);
+  const getProductImageUseCase = new GetProductImageUseCase(productImageRepository);
+  const findAllProductImageUseCase = new FindAllProductImageUseCase(productImageRepository);
+  const updateProductImageUseCase = new UpdateProductImageUseCase(productImageRepository);
+  const deleteProductImageUseCase = new DeleteProductImageUseCase(productImageRepository);
   const createProductUseCase = new CreateProductUseCase(productRepository);
   const getAllProductsUseCase = new GetAllProductsUseCase(productRepository);
   const getProductUseCase = new GetProductUseCase(productRepository);
@@ -237,6 +255,11 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const listDeliveriesUseCase = new ListDeliveriesUseCase(deliveryRepository);
 
   return {
+    createProductImageUseCase,
+    getProductImageUseCase,
+    findAllProductImageUseCase,
+    updateProductImageUseCase,
+    deleteProductImageUseCase,
     createProductUseCase,
     getAllProductsUseCase,
     getProductUseCase,

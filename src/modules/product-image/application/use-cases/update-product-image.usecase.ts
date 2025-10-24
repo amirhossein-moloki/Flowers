@@ -1,33 +1,36 @@
-import { IProductImageRepository } from '../../domain/product-image.repository';
-import { UpdateProductImageDto } from '../dtos/update-product-image.dto';
-import { ProductImageDto } from '../dtos/product-image.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { ProductImageMapper } from '../../infrastructure/product-image.mapper';
+import { IProductImageRepository } from '../../domain/product-image.repository.interface';
+import { UseCase } from '@/core/base/use-case';
 import { ProductImage } from '../../domain/product-image.entity';
+import { Result } from '@/core/utils/result';
+import { UpdateProductImageDto } from '../../presentation/http/dto/update-product-image.dto';
 
-export class UpdateProductImageUseCase {
-  constructor(private readonly productImageRepository: IProductImageRepository) {}
+export class UpdateProductImageUseCase
+  implements
+    UseCase<
+      ProductImage,
+      { id: string; product_id: string; data: UpdateProductImageDto }
+    >
+{
+  constructor(
+    private readonly productImageRepository: IProductImageRepository,
+  ) {}
 
-  async execute(id: string, dto: UpdateProductImageDto): Promise<Result<ProductImageDto, HttpError>> {
-    const productImage = await this.productImageRepository.findById(id);
-
-    if (!productImage) {
-      return failure(HttpError.notFound('ProductImage not found.'));
-    }
-
-    const updatedProductImageProps = { ...productImage.props, ...dto };
-    const updatedProductImageResult = ProductImage.create(updatedProductImageProps, productImage.id);
-
-    if(!updatedProductImageResult.success){
-        return failure(HttpError.internalServerError(updatedProductImageResult.error.message));
-    }
-
-    const updatedProductImage = updatedProductImageResult.value;
-
-    await this.productImageRepository.save(updatedProductImage);
-
-    const productImageDto = ProductImageMapper.toDto(updatedProductImage);
-    return success(productImageDto);
+  async execute({
+    id,
+    product_id,
+    data,
+  }: {
+    id: string;
+    product_id: string;
+    data: UpdateProductImageDto;
+  }): Promise<Result<ProductImage, Error>> {
+    const productImage = ProductImage.create(
+      {
+        ...data,
+        product_id,
+      },
+      id,
+    );
+    return this.productImageRepository.update(productImage.value);
   }
 }

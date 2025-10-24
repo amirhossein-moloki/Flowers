@@ -53,7 +53,7 @@ The AI Agent or CI process must **read this file sequentially (top → bottom)**
 | 13 | proof-of-delivery | ✅ Done | Signature upload test |
 | 14 | notification | ✅ Done | Manual trigger endpoint |
 | 15 | product | ✅ Done | CRUD + vendorId filter |
-| 16 | product-image | 🕒 Pending | Metadata validation |
+| 16 | product-image | ✅ Done | Metadata validation |
 | 17 | promotion | 🕒 Pending | Date range validation |
 | 18 | order-status | 🕒 Pending | Read-only flow |
 | 19 | order-promotion | 🕒 Pending | Promotion join validation |

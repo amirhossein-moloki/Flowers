@@ -1,26 +1,18 @@
-import { IProductImageRepository } from '../../domain/product-image.repository';
+import { IProductImageRepository } from '../../domain/product-image.repository.interface';
 import { ProductImage } from '../../domain/product-image.entity';
-import { CreateProductImageDto } from '../dtos/create-product-image.dto';
-import { ProductImageDto } from '../dtos/product-image.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
-import { ProductImageMapper } from '../../infrastructure/product-image.mapper';
+import { CreateProductImageDto } from '../../presentation/http/dto/create-product-image.dto';
+import { Result, success } from '@/core/utils/result';
+import { UseCase } from '@/core/base/use-case';
 
-export class CreateProductImageUseCase {
+export class CreateProductImageUseCase
+  implements UseCase<ProductImage, CreateProductImageDto>
+{
   constructor(private readonly productImageRepository: IProductImageRepository) {}
 
-  async execute(dto: CreateProductImageDto): Promise<Result<ProductImageDto, HttpError>> {
-    const productImageResult = ProductImage.create(dto);
-
-    if (!productImageResult.success) {
-      return failure(HttpError.internalServerError(productImageResult.error.message));
-    }
-
-    const productImage = productImageResult.value;
-
-    await this.productImageRepository.save(productImage);
-
-    const productImageDto = ProductImageMapper.toDto(productImage);
-    return success(productImageDto);
+  async execute(
+    data: CreateProductImageDto,
+  ): Promise<Result<ProductImage, Error>> {
+    const productImage = ProductImage.create(data);
+    return this.productImageRepository.create(productImage.value);
   }
 }
