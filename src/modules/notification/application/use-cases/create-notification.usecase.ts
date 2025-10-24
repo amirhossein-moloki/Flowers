@@ -18,9 +18,9 @@ export class CreateNotificationUseCase {
 
     const notification = notificationResult.value;
 
-    await this.notificationRepository.save(notification);
+    const savedNotification = await this.notificationRepository.save(notification);
 
-    const notificationDto = NotificationMapper.toDto(notification);
+    const notificationDto = NotificationMapper.toDto(savedNotification);
     return success(notificationDto);
   }
 }
