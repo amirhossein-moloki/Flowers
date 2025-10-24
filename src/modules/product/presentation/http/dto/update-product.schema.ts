@@ -6,6 +6,7 @@ export const UpdateProductSchema = z.object({
     description: z.string().nullable().optional(),
     price: z.number().min(0, 'Price cannot be negative.').optional(),
     stock: z.number().min(0, 'Stock cannot be negative.').optional(),
+    vendorId: z.string().min(1, 'Vendor ID cannot be empty.').optional(),
   }),
 });
 

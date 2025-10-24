@@ -13,6 +13,7 @@ export interface IProductProps {
   description: string | null;
   price: number;
   stock: number;
+  vendorId: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

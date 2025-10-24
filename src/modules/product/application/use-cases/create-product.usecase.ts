@@ -2,8 +2,8 @@ import { IProductRepository } from '../../domain/product.repository';
 import { Product } from '../../domain/product.entity';
 import { CreateProductDto } from '../dtos/create-product.dto';
 import { ProductDto } from '../dtos/product.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { ProductMapper } from '../../infrastructure/product.mapper';
 
 export class CreateProductUseCase {

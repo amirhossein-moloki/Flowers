@@ -19,6 +19,7 @@ import { createDeliveryStatusRoutes } from './modules/delivery-status/http/route
 import { createDeliveryWindowRoutes } from './modules/delivery-window/http/routes';
 import { createDeliveryRoutes } from './modules/delivery/http/routes';
 import { createNotificationRoutes } from './modules/notification/presentation/http/notification.routes';
+import { createProductRoutes } from './modules/product/presentation/http/routes';
 
 class App {
   public express: Application;
@@ -63,6 +64,7 @@ class App {
     this.express.use('/api/v1/delivery-windows', createDeliveryWindowRoutes(this.dependencies));
     this.express.use('/api/v1/deliveries', createDeliveryRoutes(this.dependencies));
     this.express.use('/api/v1/notifications', createNotificationRoutes(this.dependencies));
+    this.express.use('/api/v1/products', createProductRoutes(this.dependencies));
   }
 
   private setupErrorHandlers(): void {
