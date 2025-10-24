@@ -5,6 +5,7 @@ import { Result, success } from '@/core/utils/result';
 export class PromotionMapper {
   static toDomain(prismaPromotion: PrismaPromotion): Result<Promotion, Error> {
     const promotionProps = {
+      name: prismaPromotion.name,
       code: prismaPromotion.code,
       description: prismaPromotion.description ?? undefined,
       discount_type: prismaPromotion.discount_type,
@@ -15,12 +16,19 @@ export class PromotionMapper {
       uses_count: prismaPromotion.uses_count,
       is_active: prismaPromotion.is_active,
     };
-    return Promotion.create(promotionProps, prismaPromotion.id);
+
+    const promotionResult = Promotion.create(promotionProps, prismaPromotion.id);
+    if (promotionResult.failure) {
+      throw new Error('Failed to create promotion entity from prisma data');
+    }
+
+    return success(promotionResult.value);
   }
 
   static toPersistence(promotion: Promotion) {
     return {
       id: promotion.id,
+      name: promotion.props.name,
       code: promotion.props.code,
       description: promotion.props.description,
       discount_type: promotion.props.discount_type,

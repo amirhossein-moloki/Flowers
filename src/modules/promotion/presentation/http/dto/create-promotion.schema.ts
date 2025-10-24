@@ -4,6 +4,7 @@ import { DiscountType } from '@prisma/client';
 export const createPromotionSchema = z.object({
   body: z.object({
     code: z.string().min(1),
+    name: z.string().min(1),
     description: z.string().optional(),
     discount_type: z.nativeEnum(DiscountType),
     discount_value: z.number().positive(),

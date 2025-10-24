@@ -20,20 +20,19 @@ export class PromotionController {
     if (error.name === 'NotFoundError') {
       return res.status(404).json({ error: error.message });
     }
+    if (error.message === 'Start date cannot be after end date') {
+      return res.status(422).json({ error: error.message });
+    }
     return res.status(400).json({ error: error.message });
   }
 
   async create(req: Request, res: Response) {
-    try {
-      const result = await this.createPromotionUseCase.execute(req.body);
+    const result = await this.createPromotionUseCase.execute(req.body);
 
-      if (result.success) {
-        res.status(201).json(PromotionPresenter.toJSON(result.value));
-      } else {
-        this.handleError(res, result.error);
-      }
-    } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
+    if (result.success) {
+      res.status(201).json(PromotionPresenter.toJSON(result.value));
+    } else {
+      this.handleError(res, result.error);
     }
   }
 

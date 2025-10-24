@@ -5,6 +5,7 @@ import { DiscountType } from '@prisma/client';
 
 type UpdatePromotionRequest = {
   id: string;
+  name?: string;
   code?: string;
   description?: string;
   discount_type?: DiscountType;
@@ -29,6 +30,7 @@ export class UpdatePromotionUseCase {
 
     const updatedProps = { ...promotion.props };
 
+    if (request.name) updatedProps.name = request.name;
     if (request.code) updatedProps.code = request.code;
     if (request.description) updatedProps.description = request.description;
     if (request.discount_type) updatedProps.discount_type = request.discount_type;
