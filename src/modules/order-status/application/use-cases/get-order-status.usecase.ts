@@ -7,12 +7,13 @@ export class GetOrderStatusUseCase {
   constructor(private readonly orderStatusRepository: IOrderStatusRepository) {}
 
   async execute(id: string): Promise<Result<OrderStatus, Error>> {
-    const orderStatus = await this.orderStatusRepository.findById(id);
-
-    if (!orderStatus) {
+    const result = await this.orderStatusRepository.findById(id);
+    if (!result.success) {
+      return result;
+    }
+    if (!result.value) {
       return failure(new NotFoundError('OrderStatus not found.'));
     }
-
-    return success(orderStatus);
+    return success(result.value);
   }
 }

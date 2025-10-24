@@ -6,7 +6,6 @@ export class GetAllOrderStatusesUseCase {
   constructor(private readonly orderStatusRepository: IOrderStatusRepository) {}
 
   async execute(): Promise<Result<OrderStatus[], Error>> {
-    const orderStatuses = await this.orderStatusRepository.findAll();
-    return success(orderStatuses);
+    return await this.orderStatusRepository.findAll();
   }
 }
