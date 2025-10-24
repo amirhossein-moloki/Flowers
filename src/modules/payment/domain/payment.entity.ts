@@ -9,7 +9,8 @@ interface PaymentProps {
   gateway: string;
   gateway_ref: string;
   amount: number;
-  paid_at: Date;
+  paid_at?: Date;
+  idempotency_key?: string;
   created_at?: Date;
 }
 
@@ -44,6 +45,14 @@ export class Payment extends Entity<PaymentProps> {
 
   get paid_at(): Date {
     return this.props.paid_at;
+  }
+
+  get idempotency_key(): string {
+    return this.props.idempotency_key;
+  }
+
+  get created_at(): Date {
+    return this.props.created_at;
   }
 
   public static create(

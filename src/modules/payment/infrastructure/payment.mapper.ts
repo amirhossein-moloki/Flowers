@@ -30,12 +30,13 @@ export class PaymentMapper {
     return {
       id: payment.id,
       order_id: props.order_id,
-      method: props.method,
-      status: props.status,
+      method: props.method.toUpperCase() as any,
+      status: props.status.toUpperCase() as any,
       gateway: props.gateway,
       gateway_ref: props.gateway_ref,
       amount: props.amount,
       paid_at: props.paid_at,
+      idempotency_key: props.idempotency_key,
     };
   }
 
@@ -50,7 +51,8 @@ export class PaymentMapper {
       gateway_ref: props.gateway_ref,
       amount: props.amount,
       paid_at: props.paid_at,
-      created_at: props.created_at,
+      idempotency_key: props.idempotency_key,
+      created_at: payment.created_at,
     };
   }
 }

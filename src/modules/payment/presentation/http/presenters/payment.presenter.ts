@@ -11,7 +11,7 @@ export class PaymentPresenter {
       gateway_ref: payment.gateway_ref,
       amount: payment.amount,
       paid_at: payment.paid_at,
-      created_at: payment.props.created_at,
+      created_at: payment.created_at,
     };
   }
 }
