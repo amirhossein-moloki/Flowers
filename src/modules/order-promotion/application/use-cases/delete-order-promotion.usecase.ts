@@ -1,11 +1,11 @@
 import { IOrderPromotionRepository } from '../../domain/order-promotion.repository';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 
 export class DeleteOrderPromotionUseCase {
   constructor(private readonly orderPromotionRepository: IOrderPromotionRepository) {}
 
-  async execute(id: string): Promise<Result<void, HttpError>> {
+  async execute({ id }: { id: string }): Promise<Result<void, HttpError>> {
     const orderPromotion = await this.orderPromotionRepository.findById(id);
 
     if (!orderPromotion) {

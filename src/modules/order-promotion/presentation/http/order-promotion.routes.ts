@@ -3,6 +3,8 @@ import { OrderPromotionController } from './order-promotion.controller';
 import { validate } from '@/core/middlewares/validate.middleware';
 import { createOrderPromotionSchema } from './dto/create-order-promotion.schema';
 import { updateOrderPromotionSchema } from './dto/update-order-promotion.schema';
+import { isAuthenticated, hasRole } from '@/core/middlewares/auth.middleware';
+import { UserRole } from '@prisma/client';
 import { CreateOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/create-order-promotion.usecase';
 import { GetOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/get-order-promotion.usecase';
 import { UpdateOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/update-order-promotion.usecase';
@@ -26,15 +28,23 @@ const orderPromotionController = new OrderPromotionController(
   deleteOrderPromotionUseCase,
 );
 
+orderPromotionRouter.use(isAuthenticated);
+
 orderPromotionRouter.post(
   '/',
+  hasRole([UserRole.ADMIN]),
   validate(createOrderPromotionSchema),
   orderPromotionController.create.bind(orderPromotionController),
 );
 orderPromotionRouter.get('/:id', orderPromotionController.findById.bind(orderPromotionController));
 orderPromotionRouter.put(
   '/:id',
+  hasRole([UserRole.ADMIN]),
   validate(updateOrderPromotionSchema),
   orderPromotionController.update.bind(orderPromotionController),
 );
-orderPromotionRouter.delete('/:id', orderPromotionController.delete.bind(orderPromotionController));
+orderPromotionRouter.delete(
+  '/:id',
+  hasRole([UserRole.ADMIN]),
+  orderPromotionController.delete.bind(orderPromotionController),
+);
