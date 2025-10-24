@@ -16,6 +16,6 @@ const automationLogController = new AutomationLogController(
   findAllAutomationLogsUseCase,
 );
 
-router.use('/automation-logs', automationLogController.router);
+router.use('/', automationLogController.router);
 
 export default router;
