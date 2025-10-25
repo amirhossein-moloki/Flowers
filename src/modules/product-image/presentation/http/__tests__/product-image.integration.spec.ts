@@ -48,6 +48,7 @@ describe('ProductImage Integration Tests', () => {
   afterEach(async () => {
     await prisma.productImage.deleteMany({});
     await prisma.product.deleteMany({});
+    await prisma.vendorOutlet.deleteMany({});
     await prisma.vendor.deleteMany({});
   });
 

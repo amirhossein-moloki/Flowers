@@ -17,6 +17,8 @@ describe('Notification Integration Tests', () => {
   beforeEach(async () => {
     // Correct cleanup order
     await prisma.notification.deleteMany();
+    await prisma.orderItem.deleteMany();
+    await prisma.payment.deleteMany();
     await prisma.order.deleteMany();
     await prisma.user.deleteMany();
 

@@ -8,7 +8,7 @@ describe('PrismaPaymentRepository', () => {
   let repository: PrismaPaymentRepository;
 
   beforeEach(() => {
-    repository = new PrismaPaymentRepository();
+    repository = new PrismaPaymentRepository(prismaMock);
   });
 
   const paymentProps = {

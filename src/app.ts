@@ -22,8 +22,8 @@ import { createNotificationRoutes } from './modules/notification/presentation/ht
 import { createProductRoutes } from './modules/product/presentation/http/routes';
 import { createProductImageRoutes } from './modules/product-image/presentation/http/product-image.routes';
 import { createPromotionRoutes } from './modules/promotion/presentation/http/promotion.routes';
-import orderStatusRouter from './modules/order-status/presentation/http/routes';
-import { orderPromotionRouter } from './modules/order-promotion/presentation/http/order-promotion.routes';
+import { createOrderStatusRoutes } from './modules/order-status/presentation/http/routes';
+import { createOrderPromotionRoutes } from './modules/order-promotion/presentation/http/order-promotion.routes';
 import orderRouter from './modules/order/presentation/http/order.routes';
 import paymentRouter from './modules/payment/presentation/http/payment.routes';
 import automationLogRouter from './modules/automation-log/presentation/http/automation-log.routes';
@@ -32,9 +32,9 @@ class App {
   public express: Application;
   public dependencies: Dependencies;
 
-  constructor(prisma: PrismaClient) {
+  constructor(prisma: PrismaClient, dependencies?: Dependencies) {
     this.express = express();
-    this.dependencies = createDependencies(prisma);
+    this.dependencies = dependencies || createDependencies(prisma);
     this.setupMiddlewares();
     this.setupRoutes();
     this.setupErrorHandlers();
@@ -75,8 +75,8 @@ class App {
     this.express.use('/api/v1/products', createProductRoutes(this.dependencies));
     this.express.use('/api/v1/product-image', createProductImageRoutes(this.dependencies));
     this.express.use('/api/v1/promotions', createPromotionRoutes(this.dependencies));
-    this.express.use('/api/v1/order-statuses', orderStatusRouter);
-    this.express.use('/api/v1/order-promotions', orderPromotionRouter);
+    this.express.use('/api/v1/order-statuses', createOrderStatusRoutes(this.dependencies));
+    this.express.use('/api/v1/order-promotions', createOrderPromotionRoutes(this.dependencies.orderPromotionRepository));
     this.express.use('/api/v1/orders', orderRouter);
     this.express.use('/api/v1/payments', paymentRouter);
     this.express.use('/api/v1/automation-logs', automationLogRouter);

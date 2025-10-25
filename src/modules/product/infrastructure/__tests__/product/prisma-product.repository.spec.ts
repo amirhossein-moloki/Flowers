@@ -1,4 +1,4 @@
-import { prismaMock } from '../helpers/prisma-mock.helper';
+import { prismaMock } from '@/modules/__tests__/helpers/prisma-mock.helper';
 import { PrismaProductRepository } from '@/modules/product/infrastructure/prisma-product.repository';
 import { Product } from '@/modules/product/domain/product.entity';
 import { ProductMapper } from '@/modules/product/infrastructure/product.mapper';
@@ -7,7 +7,7 @@ describe('PrismaProductRepository', () => {
   let repository: PrismaProductRepository;
 
   beforeEach(() => {
-    repository = new PrismaProductRepository();
+    repository = new PrismaProductRepository(prismaMock);
   });
 
   const productProps = {
@@ -42,13 +42,14 @@ describe('PrismaProductRepository', () => {
   test('findAll should return a paginated list of products', async () => {
     prismaMock.product.findMany.mockResolvedValue([prismaProduct]);
 
-    const products = await repository.findAll(1, 10);
+    const products = await repository.findAll({ page: 1, limit: 10 });
 
     expect(products).toHaveLength(1);
     expect(products[0]).toBeInstanceOf(Product);
     expect(prismaMock.product.findMany).toHaveBeenCalledWith({
       skip: 0,
       take: 10,
+      where: { vendorId: undefined },
     });
   });
 

@@ -98,8 +98,10 @@ import { DeletePromotionUseCase } from '@/modules/promotion/application/use-case
 import { GetAllPromotionsUseCase } from '@/modules/promotion/application/use-cases/get-all-promotions.usecase';
 import { IPromotionRepository } from '@/modules/promotion/domain/promotion.repository.interface';
 import { PrismaPromotionRepository } from '@/modules/promotion/infrastructure/prisma-promotion.repository';
+import { PrismaOrderPromotionRepository } from '@/modules/order-promotion/infrastructure/prisma-order-promotion.repository';
 
 export interface Dependencies {
+  orderPromotionRepository: PrismaOrderPromotionRepository;
   createPromotionUseCase: CreatePromotionUseCase;
   getPromotionUseCase: GetPromotionUseCase;
   updatePromotionUseCase: UpdatePromotionUseCase;
@@ -197,6 +199,7 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const productRepository = new PrismaProductRepository(prisma);
   const productImageRepository = new PrismaProductImageRepository(prisma);
   const promotionRepository = new PrismaPromotionRepository(prisma);
+  const orderPromotionRepository = new PrismaOrderPromotionRepository(prisma);
 
   const createPromotionUseCase = new CreatePromotionUseCase(promotionRepository);
   const getPromotionUseCase = new GetPromotionUseCase(promotionRepository);
@@ -273,6 +276,7 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const listDeliveriesUseCase = new ListDeliveriesUseCase(deliveryRepository);
 
   return {
+    orderPromotionRepository,
     createPromotionUseCase,
     getPromotionUseCase,
     updatePromotionUseCase,

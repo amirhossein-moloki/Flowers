@@ -1,30 +1,34 @@
 import { IOrderStatusRepository } from '../domain/order-status.repository';
 import { OrderStatus } from '../domain/order-status.entity';
-import { OrderStatus as PrismaOrderStatus } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import { OrderStatusMapper } from './order-status.mapper';
 import { Result, success } from '@/core/utils/result';
 
 export class PrismaOrderStatusRepository implements IOrderStatusRepository {
+  constructor(private readonly prisma: PrismaClient) {}
+
   async findById(id: string): Promise<Result<OrderStatus | null, Error>> {
-    const orderStatus = Object.values(PrismaOrderStatus).find((status) => status === id);
-    if (!orderStatus) {
-      return success(null);
-    }
-    const domainStatus = OrderStatus.create({
-      code: orderStatus,
-      name: orderStatus.charAt(0).toUpperCase() + orderStatus.slice(1).toLowerCase(),
-      display_order: Object.values(PrismaOrderStatus).indexOf(orderStatus),
-    });
-    return success(domainStatus.value);
+    const orderStatus = await this.prisma.orderStatus.findUnique({ where: { id } });
+    return success(orderStatus ? OrderStatusMapper.toDomain(orderStatus) : null);
   }
 
   async findAll(): Promise<Result<OrderStatus[], Error>> {
-    const orderStatuses = Object.values(PrismaOrderStatus).map((status, index) => {
-      return OrderStatus.create({
-        code: status,
-        name: status.charAt(0).toUpperCase() + status.slice(1).toLowerCase(),
-        display_order: index,
-      }).value;
+    const orderStatuses = await this.prisma.orderStatus.findMany();
+    return success(orderStatuses.map(OrderStatusMapper.toDomain));
+  }
+
+  async save(orderStatus: OrderStatus): Promise<Result<void, Error>> {
+    const data = OrderStatusMapper.toPersistence(orderStatus);
+    await this.prisma.orderStatus.upsert({
+      where: { id: orderStatus.id },
+      update: data,
+      create: data,
     });
-    return success(orderStatuses);
+    return success(undefined);
+  }
+
+  async delete(id: string): Promise<Result<void, Error>> {
+    await this.prisma.orderStatus.delete({ where: { id } });
+    return success(undefined);
   }
 }

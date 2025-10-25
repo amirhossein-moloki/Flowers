@@ -1,11 +1,22 @@
 import request from 'supertest';
 import express from 'express';
-import { deliveryRouter } from '../routes';
+import { createDeliveryRoutes } from '../routes';
 import { VehicleType } from '@/core/domain/enums';
+import { Dependencies } from '@/infrastructure/di';
+
+import { success } from '@/core/utils/result';
+
+const mockDependencies = {
+  createDeliveryUseCase: { execute: jest.fn().mockResolvedValue(success({ id: 'mock-id' })) },
+  getDeliveryUseCase: { execute: jest.fn().mockResolvedValue(success({ id: 'mock-id' })) },
+  updateDeliveryUseCase: { execute: jest.fn().mockResolvedValue(success({ id: 'mock-id', distance_meters: 1500 })) },
+  deleteDeliveryUseCase: { execute: jest.fn().mockResolvedValue(success(undefined)) },
+  listDeliveriesUseCase: { execute: jest.fn().mockResolvedValue(success([])) },
+} as unknown as Dependencies;
 
 const app = express();
 app.use(express.json());
-app.use('/deliveries', deliveryRouter);
+app.use('/deliveries', createDeliveryRoutes(mockDependencies));
 
 describe('Delivery Controller', () => {
   it('should create a new delivery and return 201', async () => {
@@ -27,13 +38,13 @@ describe('Delivery Controller', () => {
     expect(response.body).toHaveProperty('id');
   });
 
-  it('should return 400 for invalid create data', async () => {
+  it('should return 422 for invalid create data', async () => {
     const response = await request(app)
       .post('/deliveries')
       .send({
         order_id: 'order-1',
       });
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(422);
   });
 
   it('should get a list of deliveries and return 200', async () => {

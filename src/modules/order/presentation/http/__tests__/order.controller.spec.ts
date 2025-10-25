@@ -48,9 +48,14 @@ jest.mock('@/modules/order/application/use-cases/cancel-order.usecase', () => ({
 
 import orderRoutes from '../order.routes';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: jest.fn((req, res, next) => next()),
+  hasRole: jest.fn(() => (req, res, next) => next()),
+}));
+
 const app = express();
 app.use(express.json());
-app.use(orderRoutes);
+app.use('/api/v1/orders', orderRoutes);
 
 describe('OrderController', () => {
   beforeEach(() => {
@@ -82,7 +87,7 @@ describe('OrderController', () => {
       mockCreateOrderUseCase.execute.mockResolvedValue(success(order));
 
       const response = await request(app)
-        .post('/orders')
+        .post('/api/v1/orders')
         .send({
           userId,
           items: [{ productId: 'a1b2c3d4-e5f6-7890-1234-567890abcdef', quantity: 1, price: 100 }],
@@ -97,7 +102,7 @@ describe('OrderController', () => {
     it('should return an order and 200', async () => {
       mockGetOrderUseCase.execute.mockResolvedValue(success(order));
 
-      const response = await request(app).get(`/orders/${orderId}`);
+      const response = await request(app).get(`/api/v1/orders/${orderId}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id');
@@ -108,7 +113,7 @@ describe('OrderController', () => {
     it('should return an array of orders and 200', async () => {
       mockFindAllOrdersUseCase.execute.mockResolvedValue(success([order]));
 
-      const response = await request(app).get('/orders').query({ userId });
+      const response = await request(app).get('/api/v1/orders').query({ userId });
 
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Array);
@@ -120,7 +125,7 @@ describe('OrderController', () => {
       mockUpdateOrderUseCase.execute.mockResolvedValue(success(order));
 
       const response = await request(app)
-        .put(`/orders/${orderId}`)
+        .put(`/api/v1/orders/${orderId}`)
         .send({
           status: OrderStatus.PAID,
         });
@@ -134,7 +139,7 @@ describe('OrderController', () => {
     it('should delete an order and return 204', async () => {
       mockDeleteOrderUseCase.execute.mockResolvedValue(success(undefined));
 
-      const response = await request(app).delete(`/orders/${orderId}`);
+      const response = await request(app).delete(`/api/v1/orders/${orderId}`);
 
       expect(response.status).toBe(204);
     });
@@ -144,7 +149,7 @@ describe('OrderController', () => {
     it('should confirm an order and return 200', async () => {
       mockConfirmOrderUseCase.execute.mockResolvedValue(success(order));
 
-      const response = await request(app).post(`/orders/${orderId}/confirm`);
+      const response = await request(app).post(`/api/v1/orders/${orderId}/confirm`);
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id');
@@ -155,7 +160,7 @@ describe('OrderController', () => {
     it('should cancel an order and return 200', async () => {
       mockCancelOrderUseCase.execute.mockResolvedValue(success(order));
 
-      const response = await request(app).post(`/orders/${orderId}/cancel`);
+      const response = await request(app).post(`/api/v1/orders/${orderId}/cancel`);
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id');

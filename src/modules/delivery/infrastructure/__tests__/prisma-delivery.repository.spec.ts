@@ -1,7 +1,8 @@
 import { PrismaDeliveryRepository } from '../prisma-delivery.repository';
 import { Delivery } from '../../domain/delivery.entity';
-import { prismaMock } from '../../../__tests__/helpers/prisma-mock.helper';
+import { prismaMock } from '../../../../modules/__tests__/helpers/prisma-mock.helper';
 import { Delivery as PrismaDelivery, VehicleType } from '@prisma/client';
+import { DeliveryMapper } from '../delivery.mapper';
 
 jest.mock('../../../../infrastructure/database/prisma/prisma-client');
 
@@ -33,20 +34,18 @@ describe('PrismaDeliveryRepository', () => {
   };
 
   beforeEach(() => {
-    repository = new PrismaDeliveryRepository();
+    repository = new PrismaDeliveryRepository(prismaMock);
   });
 
   describe('save', () => {
     it('should call prisma.delivery.upsert with correct data', async () => {
       await repository.save(deliveryEntity!);
 
-      const { id, ...updateData } = deliveryEntity!.props;
+      const persistenceData = DeliveryMapper.toPersistence(deliveryEntity!);
+      const { id, ...updateData } = persistenceData;
       expect(prismaMock.delivery.upsert).toHaveBeenCalledWith({
         where: { id: deliveryEntity!.id },
-        create: {
-          id: deliveryEntity!.id,
-          ...deliveryProps,
-        },
+        create: persistenceData,
         update: updateData,
       });
     });

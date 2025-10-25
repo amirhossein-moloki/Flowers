@@ -12,39 +12,43 @@ import { DeleteOrderPromotionUseCase } from '@/modules/order-promotion/applicati
 import { PrismaOrderPromotionRepository } from '@/modules/order-promotion/infrastructure/prisma-order-promotion.repository';
 import { prisma } from '@/infrastructure/database/prisma/prisma-client';
 
-export const orderPromotionRouter = Router();
+export const createOrderPromotionRoutes = (
+  orderPromotionRepository: PrismaOrderPromotionRepository,
+): Router => {
+  const router = Router();
 
-const orderPromotionRepository = new PrismaOrderPromotionRepository(prisma);
+  const createOrderPromotionUseCase = new CreateOrderPromotionUseCase(orderPromotionRepository);
+  const getOrderPromotionUseCase = new GetOrderPromotionUseCase(orderPromotionRepository);
+  const updateOrderPromotionUseCase = new UpdateOrderPromotionUseCase(orderPromotionRepository);
+  const deleteOrderPromotionUseCase = new DeleteOrderPromotionUseCase(orderPromotionRepository);
 
-const createOrderPromotionUseCase = new CreateOrderPromotionUseCase(orderPromotionRepository);
-const getOrderPromotionUseCase = new GetOrderPromotionUseCase(orderPromotionRepository);
-const updateOrderPromotionUseCase = new UpdateOrderPromotionUseCase(orderPromotionRepository);
-const deleteOrderPromotionUseCase = new DeleteOrderPromotionUseCase(orderPromotionRepository);
+  const orderPromotionController = new OrderPromotionController(
+    createOrderPromotionUseCase,
+    getOrderPromotionUseCase,
+    updateOrderPromotionUseCase,
+    deleteOrderPromotionUseCase,
+  );
 
-const orderPromotionController = new OrderPromotionController(
-  createOrderPromotionUseCase,
-  getOrderPromotionUseCase,
-  updateOrderPromotionUseCase,
-  deleteOrderPromotionUseCase,
-);
+  router.use(isAuthenticated);
 
-orderPromotionRouter.use(isAuthenticated);
+  router.post(
+    '/',
+    hasRole([UserRole.ADMIN]),
+    validate(createOrderPromotionSchema),
+    orderPromotionController.create.bind(orderPromotionController),
+  );
+  router.get('/:id', orderPromotionController.findById.bind(orderPromotionController));
+  router.put(
+    '/:id',
+    hasRole([UserRole.ADMIN]),
+    validate(updateOrderPromotionSchema),
+    orderPromotionController.update.bind(orderPromotionController),
+  );
+  router.delete(
+    '/:id',
+    hasRole([UserRole.ADMIN]),
+    orderPromotionController.delete.bind(orderPromotionController),
+  );
 
-orderPromotionRouter.post(
-  '/',
-  hasRole([UserRole.ADMIN]),
-  validate(createOrderPromotionSchema),
-  orderPromotionController.create.bind(orderPromotionController),
-);
-orderPromotionRouter.get('/:id', orderPromotionController.findById.bind(orderPromotionController));
-orderPromotionRouter.put(
-  '/:id',
-  hasRole([UserRole.ADMIN]),
-  validate(updateOrderPromotionSchema),
-  orderPromotionController.update.bind(orderPromotionController),
-);
-orderPromotionRouter.delete(
-  '/:id',
-  hasRole([UserRole.ADMIN]),
-  orderPromotionController.delete.bind(orderPromotionController),
-);
+  return router;
+};

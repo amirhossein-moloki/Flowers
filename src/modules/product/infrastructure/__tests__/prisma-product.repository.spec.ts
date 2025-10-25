@@ -1,6 +1,6 @@
 import { PrismaProductRepository } from '../prisma-product.repository';
 import { Product } from '../../domain/product.entity';
-import { prismaMock } from '../../../__tests__/helpers/prisma-mock.helper';
+import { prismaMock } from '../../../../modules/__tests__/helpers/prisma-mock.helper';
 import { Product as PrismaProduct } from '@prisma/client';
 
 jest.mock('../../../../infrastructure/database/prisma/prisma-client');
@@ -19,7 +19,7 @@ describe('PrismaProductRepository', () => {
   };
 
   beforeEach(() => {
-    repository = new PrismaProductRepository();
+    repository = new PrismaProductRepository(prismaMock);
   });
 
   describe('save', () => {

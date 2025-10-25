@@ -3,8 +3,10 @@ import { jest } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
 import App from '@/app';
-import prismaClient from '@/infrastructure/database/prisma/prisma-client';
+import { prismaMock } from '@/modules/__tests__/helpers/prisma-mock.helper';
 import { OrderStatus } from '../../../domain/order-status.entity';
+import { Dependencies } from '@/infrastructure/di';
+import { success } from '@/core/utils/result';
 
 describe('OrderStatus API', () => {
   let app: express.Express;
@@ -13,14 +15,24 @@ describe('OrderStatus API', () => {
     jest.resetModules();
   });
 
-  beforeAll(async () => {
-    const application = new App(prismaClient);
+  let dependencies: Partial<Dependencies>;
+
+  beforeEach(() => {
+    dependencies = {
+      getAllOrderStatusesUseCase: {
+        execute: jest.fn().mockResolvedValue(success([
+          OrderStatus.create({ code: 'PENDING', name: 'Pending', display_order: 1 }).value,
+          OrderStatus.create({ code: 'SHIPPED', name: 'Shipped', display_order: 2 }).value,
+        ])),
+      },
+      getOrderStatusUseCase: {
+        execute: jest.fn().mockResolvedValue(success(OrderStatus.create({ code: 'PENDING', name: 'Pending', display_order: 1 }).value)),
+      },
+    };
+    const application = new App(prismaMock, dependencies as Dependencies);
     app = application.getServer();
   });
 
-  afterAll(async () => {
-    await prismaClient.$disconnect();
-  });
 
   describe('GET /order-statuses', () => {
     it('should return a list of order statuses', async () => {
@@ -30,7 +42,7 @@ describe('OrderStatus API', () => {
       // Assert
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Array);
-      expect(response.body.length).toBe(5);
+      expect(response.body.length).toBe(2);
       expect(response.body[0]).toHaveProperty('code', 'PENDING');
     });
   });
@@ -38,7 +50,7 @@ describe('OrderStatus API', () => {
   describe('GET /order-statuses/:id', () => {
     it('should return an order status by id', async () => {
       // Act
-      const response = await request(app).get(`/api/v1/order-statuses/PENDING`);
+      const response = await request(app).get(`/api/v1/order-statuses/1`);
 
       // Assert
       expect(response.status).toBe(200);
@@ -46,6 +58,7 @@ describe('OrderStatus API', () => {
     });
 
     it('should return 404 if the order status does not exist', async () => {
+      (dependencies.getOrderStatusUseCase.execute as jest.Mock).mockResolvedValue(success(null));
       // Act
       const response = await request(app).get('/api/v1/order-statuses/non-existent-id');
 

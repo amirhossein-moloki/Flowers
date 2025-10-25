@@ -1,6 +1,11 @@
 import 'reflect-metadata';
 import request from 'supertest';
 import express from 'express';
+
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: jest.fn((req, res, next) => next()),
+  hasRole: jest.fn(() => (req, res, next) => next()),
+}));
 import { createProductRoutes } from '../routes';
 import { Dependencies } from '@/infrastructure/di';
 import { mock, mockDeep } from 'jest-mock-extended';
@@ -37,13 +42,14 @@ describe('Product Routes', () => {
         description: 'Test Description',
         price: 100,
         stock: 10,
+        vendorId: 'some-vendor-id',
       }).value as Product;
 
       (mockDependencies.createProductUseCase.execute as jest.Mock).mockResolvedValue(success(product));
 
       const response = await request(app)
         .post('/products')
-        .send({ name: 'Test Product', description: 'Test Description', price: 100, stock: 10 });
+        .send({ name: 'Test Product', description: 'Test Description', price: 100, stock: 10, vendorId: 'some-vendor-id' });
 
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');

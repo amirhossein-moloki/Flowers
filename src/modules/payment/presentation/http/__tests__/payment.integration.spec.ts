@@ -1,6 +1,6 @@
 import request from 'supertest';
 import prismaClient from '@/infrastructure/database/prisma/prisma-client';
-import { Order, User } from '@prisma/client';
+import { Order, User, PaymentMethod, PaymentStatus, OrderStatus } from '@prisma/client';
 import App from '@/app';
 
 let app: App;
@@ -21,10 +21,11 @@ describe('Payment Integration Tests', () => {
 
   beforeEach(async () => {
     // Create a user and an order for testing
+    const uniqueId = new Date().getTime();
     user = await prismaClient.user.create({
       data: {
-        email: 'test@example.com',
-        username: 'testuser',
+        email: `test${uniqueId}@example.com`,
+        username: `testuser${uniqueId}`,
         password: 'password',
       },
     });
@@ -33,13 +34,14 @@ describe('Payment Integration Tests', () => {
       data: {
         userId: user.id,
         total: 100,
-        status: 'PENDING',
+        status: OrderStatus.PENDING,
       },
     });
   });
 
   afterEach(async () => {
     await prismaClient.payment.deleteMany({});
+    await prismaClient.orderItem.deleteMany({});
     await prismaClient.order.deleteMany({});
     await prismaClient.user.deleteMany({});
   });
@@ -49,7 +51,7 @@ describe('Payment Integration Tests', () => {
       const createPaymentDto = {
         orderId: order.id,
         amount: 100,
-        method: 'ONLINE',
+        method: PaymentMethod.ONLINE,
       };
 
       const response = await request(server)
@@ -66,7 +68,7 @@ describe('Payment Integration Tests', () => {
       const createPaymentDto = {
         orderId: order.id,
         amount: 100,
-        method: 'ONLINE',
+        method: PaymentMethod.ONLINE,
         idempotencyKey,
       };
 
@@ -104,8 +106,8 @@ describe('Payment Integration Tests', () => {
         data: {
           order_id: order.id,
           amount: 100,
-          method: 'ONLINE',
-          status: 'PENDING',
+          method: PaymentMethod.ONLINE,
+          status: PaymentStatus.PENDING,
           gateway: 'test',
           gateway_ref: 'test',
         },

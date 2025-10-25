@@ -3,7 +3,7 @@ import { CreateOrderPromotionUseCase } from '@/modules/order-promotion/applicati
 import { GetOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/get-order-promotion.usecase';
 import { UpdateOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/update-order-promotion.usecase';
 import { DeleteOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/delete-order-promotion.usecase';
-import { OrderPromotionPresenter } from './presenters/order-promotion.presenter';
+import { OrderPromotionPresenter } from '../order-promotion.presenter';
 
 export class OrderPromotionController {
   constructor(
@@ -28,11 +28,12 @@ export class OrderPromotionController {
       const result = await this.createOrderPromotionUseCase.execute(req.body);
 
       if (result.success) {
-        res.status(201).json(OrderPromotionPresenter.toHTTP(result.value));
+        res.status(201).json(OrderPromotionPresenter.toDTO(result.value));
       } else {
         this.handleError(res, result.error);
       }
     } catch (error) {
+      console.error('Error in OrderPromotionController.create:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   }
@@ -43,11 +44,12 @@ export class OrderPromotionController {
       const result = await this.getOrderPromotionUseCase.execute({ id });
 
       if (result.success) {
-        res.status(200).json(OrderPromotionPresenter.toHTTP(result.value));
+        res.status(200).json(OrderPromotionPresenter.toDTO(result.value));
       } else {
         this.handleError(res, result.error);
       }
     } catch (error) {
+      console.error('Error in OrderPromotionController.findById:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   }
@@ -61,11 +63,12 @@ export class OrderPromotionController {
       });
 
       if (result.success) {
-        res.status(200).json(OrderPromotionPresenter.toHTTP(result.value));
+        res.status(200).json(OrderPromotionPresenter.toDTO(result.value));
       } else {
         this.handleError(res, result.error);
       }
     } catch (error) {
+      console.error('Error in OrderPromotionController.update:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   }

@@ -22,9 +22,14 @@ jest.mock('@/modules/payment/application/use-cases/verify-payment.usecase', () =
 
 import paymentRoutes from '../payment.routes';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: jest.fn((req, res, next) => next()),
+  hasRole: jest.fn(() => (req, res, next) => next()),
+}));
+
 const app = express();
 app.use(express.json());
-app.use(paymentRoutes);
+app.use('/api/v1/payments', paymentRoutes);
 
 describe('PaymentController', () => {
   beforeEach(() => {
@@ -52,7 +57,7 @@ describe('PaymentController', () => {
       mockCreatePaymentUseCase.execute.mockResolvedValue(success(payment));
 
       const response = await request(app)
-        .post('/payments')
+        .post('/api/v1/payments')
         .send({
           orderId: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
           amount: 100,
@@ -69,7 +74,7 @@ describe('PaymentController', () => {
       mockVerifyPaymentUseCase.execute.mockResolvedValue(success(payment));
 
       const response = await request(app)
-        .post('/payments/verify')
+        .post('/api/v1/payments/verify')
         .send({
           paymentId: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
           verificationCode: '123456',
