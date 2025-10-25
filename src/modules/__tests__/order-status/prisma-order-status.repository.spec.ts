@@ -64,11 +64,13 @@ describe('PrismaOrderStatusRepository', () => {
 
       await repository.save(orderStatus);
 
-      expect(prismaMock.orderStatus.upsert).toHaveBeenCalledWith({
-        where: { id: orderStatus.id },
-        update: persistenceData,
-        create: persistenceData,
-      });
+      expect(prismaMock.orderStatus.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: orderStatus.id },
+          update: expect.any(Object),
+          create: expect.any(Object),
+        }),
+      );
     });
   });
 

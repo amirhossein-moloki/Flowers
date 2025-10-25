@@ -23,9 +23,9 @@ export class UpdateOrderPromotionUseCase {
         return failure(HttpError.internalServerError(updatedOrderPromotionResult.error.message));
     }
 
-    const updatedOrderPromotion = updatedOrderPromotionResult.value;
+    let updatedOrderPromotion = updatedOrderPromotionResult.value;
 
-    await this.orderPromotionRepository.save(updatedOrderPromotion);
+    updatedOrderPromotion = await this.orderPromotionRepository.save(updatedOrderPromotion);
 
     const orderPromotionDto = OrderPromotionMapper.toDto(updatedOrderPromotion);
     return success(orderPromotionDto);

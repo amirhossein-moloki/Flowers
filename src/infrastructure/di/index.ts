@@ -99,9 +99,19 @@ import { GetAllPromotionsUseCase } from '@/modules/promotion/application/use-cas
 import { IPromotionRepository } from '@/modules/promotion/domain/promotion.repository.interface';
 import { PrismaPromotionRepository } from '@/modules/promotion/infrastructure/prisma-promotion.repository';
 import { PrismaOrderPromotionRepository } from '@/modules/order-promotion/infrastructure/prisma-order-promotion.repository';
+import {
+  CreateOrderPromotionUseCase,
+  GetOrderPromotionUseCase,
+  UpdateOrderPromotionUseCase,
+  DeleteOrderPromotionUseCase,
+} from '@/modules/order-promotion/application/use-cases';
 
 export interface Dependencies {
   orderPromotionRepository: PrismaOrderPromotionRepository;
+  createOrderPromotionUseCase: CreateOrderPromotionUseCase;
+  getOrderPromotionUseCase: GetOrderPromotionUseCase;
+  updateOrderPromotionUseCase: UpdateOrderPromotionUseCase;
+  deleteOrderPromotionUseCase: DeleteOrderPromotionUseCase;
   createPromotionUseCase: CreatePromotionUseCase;
   getPromotionUseCase: GetPromotionUseCase;
   updatePromotionUseCase: UpdatePromotionUseCase;
@@ -201,6 +211,10 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const promotionRepository = new PrismaPromotionRepository(prisma);
   const orderPromotionRepository = new PrismaOrderPromotionRepository(prisma);
 
+  const createOrderPromotionUseCase = new CreateOrderPromotionUseCase(orderPromotionRepository);
+  const getOrderPromotionUseCase = new GetOrderPromotionUseCase(orderPromotionRepository);
+  const updateOrderPromotionUseCase = new UpdateOrderPromotionUseCase(orderPromotionRepository);
+  const deleteOrderPromotionUseCase = new DeleteOrderPromotionUseCase(orderPromotionRepository);
   const createPromotionUseCase = new CreatePromotionUseCase(promotionRepository);
   const getPromotionUseCase = new GetPromotionUseCase(promotionRepository);
   const updatePromotionUseCase = new UpdatePromotionUseCase(promotionRepository);
@@ -277,6 +291,10 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
 
   return {
     orderPromotionRepository,
+    createOrderPromotionUseCase,
+    getOrderPromotionUseCase,
+    updateOrderPromotionUseCase,
+    deleteOrderPromotionUseCase,
     createPromotionUseCase,
     getPromotionUseCase,
     updatePromotionUseCase,

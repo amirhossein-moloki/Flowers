@@ -49,10 +49,11 @@ describe('Product Integration Tests', () => {
 
   afterEach(async () => {
     authenticatedUser = null;
+    await prisma.productImage.deleteMany({});
     await prisma.product.deleteMany({});
+    await prisma.vendorOutlet.deleteMany({});
     await prisma.vendor.deleteMany({});
     jest.clearAllMocks();
-    jest.resetModules();
   });
 
   afterAll(async () => {

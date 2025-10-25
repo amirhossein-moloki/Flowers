@@ -14,13 +14,14 @@ export class PrismaOrderPromotionRepository implements IOrderPromotionRepository
     return orderPromotions.map(OrderPromotionMapper.toDomain);
   }
 
-  async save(orderPromotion: OrderPromotion): Promise<void> {
+  async save(orderPromotion: OrderPromotion): Promise<OrderPromotion> {
     const data = OrderPromotionMapper.toPersistence(orderPromotion);
-    await prisma.orderPromotion.upsert({
+    const savedOrderPromotion = await prisma.orderPromotion.upsert({
       where: { id: orderPromotion.id },
       update: data,
       create: data,
     });
+    return OrderPromotionMapper.toDomain(savedOrderPromotion);
   }
 
   async delete(id: string): Promise<void> {

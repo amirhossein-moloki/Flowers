@@ -11,7 +11,7 @@ import { CreateOrderPromotionUseCase } from '@/modules/order-promotion/applicati
 import { GetOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/get-order-promotion.usecase';
 import { UpdateOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/update-order-promotion.usecase';
 import { DeleteOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/delete-order-promotion.usecase';
-import { OrderPromotion } from '@/modules/order-promotion/domain/order-promotion.entity';
+import { OrderPromotionDto } from '@/modules/order-promotion/application/dtos/order-promotion.dto';
 import { success } from '@/core/utils/result';
 
 // 1. Create mock instances
@@ -52,15 +52,12 @@ const mockOrderPromotionRepository = mock<PrismaOrderPromotionRepository>();
 app.use('/api/v1/order-promotions', createOrderPromotionRoutes(mockOrderPromotionRepository));
 
 describe('OrderPromotionController', () => {
-  const orderPromotion = OrderPromotion.create(
-    {
-      order_id: 'a7e5e3c2-c5f1-4a7b-8b0e-3e1a6c4c5b3d',
-      promotion_id: 'b8f6e4c3-c6f2-4b8c-9a1f-4d2a7d5e6c4e',
-      discount_applied: 10,
-      created_at: new Date(),
-    },
-    'c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f',
-  ).value as OrderPromotion;
+  const orderPromotion: OrderPromotionDto = {
+    id: 'c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f',
+    order_id: 'a7e5e3c2-c5f1-4a7b-8b0e-3e1a6c4c5b3d',
+    promotion_id: 'b8f6e4c3-c6f2-4b8c-9a1f-4d2a7d5e6c4e',
+    discount_applied: 10,
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -106,13 +103,10 @@ describe('OrderPromotionController', () => {
 
   describe('PUT /order-promotions/:id', () => {
     it('should return 200 and the updated order-promotion', async () => {
-      const updatedOrderPromotion = OrderPromotion.create(
-        {
-          ...orderPromotion.props,
-          discount_applied: 15,
-        },
-        orderPromotion.id,
-      ).value as OrderPromotion;
+      const updatedOrderPromotion: OrderPromotionDto = {
+        ...orderPromotion,
+        discount_applied: 15,
+      };
       mockUpdateOrderPromotionUseCase.execute.mockResolvedValue(success(updatedOrderPromotion));
 
       const response = await request(app)

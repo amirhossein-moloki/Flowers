@@ -49,6 +49,7 @@ describe('PrismaOrderPromotionRepository', () => {
   });
 
   test('save should call upsert on prisma client', async () => {
+    prismaMock.orderPromotion.upsert.mockResolvedValue(prismaOrderPromotion);
     await repository.save(orderPromotionEntity);
 
     expect(prismaMock.orderPromotion.upsert).toHaveBeenCalledWith({
