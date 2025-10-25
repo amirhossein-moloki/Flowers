@@ -1,7 +1,7 @@
 import request from 'supertest';
 import App from '@/app';
 import prismaClient from '@/infrastructure/database/prisma/prisma-client';
-import { User, UserRole } from '@prisma/client';
+import { User, UserRole, OrderStatus } from '@prisma/client';
 
 jest.mock('@prisma/client', () => {
   const originalModule = jest.requireActual('@prisma/client');
@@ -33,12 +33,16 @@ describe('Order Integration Tests', () => {
 
   beforeEach(async () => {
     app = new App(prismaClient);
+    await prismaClient.orderItem.deleteMany({});
+    await prismaClient.payment.deleteMany({});
+    await prismaClient.order.deleteMany({});
+    await prismaClient.user.deleteMany({});
     mockUser = await prismaClient.user.create({
       data: {
         email: 'testuser@example.com',
         password: 'password',
         username: 'testuser',
-        role: UserRole.USER,
+        role: UserRole.CUSTOMER,
       },
     });
   });
@@ -47,6 +51,7 @@ describe('Order Integration Tests', () => {
     await prismaClient.orderItem.deleteMany({});
     await prismaClient.order.deleteMany({});
     await prismaClient.product.deleteMany({});
+    await prismaClient.vendorOutlet.deleteMany({});
     await prismaClient.vendor.deleteMany({});
     await prismaClient.user.deleteMany({});
     mockUser = null;
@@ -122,7 +127,7 @@ describe('Order Integration Tests', () => {
         data: {
           userId: mockUser?.id,
           total: 100,
-          status: 'PENDING',
+          status: OrderStatus.PENDING,
           items: {
             create: {
               productId: product.id,
@@ -172,7 +177,7 @@ describe('Order Integration Tests', () => {
         data: {
           userId: mockUser?.id,
           total: 100,
-          status: 'PENDING',
+          status: OrderStatus.PENDING,
           items: {
             create: {
               productId: product.id,
@@ -213,7 +218,7 @@ describe('Order Integration Tests', () => {
         data: {
           userId: mockUser?.id,
           total: 100,
-          status: 'PENDING',
+          status: OrderStatus.PENDING,
           items: {
             create: {
               productId: product.id,
@@ -260,7 +265,7 @@ describe('Order Integration Tests', () => {
         data: {
           userId: mockUser?.id,
           total: 100,
-          status: 'PENDING',
+          status: OrderStatus.PENDING,
           items: {
             create: {
               productId: product.id,
@@ -301,7 +306,7 @@ describe('Order Integration Tests', () => {
         data: {
           userId: mockUser?.id,
           total: 100,
-          status: 'PENDING',
+          status: OrderStatus.PENDING,
           items: {
             create: {
               productId: product.id,
@@ -343,7 +348,7 @@ describe('Order Integration Tests', () => {
         data: {
           userId: mockUser?.id,
           total: 100,
-          status: 'PENDING',
+          status: OrderStatus.PENDING,
           items: {
             create: {
               productId: product.id,

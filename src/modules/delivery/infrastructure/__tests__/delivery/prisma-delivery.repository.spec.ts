@@ -1,4 +1,4 @@
-import { prismaMock } from '../helpers/prisma-mock.helper';
+import { prismaMock } from '@/modules/__tests__/helpers/prisma-mock.helper';
 import { PrismaDeliveryRepository } from '@/modules/delivery/infrastructure/prisma-delivery.repository';
 import { Delivery } from '@/modules/delivery/domain/delivery.entity';
 import { DeliveryMapper } from '@/modules/delivery/infrastructure/delivery.mapper';
@@ -8,7 +8,7 @@ describe('PrismaDeliveryRepository', () => {
   let repository: PrismaDeliveryRepository;
 
   beforeEach(() => {
-    repository = new PrismaDeliveryRepository();
+    repository = new PrismaDeliveryRepository(prismaMock);
   });
 
   const deliveryProps = {
@@ -58,11 +58,12 @@ describe('PrismaDeliveryRepository', () => {
 
   test('save should call upsert on prisma client', async () => {
     await repository.save(deliveryEntity);
-    const { id, ...updateData } = DeliveryMapper.toPersistence(deliveryEntity);
+    const persistenceData = DeliveryMapper.toPersistence(deliveryEntity);
+    const { id, ...updateData } = persistenceData;
 
     expect(prismaMock.delivery.upsert).toHaveBeenCalledWith({
       where: { id: deliveryEntity.id },
-      create: DeliveryMapper.toPersistence(deliveryEntity),
+      create: persistenceData,
       update: updateData,
     });
   });

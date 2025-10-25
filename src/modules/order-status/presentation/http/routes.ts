@@ -1,20 +1,18 @@
 import { Router } from 'express';
 import { OrderStatusController } from './controller';
-import { PrismaOrderStatusRepository } from '../../infrastructure/prisma-order-status.repository';
 import { GetAllOrderStatusesUseCase } from '../../application/use-cases/get-all-order-statuses.usecase';
 import { GetOrderStatusUseCase } from '../../application/use-cases/get-order-status.usecase';
-import { prismaClient } from '@/infrastructure/database/prisma/prisma-client';
+import { Dependencies } from '@/infrastructure/di';
 
-const router = Router();
+export const createOrderStatusRoutes = (dependencies: Dependencies): Router => {
+  const router = Router();
+  const controller = new OrderStatusController(
+    dependencies.getAllOrderStatusesUseCase,
+    dependencies.getOrderStatusUseCase,
+  );
 
-// Dependencies
-const orderStatusRepository = new PrismaOrderStatusRepository(prismaClient);
-const getAllOrderStatusesUseCase = new GetAllOrderStatusesUseCase(orderStatusRepository);
-const getOrderStatusUseCase = new GetOrderStatusUseCase(orderStatusRepository);
-const orderStatusController = new OrderStatusController(getAllOrderStatusesUseCase, getOrderStatusUseCase);
+  router.get('/', controller.getAll.bind(controller));
+  router.get('/:id', controller.getById.bind(controller));
 
-// Routes
-router.get('/', orderStatusController.getAll);
-router.get('/:id', orderStatusController.getById);
-
-export default router;
+  return router;
+}

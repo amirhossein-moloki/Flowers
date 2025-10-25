@@ -18,10 +18,15 @@ export class CreatePaymentUseCase {
       }
     }
 
+    const paymentMethod = dto.method.toUpperCase() as keyof typeof PaymentMethod;
+    if (!(paymentMethod in PaymentMethod)) {
+      return failure(HttpError.badRequest('Invalid payment method'));
+    }
+
     const paymentResult = Payment.create({
       order_id: dto.orderId,
       amount: dto.amount,
-      method: dto.method as PaymentMethod,
+      method: PaymentMethod[paymentMethod],
       status: PaymentStatus.PENDING,
       gateway: 'test-gateway',
       gateway_ref: 'test-ref',

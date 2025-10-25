@@ -30,8 +30,8 @@ export class PaymentMapper {
     return {
       id: payment.id,
       order_id: props.order_id,
-      method: props.method.toUpperCase() as any,
-      status: props.status.toUpperCase() as any,
+      method: String(props.method).toUpperCase(),
+      status: String(props.status).toUpperCase(),
       gateway: props.gateway,
       gateway_ref: props.gateway_ref,
       amount: props.amount,

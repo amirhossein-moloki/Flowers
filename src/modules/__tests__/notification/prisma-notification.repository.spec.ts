@@ -13,13 +13,9 @@ describe('PrismaNotificationRepository', () => {
   });
 
   const notificationProps = {
-    user_id: 'user-123',
-    order_id: 'order-456',
-    channel: NotificationChannel.EMAIL,
-    template: 'order-confirmation',
-    payload_json: { total: 100 },
-    status: 'sent',
-    sent_at: new Date(),
+    title: 'Test Notification',
+    message: 'This is a test notification.',
+    recipient: 'test@example.com',
   };
   const notificationResult = Notification.create(notificationProps, 'notif-id-1');
   if (!notificationResult.success) {
@@ -30,9 +26,8 @@ describe('PrismaNotificationRepository', () => {
   const prismaNotification = {
     id: notificationEntity.id,
     ...notificationProps,
-    payload_json: JSON.stringify(notificationProps.payload_json), // Prisma stores JSON as string
-    created_at: new Date(),
-    updated_at: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   test('findById should return a notification entity when found', async () => {

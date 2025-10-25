@@ -22,9 +22,9 @@ export class CreateNotificationUseCase {
 
     const notification = notificationResult.value;
 
-    const savedNotification = await this.notificationRepository.save(notification);
+    await this.notificationRepository.save(notification);
 
-    const notificationDto = NotificationMapper.toDto(savedNotification);
+    const notificationDto = NotificationMapper.toDto(notification);
     return success(notificationDto);
   }
 }

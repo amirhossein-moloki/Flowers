@@ -20,7 +20,7 @@ describe('Order-Promotion Integration Tests', () => {
   let adminAccessToken: string;
 
   beforeAll(async () => {
-    app = new App(prisma);
+    app = new App();
 
     user = await prisma.user.create({
       data: {
@@ -42,10 +42,13 @@ describe('Order-Promotion Integration Tests', () => {
   });
 
   afterAll(async () => {
+    await prisma.payment.deleteMany();
+    await prisma.orderItem.deleteMany();
     await prisma.order.deleteMany();
     await prisma.user.deleteMany({
       where: { id: { in: [user.id, admin.id] } },
     });
+    await prisma.$disconnect();
   });
 
   let order: any;
@@ -55,6 +58,8 @@ describe('Order-Promotion Integration Tests', () => {
     (isAuthenticated as jest.Mock).mockClear();
     await prisma.orderPromotion.deleteMany();
     await prisma.promotion.deleteMany();
+    await prisma.payment.deleteMany();
+    await prisma.orderItem.deleteMany();
     await prisma.order.deleteMany();
 
     order = await prisma.order.create({

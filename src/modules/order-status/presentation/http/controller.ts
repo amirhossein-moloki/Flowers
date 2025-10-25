@@ -36,6 +36,9 @@ export class OrderStatusController {
       if (!result.success) {
         return this.handleError(res, result.error);
       }
+      if (!result.value) {
+        return res.status(404).json({ error: 'Order status not found' });
+      }
       const orderStatusDTO = OrderStatusPresenter.toDTO(result.value);
       return res.status(200).json(orderStatusDTO);
     } catch (error) {

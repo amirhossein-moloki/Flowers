@@ -11,6 +11,11 @@ export class PrismaDeliveryRepository implements IDeliveryRepository {
     return delivery ? DeliveryMapper.toDomain(delivery) : null;
   }
 
+  async findByOrderId(orderId: string): Promise<Delivery | null> {
+    const delivery = await this.prisma.delivery.findUnique({ where: { order_id: orderId } });
+    return delivery ? DeliveryMapper.toDomain(delivery) : null;
+  }
+
   async findAll(page: number, pageSize: number): Promise<Delivery[]> {
     const deliveries = await this.prisma.delivery.findMany({
       skip: (page - 1) * pageSize,
@@ -21,9 +26,10 @@ export class PrismaDeliveryRepository implements IDeliveryRepository {
 
   async save(delivery: Delivery): Promise<void> {
     const data = DeliveryMapper.toPersistence(delivery);
+    const { id, ...updateData } = data;
     await this.prisma.delivery.upsert({
       where: { id: delivery.id },
-      update: data,
+      update: updateData,
       create: data,
     });
   }

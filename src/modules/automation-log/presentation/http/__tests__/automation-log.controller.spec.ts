@@ -18,7 +18,7 @@ import automationLogRoutes from '../automation-log.routes';
 
 const app = express();
 app.use(express.json());
-app.use(automationLogRoutes);
+app.use('/automation-logs', automationLogRoutes);
 
 describe('AutomationLogController', () => {
   beforeEach(() => {

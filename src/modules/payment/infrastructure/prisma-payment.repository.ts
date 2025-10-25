@@ -14,6 +14,11 @@ export class PrismaPaymentRepository implements IPaymentRepository {
     return payment ? PaymentMapper.toDomain(payment) : null;
   }
 
+  async findByOrderId(orderId: string): Promise<Payment | null> {
+    const payment = await prisma.payment.findUnique({ where: { order_id: orderId } });
+    return payment ? PaymentMapper.toDomain(payment) : null;
+  }
+
   async findAll(): Promise<Payment[]> {
     const payments = await prisma.payment.findMany();
     return payments.map(PaymentMapper.toDomain);

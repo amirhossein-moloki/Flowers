@@ -18,14 +18,13 @@ export class PrismaNotificationRepository implements INotificationRepository {
     return notifications.map(NotificationMapper.toDomain);
   }
 
-  async save(notification: Notification): Promise<Notification> {
+  async save(notification: Notification): Promise<void> {
     const data = NotificationMapper.toPersistence(notification);
-    const savedNotification = await this.prisma.notification.upsert({
+    await this.prisma.notification.upsert({
       where: { id: notification.id },
       create: data,
       update: data,
     });
-    return NotificationMapper.toDomain(savedNotification);
   }
 
   async delete(id: string): Promise<void> {

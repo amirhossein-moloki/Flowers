@@ -27,6 +27,8 @@ describe('Delivery Integration Tests', () => {
     await prisma.deliveryStatus.deleteMany({});
     await prisma.user.deleteMany({});
     await prisma.product.deleteMany({});
+    await prisma.vendorOutlet.deleteMany({});
+    await prisma.vendor.deleteMany({});
 
     user = await prisma.user.create({
       data: {
@@ -37,11 +39,21 @@ describe('Delivery Integration Tests', () => {
       },
     });
 
+    const vendor = await prisma.vendor.create({
+      data: {
+        name: 'Test Vendor',
+        email: `vendor-${randomUUID()}@example.com`,
+        phone: `1234567890-${randomUUID()}`,
+        address: '123 Test St',
+      },
+    });
+
     const product = await prisma.product.create({
       data: {
         name: 'Test Product',
         price: 10.0,
         stock: 100,
+        vendorId: vendor.id,
       },
     });
 

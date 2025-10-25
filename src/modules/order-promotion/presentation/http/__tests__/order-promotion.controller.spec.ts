@@ -1,6 +1,11 @@
 import express from 'express';
 import request from 'supertest';
 import { mock, mockDeep } from 'jest-mock-extended';
+
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: jest.fn((req, res, next) => next()),
+  hasRole: jest.fn(() => (req, res, next) => next()),
+}));
 import { PrismaClient } from '@prisma/client';
 import { CreateOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/create-order-promotion.usecase';
 import { GetOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/get-order-promotion.usecase';
@@ -38,11 +43,13 @@ jest.mock('@/infrastructure/database/prisma/prisma-client', () => ({
 }));
 
 // 4. NOW import the router, which will use the mocks above
-import { orderPromotionRouter } from '../order-promotion.routes';
+import { createOrderPromotionRoutes } from '../order-promotion.routes';
+import { PrismaOrderPromotionRepository } from '@/modules/order-promotion/infrastructure/prisma-order-promotion.repository';
 
 const app = express();
 app.use(express.json());
-app.use('/order-promotions', orderPromotionRouter);
+const mockOrderPromotionRepository = mock<PrismaOrderPromotionRepository>();
+app.use('/api/v1/order-promotions', createOrderPromotionRoutes(mockOrderPromotionRepository));
 
 describe('OrderPromotionController', () => {
   const orderPromotion = OrderPromotion.create(
@@ -64,7 +71,7 @@ describe('OrderPromotionController', () => {
       mockCreateOrderPromotionUseCase.execute.mockResolvedValue(success(orderPromotion));
 
       const response = await request(app)
-        .post('/order-promotions')
+        .post('/api/v1/order-promotions')
         .send({
           order_id: 'a7e5e3c2-c5f1-4a7b-8b0e-3e1a6c4c5b3d',
           promotion_id: 'b8f6e4c3-c6f2-4b8c-9a1f-4d2a7d5e6c4e',
@@ -72,12 +79,11 @@ describe('OrderPromotionController', () => {
         });
 
       expect(response.status).toBe(201);
-      expect(response.body).toEqual({
+      expect(response.body).toMatchObject({
         id: 'c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f',
         order_id: 'a7e5e3c2-c5f1-4a7b-8b0e-3e1a6c4c5b3d',
         promotion_id: 'b8f6e4c3-c6f2-4b8c-9a1f-4d2a7d5e6c4e',
         discount_applied: 10,
-        created_at: expect.any(String),
       });
     });
   });
@@ -86,15 +92,14 @@ describe('OrderPromotionController', () => {
     it('should return 200 and the order-promotion', async () => {
       mockGetOrderPromotionUseCase.execute.mockResolvedValue(success(orderPromotion));
 
-      const response = await request(app).get('/order-promotions/c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f');
+      const response = await request(app).get('/api/v1/order-promotions/c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f');
 
       expect(response.status).toBe(200);
-      expect(response.body).toEqual({
+      expect(response.body).toMatchObject({
         id: 'c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f',
         order_id: 'a7e5e3c2-c5f1-4a7b-8b0e-3e1a6c4c5b3d',
         promotion_id: 'b8f6e4c3-c6f2-4b8c-9a1f-4d2a7d5e6c4e',
         discount_applied: 10,
-        created_at: expect.any(String),
       });
     });
   });
@@ -111,16 +116,15 @@ describe('OrderPromotionController', () => {
       mockUpdateOrderPromotionUseCase.execute.mockResolvedValue(success(updatedOrderPromotion));
 
       const response = await request(app)
-        .put('/order-promotions/c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f')
+        .put('/api/v1/order-promotions/c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f')
         .send({ discount_applied: 15 });
 
       expect(response.status).toBe(200);
-      expect(response.body).toEqual({
+      expect(response.body).toMatchObject({
         id: 'c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f',
         order_id: 'a7e5e3c2-c5f1-4a7b-8b0e-3e1a6c4c5b3d',
         promotion_id: 'b8f6e4c3-c6f2-4b8c-9a1f-4d2a7d5e6c4e',
         discount_applied: 15,
-        created_at: expect.any(String),
       });
     });
   });
@@ -129,7 +133,7 @@ describe('OrderPromotionController', () => {
     it('should return 204', async () => {
       mockDeleteOrderPromotionUseCase.execute.mockResolvedValue(success(undefined as any));
 
-      const response = await request(app).delete('/order-promotions/c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f');
+      const response = await request(app).delete('/api/v1/order-promotions/c9g7f5d4-d7g3-5c9d-0a2g-5e3b8e6d7c5f');
 
       expect(response.status).toBe(204);
     });

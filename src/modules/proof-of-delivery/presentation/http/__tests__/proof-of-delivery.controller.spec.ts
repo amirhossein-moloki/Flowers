@@ -4,6 +4,11 @@ import { createProofOfDeliveryRoutes } from '../routes';
 import { Dependencies } from '@/infrastructure/di';
 import { success } from '@/core/utils/result';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: jest.fn((req, res, next) => next()),
+  hasRole: jest.fn(() => (req, res, next) => next()),
+}));
+
 describe('ProofOfDelivery Controller', () => {
   let app: express.Express;
   let dependencies: Partial<Dependencies>;

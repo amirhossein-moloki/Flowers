@@ -55,22 +55,23 @@ describe('AutomationLog Integration Tests', () => {
 
   beforeEach(async () => {
     // Create entities in an order that respects dependencies
+    const uniqueId = new Date().getTime();
     user = await prisma.user.create({
       data: {
-        email: faker.internet.email(),
-        username: faker.internet.userName(),
-        password: faker.internet.password(),
+        email: `user.${uniqueId}@example.com`,
+        username: `user${uniqueId}`,
+        password: 'password',
         role: 'CUSTOMER',
       },
     });
 
     vendor = await prisma.vendor.create({
       data: {
-        name: faker.company.name(),
-        email: faker.internet.email(),
-        phone: faker.phone.number(),
-        address: faker.location.streetAddress(),
-      }
+        name: `Vendor ${uniqueId}`,
+        email: `vendor.${uniqueId}@example.com`,
+        phone: `1234567890${uniqueId}`,
+        address: '123 Test St',
+      },
     });
 
     product = await prisma.product.create({

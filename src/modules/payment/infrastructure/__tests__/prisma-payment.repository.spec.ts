@@ -2,6 +2,7 @@ import { PrismaPaymentRepository } from '../prisma-payment.repository';
 import { Payment } from '../../domain/payment.entity';
 import { prismaMock } from '../../../__tests__/helpers/prisma-mock.helper';
 import { Payment as PrismaPayment, PaymentMethod, PaymentStatus } from '@prisma/client';
+import { PaymentMapper } from '../payment.mapper';
 
 jest.mock('../../../../infrastructure/database/prisma/prisma-client');
 
@@ -12,8 +13,8 @@ describe('PrismaPaymentRepository', () => {
 
   const paymentProps = {
     order_id: 'order-uuid',
-    method: DomainPaymentMethod.CREDIT_CARD,
-    status: DomainPaymentStatus.COMPLETED,
+    method: 'credit_card' as DomainPaymentMethod,
+    status: 'completed' as DomainPaymentStatus,
     gateway: 'stripe',
     gateway_ref: 'txn_123',
     amount: 100,
@@ -30,20 +31,18 @@ describe('PrismaPaymentRepository', () => {
   };
 
   beforeEach(() => {
-    repository = new PrismaPaymentRepository();
+    repository = new PrismaPaymentRepository(prismaMock);
   });
 
   describe('save', () => {
     it('should call prisma.payment.upsert with correct data', async () => {
       await repository.save(paymentEntity!);
 
-      const { id, ...updateData } = paymentEntity!.props;
+      const persistenceData = PaymentMapper.toPersistence(paymentEntity!);
+      const { id, ...updateData } = persistenceData;
       expect(prismaMock.payment.upsert).toHaveBeenCalledWith({
         where: { id: paymentEntity!.id },
-        create: {
-          id: paymentEntity!.id,
-          ...paymentProps,
-        },
+        create: persistenceData,
         update: updateData,
       });
     });
