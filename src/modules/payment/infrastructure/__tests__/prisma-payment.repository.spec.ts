@@ -13,8 +13,8 @@ describe('PrismaPaymentRepository', () => {
 
   const paymentProps = {
     order_id: 'order-uuid',
-    method: 'credit_card' as DomainPaymentMethod,
-    status: 'completed' as DomainPaymentStatus,
+    method: DomainPaymentMethod.CREDIT_CARD,
+    status: DomainPaymentStatus.COMPLETED,
     gateway: 'stripe',
     gateway_ref: 'txn_123',
     amount: 100,

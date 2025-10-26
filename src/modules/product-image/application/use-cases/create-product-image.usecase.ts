@@ -1,18 +1,34 @@
 import { IProductImageRepository } from '../../domain/product-image.repository.interface';
-import { ProductImage } from '../../domain/product-image.entity';
-import { CreateProductImageDto } from '../../presentation/http/dto/create-product-image.dto';
-import { Result, success } from '@/core/utils/result';
-import { UseCase } from '@/core/base/use-case';
+import { ProductImage, ProductImageProps } from '../../domain/product-image.entity';
+import { CreateProductImageDto } from '../dtos/create-product-image.dto';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
+import { ProductImageDto } from '../dtos/product-image.dto';
+import { ProductImageMapper } from '../../infrastructure/product-image.mapper';
 
-export class CreateProductImageUseCase
-  implements UseCase<ProductImage, CreateProductImageDto>
-{
+export class CreateProductImageUseCase {
   constructor(private readonly productImageRepository: IProductImageRepository) {}
 
   async execute(
-    data: CreateProductImageDto,
-  ): Promise<Result<ProductImage, Error>> {
-    const productImage = ProductImage.create(data);
-    return this.productImageRepository.create(productImage.value);
+    dto: CreateProductImageDto,
+  ): Promise<Result<ProductImageDto, HttpError>> {
+    const productImageProps: ProductImageProps = {
+      product_id: dto.product_id,
+      url: dto.url,
+      sort_order: dto.sort_order,
+    };
+
+    const productImageResult = ProductImage.create(productImageProps);
+
+    if (!productImageResult.success) {
+      return failure(HttpError.internalServerError(productImageResult.error.message));
+    }
+
+    const productImage = productImageResult.value;
+
+    await this.productImageRepository.save(productImage);
+
+    const productImageDto = ProductImageMapper.toDto(productImage);
+    return success(productImageDto);
   }
 }

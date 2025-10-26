@@ -1,7 +1,7 @@
-import { Payment } from '../../../domain/payment.entity';
+import { PaymentDto } from '@/modules/payment/application/dtos/payment.dto';
 
 export class PaymentPresenter {
-  static toJSON(payment: Payment) {
+  static toJSON(payment: PaymentDto) {
     return {
       id: payment.id,
       order_id: payment.order_id,

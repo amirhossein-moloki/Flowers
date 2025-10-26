@@ -84,7 +84,7 @@ class App {
 
   private setupErrorHandlers(): void {
     this.express.use(notFoundHandler);
-    this.express.use(errorHandler);
+    this.express.use(errorHandler as express.ErrorRequestHandler);
   }
 
   public start(port: number): import('http').Server {

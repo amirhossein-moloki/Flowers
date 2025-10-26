@@ -1,15 +1,15 @@
-import { Product } from '@/modules/product/domain/product.entity';
+import { ProductDto } from '@/modules/product/application/dtos/product.dto';
 
 export class ProductPresenter {
-  static toJSON(product: Product) {
+  static toJSON(product: ProductDto) {
     return {
       id: product.id,
       name: product.name,
       description: product.description,
       price: product.price,
       stock: product.stock,
-      createdAt: product.props.createdAt,
-      updatedAt: product.props.updatedAt,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
     };
   }
 }

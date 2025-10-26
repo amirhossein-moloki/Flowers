@@ -4,6 +4,8 @@ export enum UserRole {
   COURIER = 'COURIER',
   OPS = 'OPS',
   ADMIN = 'ADMIN',
+  DRIVER = 'DRIVER',
+  VENDOR = 'VENDOR',
 }
 
 export enum VehicleType {

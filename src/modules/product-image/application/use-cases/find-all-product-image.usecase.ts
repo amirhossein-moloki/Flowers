@@ -1,14 +1,21 @@
 import { IProductImageRepository } from '../../domain/product-image.repository.interface';
-import { UseCase } from '@/core/base/use-case';
-import { ProductImage } from '../../domain/product-image.entity';
-import { Result } from '@/core/utils/result';
+import { Result, success } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
+import { ProductImageDto } from '../dtos/product-image.dto';
+import { ProductImageMapper } from '../../infrastructure/product-image.mapper';
 
-export class FindAllProductImageUseCase
-  implements UseCase<ProductImage[], null>
-{
+export class FindAllProductImageUseCase {
   constructor(private readonly productImageRepository: IProductImageRepository) {}
 
-  async execute(): Promise<Result<ProductImage[], Error>> {
-    return this.productImageRepository.findAll();
+  async execute(
+    productId: string,
+  ): Promise<Result<ProductImageDto[], HttpError>> {
+    const productImages = await this.productImageRepository.findAllByProductId(
+      productId,
+    );
+    const productImagesDto = productImages.map(productImage =>
+      ProductImageMapper.toDto(productImage),
+    );
+    return success(productImagesDto);
   }
 }

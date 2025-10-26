@@ -1,4 +1,4 @@
-import { Express } from 'express';
+import express from 'express';
 import { PrismaClient, UserRole } from '@prisma/client';
 import request from 'supertest';
 import { randomUUID } from 'crypto';
@@ -12,7 +12,7 @@ jest.mock('@/core/middlewares/auth.middleware', () => ({
 }));
 
 describe('ProofOfDelivery Integration Tests', () => {
-  let app: Express;
+  let app: express.Application;
   let prisma: PrismaClient;
 
   beforeAll(() => {

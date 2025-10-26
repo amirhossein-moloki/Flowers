@@ -1,4 +1,4 @@
-import { Express } from 'express';
+import express from 'express';
 import supertest from 'supertest';
 import App from '@/app';
 import { PrismaClient, UserRole } from '@prisma/client';
@@ -23,7 +23,7 @@ jest.mock('@/core/middlewares/auth.middleware', () => ({
 }));
 
 describe('Product Integration Tests', () => {
-  let app: Express;
+  let app: express.Application;
   let prisma: PrismaClient;
 
   beforeAll(async () => {

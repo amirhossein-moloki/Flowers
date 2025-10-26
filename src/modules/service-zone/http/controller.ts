@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
-import { GetServiceZoneUseCase, ListServiceZonesUseCase } from '../../application/use-cases';
+import {
+  GetServiceZoneUseCase,
+  ListServiceZonesUseCase,
+} from '@/modules/service-zone/application/use-cases';
 import { ServiceZonePresenter } from './presenters/service-zone.presenter';
 
 export class ServiceZoneController {
