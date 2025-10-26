@@ -1,6 +1,6 @@
 import { Promotion as PrismaPromotion } from '@prisma/client';
 import { Promotion } from '@/modules/promotion/domain/promotion.entity';
-import { Result, success } from '@/core/utils/result';
+import { Result } from '@/core/utils/result';
 
 export class PromotionMapper {
   static toDomain(prismaPromotion: PrismaPromotion): Result<Promotion, Error> {
@@ -17,12 +17,7 @@ export class PromotionMapper {
       is_active: prismaPromotion.is_active,
     };
 
-    const promotionResult = Promotion.create(promotionProps, prismaPromotion.id);
-    if (promotionResult.failure) {
-      throw new Error('Failed to create promotion entity from prisma data');
-    }
-
-    return success(promotionResult.value);
+    return Promotion.create(promotionProps, prismaPromotion.id);
   }
 
   static toPersistence(promotion: Promotion) {

@@ -22,19 +22,19 @@ export class CreatePromotionUseCase {
     }
 
     const promotion = promotionOrError.value;
-    const existingPromotion = await this.promotionRepository.findByCode(promotion.props.code);
+    const existingPromotionResult = await this.promotionRepository.findByCode(promotion.props.code);
 
-    if (existingPromotion.success) {
+    if (existingPromotionResult.success) {
       return failure(new Error('Promotion code already exists'));
     }
 
-    if (!(existingPromotion.error instanceof NotFoundError)) {
-      return failure(existingPromotion.error);
+    if (!(existingPromotionResult.error instanceof NotFoundError)) {
+      return failure(existingPromotionResult.error);
     }
 
     const saveResult = await this.promotionRepository.save(promotion);
 
-    if (saveResult.failure) {
+    if (!saveResult.success) {
       return failure(saveResult.error);
     }
 

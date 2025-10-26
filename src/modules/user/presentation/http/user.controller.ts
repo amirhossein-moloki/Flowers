@@ -28,7 +28,7 @@ export class UserController extends Controller {
 
   private async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.createUserUseCase.execute({ body: req.body });
+      const result = await this.createUserUseCase.execute(req.body);
       if (result.success) {
         res.status(201).json(result.value);
       } else {

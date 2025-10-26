@@ -48,8 +48,8 @@ export class ShippingRateMapper {
       min_weight: shippingRate.props.min_weight,
       max_weight: shippingRate.props.max_weight,
       is_active: shippingRate.props.is_active,
-      createdAt: shippingRate.props.createdAt,
-      updatedAt: shippingRate.props.updatedAt,
+      createdAt: shippingRate.props.createdAt ?? new Date(),
+      updatedAt: shippingRate.props.updatedAt ?? new Date(),
     };
   }
 }

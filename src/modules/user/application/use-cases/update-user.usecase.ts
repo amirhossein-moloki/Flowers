@@ -1,4 +1,4 @@
-import { IUserRepository } from '../../domain/user.repository';
+import { IUserRepository } from '../../domain/user.repository.interface';
 import { User } from '../../domain/user.entity';
 import { Result, success, failure } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';
@@ -14,7 +14,7 @@ export class UpdateUserUseCase {
 
     const updatedUser = Object.assign(user, data);
 
-    await this.userRepository.update(updatedUser);
+    await this.userRepository.save(updatedUser);
 
     return success(updatedUser);
   }

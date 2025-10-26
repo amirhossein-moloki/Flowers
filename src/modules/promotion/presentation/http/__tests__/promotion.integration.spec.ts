@@ -2,8 +2,6 @@ import request from 'supertest';
 import App from '@/app';
 import prisma from '@/infrastructure/database/prisma/prisma-client';
 import { User, UserRole, DiscountType } from '@prisma/client';
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
-import { PrismaClient } from '@prisma/client';
 
 let app: App;
 let authenticatedUser: User;
@@ -34,10 +32,11 @@ describe('Promotion API', () => {
     authenticatedUser = {
       id: 'test-user-id',
       email: 'test@example.com',
+      username: 'testuser',
       password: 'password',
       role: UserRole.ADMIN,
-      created_at: new Date(),
-      updated_at: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
     await prisma.promotion.deleteMany();
   });

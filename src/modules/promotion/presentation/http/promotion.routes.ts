@@ -5,7 +5,7 @@ import { createPromotionSchema } from './dto/create-promotion.schema';
 import { updatePromotionSchema } from './dto/update-promotion.schema';
 import { Dependencies } from '@/infrastructure/di';
 
-export const createPromotionRoutes = (dependencies: Dependencies): Router => {
+const promotionRouter = (dependencies: Dependencies): Router => {
   const router = Router();
 
   const promotionController = new PromotionController(
@@ -32,3 +32,5 @@ export const createPromotionRoutes = (dependencies: Dependencies): Router => {
 
   return router;
 };
+
+export default promotionRouter;

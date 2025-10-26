@@ -3,10 +3,11 @@ import express from 'express';
 import { createProofOfDeliveryRoutes } from '../routes';
 import { Dependencies } from '@/infrastructure/di';
 import { success } from '@/core/utils/result';
+import { Request, Response, NextFunction } from 'express';
 
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: jest.fn((req, res, next) => next()),
-  hasRole: jest.fn(() => (req, res, next) => next()),
+  isAuthenticated: jest.fn((req: Request, res: Response, next: NextFunction) => next()),
+  hasRole: jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
 }));
 
 describe('ProofOfDelivery Controller', () => {
@@ -18,18 +19,10 @@ describe('ProofOfDelivery Controller', () => {
     app.use(express.json());
 
     dependencies = {
-      createProofOfDeliveryUseCase: {
-        execute: jest.fn().mockResolvedValue(success({})),
-      },
-      findProofOfDeliveryByIdUseCase: {
-        execute: jest.fn().mockResolvedValue(success({})),
-      },
-      updateProofOfDeliveryUseCase: {
-        execute: jest.fn().mockResolvedValue(success({})),
-      },
-      deleteProofOfDeliveryUseCase: {
-        execute: jest.fn().mockResolvedValue(success(undefined)),
-      },
+      createProofOfDeliveryUseCase: { execute: jest.fn().mockResolvedValue(success({})) } as any,
+      findProofOfDeliveryByIdUseCase: { execute: jest.fn().mockResolvedValue(success({})) } as any,
+      updateProofOfDeliveryUseCase: { execute: jest.fn().mockResolvedValue(success({})) } as any,
+      deleteProofOfDeliveryUseCase: { execute: jest.fn().mockResolvedValue(success(undefined)) } as any,
     };
 
     const proofOfDeliveryRoutes = createProofOfDeliveryRoutes(dependencies as Dependencies);

@@ -19,7 +19,7 @@ export class ListVendorOutletsUseCase {
         }
       }
       return success(outlets);
-    } catch (error) {
+    } catch (error: any) {
       return failure(new Error(error.message));
     }
   }

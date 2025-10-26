@@ -35,14 +35,15 @@ export class PrismaPromotionRepository implements IPromotionRepository {
   async findAll(): Promise<Result<Promotion[], Error>> {
     try {
       const promotions = await this.prisma.promotion.findMany();
-      const domainPromotions = promotions.map((promotion) => PromotionMapper.toDomain(promotion));
-      const failures = domainPromotions.filter((p) => p.failure);
+      const results = promotions.map(PromotionMapper.toDomain);
+      const errors = results.filter((r): r is Result<Promotion, Error> & { success: false } => !r.success);
 
-      if (failures.length > 0) {
+      if (errors.length > 0) {
         return failure(new Error('Failed to map one or more promotions'));
       }
 
-      return success(domainPromotions.map((p) => p.value as Promotion));
+      const successes = results as (Result<Promotion, Error> & { success: true })[];
+      return success(successes.map(r => r.value));
     } catch (error) {
       return failure(error as Error);
     }

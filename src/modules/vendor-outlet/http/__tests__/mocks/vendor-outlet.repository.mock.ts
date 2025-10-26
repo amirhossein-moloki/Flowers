@@ -1,5 +1,5 @@
-import { IVendorOutletRepository } from '../../../domain/vendor-outlet.repository';
-import { VendorOutlet } from '../../../domain/vendor-outlet.entity';
+import { IVendorOutletRepository } from '../../../../vendor-outlet/domain/vendor-outlet.repository';
+import { VendorOutlet } from '../../../../vendor-outlet/domain/vendor-outlet.entity';
 
 export class MockVendorOutletRepository implements IVendorOutletRepository {
   private outlets: VendorOutlet[] = [];
@@ -9,7 +9,7 @@ export class MockVendorOutletRepository implements IVendorOutletRepository {
   }
 
   async findByVendorId(vendorId: string): Promise<VendorOutlet[]> {
-    return this.outlets.filter((outlet) => outlet.vendor_id === vendorId);
+    return this.outlets.filter((outlet) => outlet.vendorId === vendorId);
   }
 
   async findAll(): Promise<VendorOutlet[]> {

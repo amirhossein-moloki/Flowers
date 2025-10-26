@@ -23,7 +23,7 @@ export class VendorController {
       return res.status(400).json({ error: result.error.message });
     }
 
-    return res.status(201).json(VendorPresenter.toJSON(result.value));
+    return res.status(201).json(result.value);
   }
 
   async findById(req: Request, res: Response): Promise<Response> {
@@ -34,7 +34,7 @@ export class VendorController {
       return res.status(404).json({ error: 'Vendor not found' });
     }
 
-    return res.status(200).json(VendorPresenter.toJSON(result.value));
+    return res.status(200).json(result.value);
   }
 
   async update(req: Request, res: Response): Promise<Response> {
@@ -45,7 +45,7 @@ export class VendorController {
       return res.status(404).json({ error: 'Vendor not found' });
     }
 
-    return res.status(200).json(VendorPresenter.toJSON(result.value));
+    return res.status(200).json(result.value);
   }
 
   async delete(req: Request, res: Response): Promise<Response> {
@@ -62,6 +62,9 @@ export class VendorController {
   async findAll(req: Request, res: Response): Promise<Response> {
     const result = await this.listVendorsUseCase.execute();
 
+    if (!result.success) {
+      return res.status(500).json({ error: 'Failed to list vendors' });
+    }
     return res.status(200).json(result.value.map(VendorPresenter.toJSON));
   }
 }

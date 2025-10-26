@@ -3,7 +3,15 @@ import { IsString, IsNumber, IsDate, IsBoolean, IsOptional } from 'class-validat
 export class UpdatePromotionDto {
   @IsOptional()
   @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
   code?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
 
   @IsOptional()
   @IsString()

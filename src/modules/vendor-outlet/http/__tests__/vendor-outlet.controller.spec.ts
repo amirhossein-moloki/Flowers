@@ -14,9 +14,11 @@ import { MockVendorRepository } from './mocks/vendor.repository.mock';
 import { VendorOutlet } from '../../domain/vendor-outlet.entity';
 import { Vendor } from '../../../vendor/domain/vendor.entity';
 
+import { Request, Response, NextFunction } from 'express';
+
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: jest.fn((req, res, next) => next()),
-  hasRole: jest.fn(() => (req, res, next) => next()),
+  isAuthenticated: jest.fn((req: Request, res: Response, next: NextFunction) => next()),
+  hasRole: jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
 }));
 
 describe('VendorOutletController', () => {
@@ -80,24 +82,28 @@ describe('VendorOutletController', () => {
 
   describe('GET /vendor-outlets/:id', () => {
     it('should return 200', async () => {
-      const vendor = Vendor.create({
+      const vendorResult = Vendor.create({
         name: 'Test Vendor',
         email: 'test@test.com',
         phone: '1234567890',
         address: '123 Test St',
         description: 'Test Vendor',
         is_active: true,
-      }).value;
+      });
+      if (!vendorResult.success) throw new Error('Failed to create vendor');
+      const vendor = vendorResult.value;
       await mockVendorRepository.save(vendor);
 
-      const outlet = VendorOutlet.create({
+      const outletResult = VendorOutlet.create({
         vendorId: vendor.id,
         name: 'Test Outlet',
         address: '123 Test St',
         latitude: 0,
         longitude: 0,
         is_active: true,
-      }).value;
+      });
+      if (!outletResult.success) throw new Error('Failed to create outlet');
+      const outlet = outletResult.value;
       await mockOutletRepository.save(outlet);
 
       const res = await request(app).get(`/vendor-outlets/${outlet.id}`);
@@ -109,14 +115,16 @@ describe('VendorOutletController', () => {
 
   describe('PUT /vendor-outlets/:id', () => {
     it('should return 200', async () => {
-      const outlet = VendorOutlet.create({
+      const outletResult = VendorOutlet.create({
         vendorId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
         name: 'Test Outlet',
         address: '123 Test St',
         latitude: 0,
         longitude: 0,
         is_active: true,
-      }).value;
+      });
+      if (!outletResult.success) throw new Error('Failed to create outlet');
+      const outlet = outletResult.value;
       await mockOutletRepository.save(outlet);
 
       const res = await request(app).put(`/vendor-outlets/${outlet.id}`).send({
@@ -129,14 +137,16 @@ describe('VendorOutletController', () => {
 
   describe('DELETE /vendor-outlets/:id', () => {
     it('should return 204', async () => {
-      const outlet = VendorOutlet.create({
+      const outletResult = VendorOutlet.create({
         vendorId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
         name: 'Test Outlet',
         address: '123 Test St',
         latitude: 0,
         longitude: 0,
         is_active: true,
-      }).value;
+      });
+      if (!outletResult.success) throw new Error('Failed to create outlet');
+      const outlet = outletResult.value;
       await mockOutletRepository.save(outlet);
 
       const res = await request(app).delete(`/vendor-outlets/${outlet.id}`);
@@ -146,24 +156,28 @@ describe('VendorOutletController', () => {
 
   describe('GET /vendor-outlets', () => {
     it('should return 200', async () => {
-      const vendor = Vendor.create({
+      const vendorResult = Vendor.create({
         name: 'Test Vendor',
         email: 'test@test.com',
         phone: '1234567890',
         address: '123 Test St',
         description: 'Test Vendor',
         is_active: true,
-      }).value;
+      });
+      if (!vendorResult.success) throw new Error('Failed to create vendor');
+      const vendor = vendorResult.value;
       await mockVendorRepository.save(vendor);
 
-      const outlet = VendorOutlet.create({
+      const outletResult = VendorOutlet.create({
         vendorId: vendor.id,
         name: 'Test Outlet',
         address: '123 Test St',
         latitude: 0,
         longitude: 0,
         is_active: true,
-      }).value;
+      });
+      if (!outletResult.success) throw new Error('Failed to create outlet');
+      const outlet = outletResult.value;
       await mockOutletRepository.save(outlet);
 
       const res = await request(app).get('/vendor-outlets');

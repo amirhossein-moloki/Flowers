@@ -6,6 +6,7 @@ import { DeleteUserUseCase } from '../application/use-cases/delete-user.usecase'
 import { ListUsersUseCase } from '../application/use-cases/list-users.usecase';
 import { UserPresenter } from './presenter/user.presenter';
 import { PrismaUserRepository } from '../infrastructure/prisma-user.repository';
+import { PrismaClient } from '@prisma/client';
 
 export class UserController {
   private readonly createUserUseCase: CreateUserUseCase;
@@ -14,8 +15,8 @@ export class UserController {
   private readonly deleteUserUseCase: DeleteUserUseCase;
   private readonly listUsersUseCase: ListUsersUseCase;
 
-  constructor() {
-    const userRepository = new PrismaUserRepository();
+  constructor(private readonly prisma: PrismaClient) {
+    const userRepository = new PrismaUserRepository(prisma);
     this.createUserUseCase = new CreateUserUseCase(userRepository);
     this.getUserUseCase = new GetUserUseCase(userRepository);
     this.updateUserUseCase = new UpdateUserUseCase(userRepository);
@@ -26,7 +27,7 @@ export class UserController {
   create = async (req: Request, res: Response) => {
     const result = await this.createUserUseCase.execute(req.body);
     if (result.success) {
-      res.status(201).json(UserPresenter.toHttp(result.value));
+      res.status(201).json(result.value);
     } else {
       res.status(400).json({ error: result.error.message });
     }
@@ -35,7 +36,7 @@ export class UserController {
   findAll = async (req: Request, res: Response) => {
     const result = await this.listUsersUseCase.execute();
     if (result.success) {
-      res.status(200).json(result.value.map(UserPresenter.toHttp));
+      res.status(200).json(result.value);
     } else {
       res.status(400).json({ error: result.error.message });
     }
@@ -44,9 +45,9 @@ export class UserController {
   me = async (req: Request, res: Response) => {
     // @ts-ignore
     const { id } = req.user;
-    const result = await this.getUserUseCase.execute({ id });
+    const result = await this.getUserUseCase.execute(id);
     if (result.success) {
-      res.status(200).json(UserPresenter.toHttp(result.value));
+      res.status(200).json(result.value);
     } else {
       res.status(404).json({ error: 'User not found' });
     }
@@ -54,9 +55,9 @@ export class UserController {
 
   findById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const result = await this.getUserUseCase.execute({ id });
+    const result = await this.getUserUseCase.execute(id);
     if (result.success) {
-      res.status(200).json(UserPresenter.toHttp(result.value));
+      res.status(200).json(result.value);
     } else {
       res.status(404).json({ error: 'User not found' });
     }
@@ -66,7 +67,7 @@ export class UserController {
     const { id } = req.params;
     const result = await this.updateUserUseCase.execute(id, req.body);
     if (result.success) {
-      res.status(200).json(UserPresenter.toHttp(result.value));
+      res.status(200).json(result.value);
     } else {
       res.status(400).json({ error: result.error.message });
     }

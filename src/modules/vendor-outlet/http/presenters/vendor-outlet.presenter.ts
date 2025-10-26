@@ -5,7 +5,7 @@ export class VendorOutletPresenter {
   static toJSON(vendorOutlet: VendorOutlet) {
     return {
       id: vendorOutlet.id,
-      vendor_id: vendorOutlet.vendor_id,
+      vendorId: vendorOutlet.vendorId,
       name: vendorOutlet.name,
       address: vendorOutlet.address,
       latitude: vendorOutlet.latitude,

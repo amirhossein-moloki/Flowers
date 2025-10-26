@@ -13,7 +13,7 @@ export class DeleteVendorOutletUseCase {
         return failure(new Error('Vendor outlet not found'));
       }
       return success(undefined);
-    } catch (error) {
+    } catch (error: any) {
       return failure(new Error(error.message));
     }
   }

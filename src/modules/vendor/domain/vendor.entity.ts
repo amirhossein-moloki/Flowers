@@ -14,7 +14,7 @@ export interface IVendorProps {
   email: string;
   phone: string;
   address: string;
-  is_active: boolean;
+  is_active?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -45,7 +45,7 @@ export class Vendor extends Entity<IVendorProps> {
   }
 
   get is_active(): boolean {
-    return this.props.is_active;
+    return this.props.is_active ?? false;
   }
 
   public static create(props: IVendorProps, id?: string): Result<Vendor, VendorCreationError> {

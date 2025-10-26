@@ -17,18 +17,21 @@ export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepositor
           notes: data.notes,
         },
       });
-      return success(
-        ProofOfDelivery.create(
-          {
-            delivery_id: proofOfDelivery.delivery_id,
-            signature_url: proofOfDelivery.signature_url,
-            photo_url: proofOfDelivery.photo_url,
-            notes: proofOfDelivery.notes,
-            is_verified: proofOfDelivery.is_verified,
-          },
-          proofOfDelivery.id
-        ).value
+      const entityResult = ProofOfDelivery.create(
+        {
+          delivery_id: proofOfDelivery.delivery_id,
+          signature_url: proofOfDelivery.signature_url ?? undefined,
+          photo_url: proofOfDelivery.photo_url ?? undefined,
+          notes: proofOfDelivery.notes ?? undefined,
+          is_verified: proofOfDelivery.is_verified,
+        },
+        proofOfDelivery.id
       );
+
+      if (!entityResult.success) {
+        return failure(entityResult.error);
+      }
+      return success(entityResult.value);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
         return failure(HttpError.notFound('Proof of delivery not found'));
@@ -45,18 +48,21 @@ export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepositor
       if (!proofOfDelivery) {
         return failure(HttpError.notFound('Proof of delivery not found'));
       }
-      return success(
-        ProofOfDelivery.create(
-          {
-            delivery_id: proofOfDelivery.delivery_id,
-            signature_url: proofOfDelivery.signature_url,
-            photo_url: proofOfDelivery.photo_url,
-            notes: proofOfDelivery.notes,
-            is_verified: proofOfDelivery.is_verified,
-          },
-          proofOfDelivery.id
-        ).value
+      const entityResult = ProofOfDelivery.create(
+        {
+          delivery_id: proofOfDelivery.delivery_id,
+          signature_url: proofOfDelivery.signature_url ?? undefined,
+          photo_url: proofOfDelivery.photo_url ?? undefined,
+          notes: proofOfDelivery.notes ?? undefined,
+          is_verified: proofOfDelivery.is_verified,
+        },
+        proofOfDelivery.id
       );
+
+      if (!entityResult.success) {
+        return failure(entityResult.error);
+      }
+      return success(entityResult.value);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
         return failure(HttpError.notFound('Proof of delivery not found'));
@@ -65,7 +71,7 @@ export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepositor
     }
   }
 
-  async update(id: string, data: ProofOfDelivery): Promise<Result<ProofOfDelivery, Error>> {
+  async update(id: string, data: Partial<ProofOfDelivery>): Promise<Result<ProofOfDelivery, Error>> {
     try {
       const proofOfDelivery = await this.prisma.proofOfDelivery.update({
         where: { id },
@@ -76,18 +82,21 @@ export class PrismaProofOfDeliveryRepository implements ProofOfDeliveryRepositor
           is_verified: data.is_verified,
         },
       });
-      return success(
-        ProofOfDelivery.create(
-          {
-            delivery_id: proofOfDelivery.delivery_id,
-            signature_url: proofOfDelivery.signature_url,
-            photo_url: proofOfDelivery.photo_url,
-            notes: proofOfDelivery.notes,
-            is_verified: proofOfDelivery.is_verified,
-          },
-          proofOfDelivery.id
-        ).value
+      const entityResult = ProofOfDelivery.create(
+        {
+          delivery_id: proofOfDelivery.delivery_id,
+          signature_url: proofOfDelivery.signature_url ?? undefined,
+          photo_url: proofOfDelivery.photo_url ?? undefined,
+          notes: proofOfDelivery.notes ?? undefined,
+          is_verified: proofOfDelivery.is_verified,
+        },
+        proofOfDelivery.id
       );
+
+      if (!entityResult.success) {
+        return failure(entityResult.error);
+      }
+      return success(entityResult.value);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
         return failure(HttpError.notFound('Proof of delivery not found'));

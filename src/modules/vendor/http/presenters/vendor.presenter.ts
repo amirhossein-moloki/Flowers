@@ -10,8 +10,8 @@ export class VendorPresenter {
       phone: vendor.phone,
       address: vendor.address,
       is_active: vendor.is_active,
-      createdAt: vendor.createdAt,
-      updatedAt: vendor.updatedAt,
+      createdAt: vendor.props.createdAt,
+      updatedAt: vendor.props.updatedAt,
     };
   }
 }

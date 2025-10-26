@@ -15,7 +15,7 @@ export class UpdateVendorUseCase {
     const updatedProps = { ...vendor.props, ...data };
     const updatedVendorResult = Vendor.create(updatedProps, vendor.id);
 
-    if (updatedVendorResult.failure) {
+    if (!updatedVendorResult.success) {
       return failure(HttpError.internalServerError(updatedVendorResult.error.message));
     }
 

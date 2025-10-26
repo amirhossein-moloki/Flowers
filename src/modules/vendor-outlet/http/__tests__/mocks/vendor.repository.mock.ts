@@ -1,5 +1,5 @@
-import { IVendorRepository } from '../../../vendor/domain/vendor.repository';
-import { Vendor } from '../../../vendor/domain/vendor.entity';
+import { IVendorRepository } from '../../../../vendor/domain/vendor.repository';
+import { Vendor } from '../../../../vendor/domain/vendor.entity';
 
 export class MockVendorRepository implements IVendorRepository {
   private vendors: Vendor[] = [];

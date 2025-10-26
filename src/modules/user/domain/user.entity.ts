@@ -1,6 +1,12 @@
 import { Entity } from '@/core/domain/entity';
 import { Result, success } from '@/core/utils/result';
-import { UserRole } from '@/core/domain/enums';
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  CUSTOMER = 'CUSTOMER',
+  DRIVER = 'DRIVER',
+  VENDOR = 'VENDOR',
+}
 
 export interface IUserProps {
   username: string;
@@ -21,7 +27,7 @@ export class User extends Entity<IUserProps> {
     return this.props.username;
   }
 
-  get password(): string {
+  get password(): string | undefined {
     return this.props.password;
   }
 
@@ -35,7 +41,7 @@ export class User extends Entity<IUserProps> {
   }
 
   get is_active(): boolean {
-    return this.props.is_active;
+    return this.props.is_active ?? false;
   }
 
   public static create(props: IUserProps, id?: string): Result<User, Error> {

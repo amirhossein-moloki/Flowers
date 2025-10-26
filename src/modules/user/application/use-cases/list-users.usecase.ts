@@ -1,4 +1,4 @@
-import { IUserRepository } from '../../domain/user.repository';
+import { IUserRepository } from '../../domain/user.repository.interface';
 import { User } from '../../domain/user.entity';
 import { Result, success } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';

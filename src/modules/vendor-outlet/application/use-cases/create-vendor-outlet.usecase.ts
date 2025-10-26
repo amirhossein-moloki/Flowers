@@ -14,8 +14,8 @@ export class CreateVendorOutletUseCase {
   ): Promise<Result<VendorOutlet, Error>> {
     const outletResult = VendorOutlet.create({
       ...input,
-      vendor_id: input.vendorId,
-      is_active: input.isActive,
+      vendorId: input.vendorId,
+      is_active: input.is_active,
     });
 
     if (!outletResult.success) {
@@ -27,7 +27,7 @@ export class CreateVendorOutletUseCase {
         outletResult.value,
       );
       return success(savedOutlet);
-    } catch (error) {
+    } catch (error: any) {
       return failure(new VendorOutletCreationError(error.message));
     }
   }

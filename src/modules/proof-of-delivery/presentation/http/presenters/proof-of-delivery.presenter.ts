@@ -1,4 +1,4 @@
-import { ProofOfDelivery } from '../../domain/proof-of-delivery.entity';
+import { ProofOfDelivery } from '../../../domain/proof-of-delivery.entity';
 
 export class ProofOfDeliveryPresenter {
   static toJSON(proofOfDelivery: ProofOfDelivery) {

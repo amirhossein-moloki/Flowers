@@ -8,7 +8,7 @@ jest.mock('@/core/middlewares/auth.middleware', () => ({
 }));
 import { createProductRoutes } from '../routes';
 import { Dependencies } from '@/infrastructure/di';
-import { mock, mockDeep } from 'jest-mock-extended';
+import { mock } from 'jest-mock-extended';
 import {
   CreateProductUseCase,
   GetAllProductsUseCase,
@@ -37,13 +37,15 @@ describe('Product Routes', () => {
 
   describe('POST /products', () => {
     it('should return 201 and the created product', async () => {
-      const product = Product.create({
+      const productResult = Product.create({
         name: 'Test Product',
         description: 'Test Description',
         price: 100,
         stock: 10,
         vendorId: 'some-vendor-id',
-      }).value as Product;
+      });
+      if (!productResult.success) throw new Error('Failed to create test product');
+      const product = productResult.value;
 
       (mockDependencies.createProductUseCase.execute as jest.Mock).mockResolvedValue(success(product));
 
@@ -59,10 +61,11 @@ describe('Product Routes', () => {
 
   describe('GET /products', () => {
     it('should return 200 and a list of products', async () => {
-      const products = [
-        Product.create({ name: 'Product 1', price: 10, stock: 5 }).value as Product,
-        Product.create({ name: 'Product 2', price: 20, stock: 10 }).value as Product,
-      ];
+      const product1Result = Product.create({ name: 'Product 1', description: 'Desc 1', price: 10, stock: 5, vendorId: 'v1' });
+      const product2Result = Product.create({ name: 'Product 2', description: 'Desc 2', price: 20, stock: 10, vendorId: 'v2' });
+      if (!product1Result.success || !product2Result.success) throw new Error('Failed to create test products');
+
+      const products = [product1Result.value, product2Result.value];
 
       (mockDependencies.getAllProductsUseCase.execute as jest.Mock).mockResolvedValue(success(products));
 
@@ -75,7 +78,9 @@ describe('Product Routes', () => {
 
   describe('GET /products/:id', () => {
     it('should return 200 and the product', async () => {
-      const product = Product.create({ name: 'Test Product', price: 100, stock: 10 }).value as Product;
+      const productResult = Product.create({ name: 'Test Product', description: 'Test Desc', price: 100, stock: 10, vendorId: 'v1' });
+      if (!productResult.success) throw new Error('Failed to create test product');
+      const product = productResult.value;
 
       (mockDependencies.getProductUseCase.execute as jest.Mock).mockResolvedValue(success(product));
 
@@ -88,7 +93,9 @@ describe('Product Routes', () => {
 
   describe('PUT /products/:id', () => {
     it('should return 200 and the updated product', async () => {
-      const product = Product.create({ name: 'Updated Product', price: 150, stock: 15 }).value as Product;
+      const productResult = Product.create({ name: 'Updated Product', description: 'New Desc', price: 150, stock: 15, vendorId: 'v1' });
+      if (!productResult.success) throw new Error('Failed to create test product');
+      const product = productResult.value;
 
       (mockDependencies.updateProductUseCase.execute as jest.Mock).mockResolvedValue(success(product));
 
