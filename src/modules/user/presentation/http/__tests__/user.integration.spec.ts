@@ -5,7 +5,7 @@ import { UserController } from '../user.controller';
 import { PrismaUserRepository } from '@/modules/user/infrastructure/prisma-user.repository';
 import { CreateUserUseCase } from '@/modules/user/application/use-cases/create-user.usecase';
 import { GetUserUseCase } from '@/modules/user/application/use-cases/get-user.usecase';
-import { UserRole } from '@/core/domain/enums';
+import { UserRole } from '@prisma/client';
 
 const app = express();
 app.use(express.json());
@@ -23,16 +23,6 @@ app.use('/users', userController.router);
 describe('User Integration Tests', () => {
   beforeAll(async () => {
     await prisma.$connect();
-    await prisma.$executeRawUnsafe(`DROP TABLE IF EXISTS "User";`);
-    await prisma.$executeRawUnsafe(`CREATE TABLE "User" (
-      "id" TEXT NOT NULL PRIMARY KEY,
-      "username" TEXT NOT NULL UNIQUE,
-      "email" TEXT NOT NULL UNIQUE,
-      "password" TEXT NOT NULL,
-      "role" TEXT NOT NULL,
-      "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      "updatedAt" DATETIME NOT NULL
-    );`);
   });
 
   beforeEach(async () => {
@@ -88,7 +78,7 @@ describe('User Integration Tests', () => {
         data: {
           username: 'gettest',
           email: 'gettest@example.com',
-          role: 'CUSTOMER',
+          role: UserRole.CUSTOMER,
           password: 'password123',
         },
       });

@@ -15,6 +15,7 @@ describe('PrismaProductRepository', () => {
     description: 'This is a test product.',
     price: 99.99,
     stock: 100,
+    vendorId: 'vendor-id-1',
   };
   const productResult = Product.create(productProps, 'prod-id-1');
   if (!productResult.success) {
@@ -42,14 +43,14 @@ describe('PrismaProductRepository', () => {
   test('findAll should return a paginated list of products', async () => {
     prismaMock.product.findMany.mockResolvedValue([prismaProduct]);
 
-    const products = await repository.findAll({ page: 1, limit: 10 });
+    const products = await repository.findAll({ page: 1, limit: 10, vendorId: 'vendor-id-1' });
 
     expect(products).toHaveLength(1);
     expect(products[0]).toBeInstanceOf(Product);
     expect(prismaMock.product.findMany).toHaveBeenCalledWith({
       skip: 0,
       take: 10,
-      where: { vendorId: undefined },
+      where: { vendorId: 'vendor-id-1' },
     });
   });
 

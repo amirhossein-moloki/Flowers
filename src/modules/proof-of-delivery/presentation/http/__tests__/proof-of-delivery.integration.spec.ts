@@ -28,9 +28,10 @@ describe('ProofOfDelivery Integration Tests', () => {
   beforeEach(async () => {
     await prisma.proofOfDelivery.deleteMany();
     await prisma.delivery.deleteMany();
-    await prisma.order.deleteMany();
-    await prisma.user.deleteMany();
-    await prisma.courier.deleteMany();
+    await prisma.orderItem.deleteMany({});
+    await prisma.order.deleteMany({});
+    await prisma.courier.deleteMany({});
+    await prisma.user.deleteMany({});
 
     const user = await prisma.user.create({
       data: {

@@ -26,7 +26,8 @@ describe('DriverLocation API', () => {
   beforeEach(async () => {
     await prisma.driverLocation.deleteMany({});
     await prisma.delivery.deleteMany({});
-    await prisma.courier.deleteMany({});
+    await prisma.orderItem.deleteMany({});
+    await prisma.order.deleteMany({});
     await prisma.order.deleteMany({});
     await prisma.user.deleteMany({});
   });

@@ -7,7 +7,7 @@ describe('PrismaAutomationLogRepository', () => {
   let repository: PrismaAutomationLogRepository;
 
   beforeEach(() => {
-    repository = new PrismaAutomationLogRepository();
+    repository = new PrismaAutomationLogRepository(prismaMock);
   });
 
   const automationLogProps = {

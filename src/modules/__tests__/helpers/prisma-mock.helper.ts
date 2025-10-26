@@ -1,10 +1,11 @@
 import { PrismaClient, NotificationChannel, NotificationStatus, VehicleType } from '@prisma/client';
 import { mockDeep, mockReset, DeepMockProxy } from 'jest-mock-extended';
-import prisma from '@/infrastructure/database/prisma/prisma-client';
+
+const prismaMock = mockDeep<PrismaClient>();
 
 jest.mock('@/infrastructure/database/prisma/prisma-client', () => ({
   __esModule: true,
-  default: mockDeep<PrismaClient>(),
+  prisma: prismaMock,
 }));
 
 jest.mock('@prisma/client', () => {
@@ -64,4 +65,4 @@ beforeEach(() => {
   mockReset(prismaMock);
 });
 
-export const prismaMock = prisma as unknown as DeepMockProxy<PrismaClient>;
+export { prismaMock };

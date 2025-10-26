@@ -7,7 +7,7 @@ describe('PrismaOrderPromotionRepository', () => {
   let repository: PrismaOrderPromotionRepository;
 
   beforeEach(() => {
-    repository = new PrismaOrderPromotionRepository();
+    repository = new PrismaOrderPromotionRepository(prismaMock);
   });
 
   const orderPromotionProps = {

@@ -3,7 +3,7 @@ import { errorHandler } from './infrastructure/http/middlewares/error-handler';
 import { notFoundHandler } from './infrastructure/http/middlewares/not-found';
 import { securityMiddleware } from './infrastructure/http/middlewares/security';
 import { createDependencies, Dependencies } from './infrastructure/di';
-import { userRoutes } from './modules/user/http/routes';
+import { createUserRoutes } from './modules/user/http/routes';
 import { createVendorRoutes } from './modules/vendor/http/routes';
 import { createServiceZoneRoutes } from './modules/service-zone/http/routes';
 import { createShippingRateRoutes } from './modules/shipping-rate/presentation/http/shipping-rate.routes';
@@ -21,7 +21,7 @@ import { createDeliveryRoutes } from './modules/delivery/http/routes';
 import { createNotificationRoutes } from './modules/notification/presentation/http/notification.routes';
 import { createProductRoutes } from './modules/product/presentation/http/routes';
 import { createProductImageRoutes } from './modules/product-image/presentation/http/product-image.routes';
-import { createPromotionRoutes } from './modules/promotion/presentation/http/promotion.routes';
+import promotionRouter from './modules/promotion/presentation/http/promotion.routes';
 import { createOrderStatusRoutes } from './modules/order-status/presentation/http/routes';
 import { createOrderPromotionRoutes } from './modules/order-promotion/presentation/http/order-promotion.routes';
 import orderRouter from './modules/order/presentation/http/order.routes';
@@ -49,7 +49,7 @@ class App {
     this.express.get('/', (req, res) => {
       res.send('API is running...');
     });
-    this.express.use('/api/v1/users', userRoutes);
+    this.express.use('/api/v1/users', createUserRoutes(this.dependencies));
     this.express.use('/api/v1/vendors', createVendorRoutes(this.dependencies));
     this.express.use('/api/v1/service-zones', createServiceZoneRoutes(this.dependencies));
     this.express.use('/api/v1/shipping-rates', createShippingRateRoutes(this.dependencies));
@@ -74,7 +74,7 @@ class App {
     this.express.use('/api/v1/notifications', createNotificationRoutes(this.dependencies));
     this.express.use('/api/v1/products', createProductRoutes(this.dependencies));
     this.express.use('/api/v1/product-image', createProductImageRoutes(this.dependencies));
-    this.express.use('/api/v1/promotions', createPromotionRoutes(this.dependencies));
+    this.express.use('/api/v1/promotions', promotionRouter(this.dependencies));
     this.express.use('/api/v1/order-statuses', createOrderStatusRoutes(this.dependencies));
     this.express.use('/api/v1/order-promotions', createOrderPromotionRoutes(this.dependencies.orderPromotionRepository));
     this.express.use('/api/v1/orders', orderRouter);

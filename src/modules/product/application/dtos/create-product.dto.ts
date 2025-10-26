@@ -2,7 +2,7 @@ import { IsString, IsNumber, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
-  vendor_id!: string;
+  vendorId!: string;
 
   @IsString()
   name!: string;
@@ -14,7 +14,7 @@ export class CreateProductDto {
   description!: string;
 
   @IsNumber()
-  base_price!: number;
+  price!: number;
 
   @IsOptional()
   @IsNumber()
