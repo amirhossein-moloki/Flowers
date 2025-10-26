@@ -8,11 +8,12 @@ import { UpdateOrderUseCase } from '@/modules/order/application/use-cases/update
 import { DeleteOrderUseCase } from '@/modules/order/application/use-cases/delete-order.usecase';
 import { ConfirmOrderUseCase } from '@/modules/order/application/use-cases/confirm-order.usecase';
 import { CancelOrderUseCase } from '@/modules/order/application/use-cases/cancel-order.usecase';
+import prismaClient from '@/infrastructure/database/prisma/prisma-client';
 
 const router = Router();
 
 // Dependencies
-const orderRepository = new PrismaOrderRepository();
+const orderRepository = new PrismaOrderRepository(prismaClient);
 
 // Use Cases
 const createOrderUseCase = new CreateOrderUseCase(orderRepository);

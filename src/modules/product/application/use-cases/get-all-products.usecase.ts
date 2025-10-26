@@ -1,6 +1,7 @@
 import { IProductRepository } from '@/modules/product/domain/product.repository';
-import { Product } from '@/modules/product/domain/product.entity';
+import { ProductDto } from '../dtos/product.dto';
 import { Result, success } from '@/core/utils/result';
+import { ProductMapper } from '../../infrastructure/product.mapper';
 
 export class GetAllProductsUseCase {
   constructor(private readonly productRepository: IProductRepository) {}
@@ -9,8 +10,9 @@ export class GetAllProductsUseCase {
     page: number;
     limit: number;
     vendorId?: string;
-  }): Promise<Result<Product[], Error>> {
+  }): Promise<Result<ProductDto[], Error>> {
     const products = await this.productRepository.findAll(input);
-    return success(products);
+    const productDtos = products.map(product => ProductMapper.toDto(product));
+    return success(productDtos);
   }
 }

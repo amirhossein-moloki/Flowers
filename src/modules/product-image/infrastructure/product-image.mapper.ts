@@ -5,7 +5,7 @@ export class ProductImageMapper {
   static toEntity(model: ProductImageModel): ProductImage {
     const entityResult = ProductImage.create(
       {
-        product_id: model.product_id,
+        productId: model.product_id,
         url: model.url,
         sort_order: model.sort_order,
       },
@@ -21,11 +21,20 @@ export class ProductImageMapper {
   static toModel(entity: ProductImage): ProductImageModel {
     return {
       id: entity.id,
-      product_id: entity.product_id,
+      product_id: entity.productId,
       url: entity.url,
       sort_order: entity.sort_order,
       created_at: new Date(),
       updated_at: new Date(),
+    };
+  }
+
+  static toDto(entity: ProductImage): any {
+    return {
+      id: entity.id,
+      productId: entity.productId,
+      url: entity.url,
+      sort_order: entity.sort_order,
     };
   }
 }

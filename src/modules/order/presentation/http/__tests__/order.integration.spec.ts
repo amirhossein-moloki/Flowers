@@ -77,7 +77,7 @@ describe('Order Integration Tests', () => {
       });
 
       const orderData = {
-        userId: mockUser?.id,
+        userId: mockUser!.id,
         items: [{ productId: product.id, quantity: 1, price: 100 }],
       };
 
@@ -92,7 +92,7 @@ describe('Order Integration Tests', () => {
 
     it('should return 422 for invalid data', async () => {
       const orderData = {
-        userId: mockUser?.id,
+        userId: mockUser!.id,
         items: [],
       };
 
@@ -125,7 +125,7 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser?.id,
+          userId: mockUser!.id,
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -175,7 +175,7 @@ describe('Order Integration Tests', () => {
 
       await prismaClient.order.create({
         data: {
-          userId: mockUser?.id,
+          userId: mockUser!.id,
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -216,7 +216,7 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser?.id,
+          userId: mockUser!.id,
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -263,7 +263,7 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser?.id,
+          userId: mockUser!.id,
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -304,7 +304,7 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser?.id,
+          userId: mockUser!.id,
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -346,7 +346,7 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser?.id,
+          userId: mockUser!.id,
           total: 100,
           status: OrderStatus.PENDING,
           items: {

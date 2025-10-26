@@ -4,7 +4,14 @@ import { GetUserUseCase } from '../application/use-cases/get-user.usecase';
 import { UpdateUserUseCase } from '../application/use-cases/update-user.usecase';
 import { DeleteUserUseCase } from '../application/use-cases/delete-user.usecase';
 import { ListUsersUseCase } from '../application/use-cases/list-users.usecase';
-import { Dependencies } from '@/infrastructure/di';
+
+interface UserControllerDependencies {
+  createUserUseCase: CreateUserUseCase;
+  getUserUseCase: GetUserUseCase;
+  updateUserUseCase: UpdateUserUseCase;
+  deleteUserUseCase: DeleteUserUseCase;
+  listUsersUseCase: ListUsersUseCase;
+}
 
 export class UserController {
   private readonly createUserUseCase: CreateUserUseCase;
@@ -13,7 +20,7 @@ export class UserController {
   private readonly deleteUserUseCase: DeleteUserUseCase;
   private readonly listUsersUseCase: ListUsersUseCase;
 
-  constructor(dependencies: Dependencies) {
+  constructor(dependencies: UserControllerDependencies) {
     this.createUserUseCase = dependencies.createUserUseCase;
     this.getUserUseCase = dependencies.getUserUseCase;
     this.updateUserUseCase = dependencies.updateUserUseCase;

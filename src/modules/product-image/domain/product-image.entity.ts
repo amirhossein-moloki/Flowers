@@ -1,8 +1,8 @@
 import { Entity } from '../../../core/domain/entity';
 import { Result, success } from '../../../core/utils/result';
 
-interface ProductImageProps {
-  product_id: string;
+export interface ProductImageProps {
+  productId: string;
   url: string;
   sort_order?: number;
 }
@@ -12,15 +12,15 @@ export class ProductImage extends Entity<ProductImageProps> {
     super(props, id);
   }
 
-  get product_id(): string {
-    return this.props.product_id;
+  get productId(): string {
+    return this.props.productId;
   }
 
   get url(): string {
     return this.props.url;
   }
 
-  get sort_order(): number {
+  get sort_order(): number | undefined {
     return this.props.sort_order;
   }
 

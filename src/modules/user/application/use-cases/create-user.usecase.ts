@@ -5,25 +5,6 @@ import { UserDto } from '../dtos/user.dto';
 import { Result, success, failure } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';
 import { UserMapper } from '../../infrastructure/user.mapper';
-import { UserRole as PrismaUserRole } from '@prisma/client';
-
-// Helper function to map Prisma UserRole to Domain UserRole
-const toDomainUserRole = (role: PrismaUserRole): DomainUserRole => {
-  switch (role) {
-    case PrismaUserRole.ADMIN:
-      return DomainUserRole.ADMIN;
-    case PrismaUserRole.CUSTOMER:
-      return DomainUserRole.CUSTOMER;
-    case PrismaUserRole.DRIVER:
-      return DomainUserRole.DRIVER;
-    case PrismaUserRole.VENDOR:
-      return DomainUserRole.VENDOR;
-    default:
-      throw new Error(`Invalid user role: ${role}`);
-  }
-};
-
-
 export class CreateUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
@@ -40,7 +21,7 @@ export class CreateUserUseCase {
     }
 
     // 2. Create the User entity
-    const userProps: IUserProps = { ...dto, role: toDomainUserRole(dto.role) };
+    const userProps: IUserProps = { ...dto };
     const userResult = User.create(userProps);
 
     if (!userResult.success) {

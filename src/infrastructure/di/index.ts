@@ -26,8 +26,16 @@ import { PrismaNotificationRepository } from '@/modules/notification/infrastruct
 import { GetNotificationUseCase } from '@/modules/notification/application/use-cases/get-notification.usecase';
 import { UpdateNotificationUseCase } from '@/modules/notification/application/use-cases/update-notification.usecase';
 import { DeleteNotificationUseCase } from '@/modules/notification/application/use-cases/delete-notification.usecase';
+import {
+  CreateUserUseCase,
+  DeleteUserUseCase,
+  GetUserUseCase,
+  ListUsersUseCase,
+  UpdateUserUseCase,
+} from '@/modules/user/application/use-cases';
 import { IUserRepository } from '@/modules/user/domain/user.repository.interface';
-import { PrismaUserRepository } from '@/modules/user/infrastructure/prisma-user.repository';
+import { PrismaUserRepository } from '@/modules/user/infrastructure';
+import { UserController, UserRoutes } from '@/modules/user/presentation/http';
 import { IVendorRepository } from '@/modules/vendor/domain/vendor.repository';
 import { IVendorOutletRepository } from '@/modules/vendor-outlet/domain/vendor-outlet.repository';
 import { PrismaVendorOutletRepository } from '@/modules/vendor-outlet/infrastructure/prisma-vendor-outlet.repository';
@@ -138,7 +146,13 @@ export interface Dependencies {
   updateCourierUseCase: UpdateCourierUseCase;
   deleteCourierUseCase: DeleteCourierUseCase;
   listCouriersUseCase: ListCouriersUseCase;
-  userRepository: IUserRepository;
+  createUserUseCase: CreateUserUseCase;
+  getUserUseCase: GetUserUseCase;
+  updateUserUseCase: UpdateUserUseCase;
+  deleteUserUseCase: DeleteUserUseCase;
+  listUsersUseCase: ListUsersUseCase;
+  userController: UserController;
+  userRoutes: UserRoutes;
   vendorRepository: IVendorRepository;
   vendorOutletRepository: IVendorOutletRepository;
   addressRepository: IAddressRepository;
@@ -289,6 +303,21 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const deleteDeliveryUseCase = new DeleteDeliveryUseCase(deliveryRepository);
   const listDeliveriesUseCase = new ListDeliveriesUseCase(deliveryRepository);
 
+  const createUserUseCase = new CreateUserUseCase(userRepository);
+  const getUserUseCase = new GetUserUseCase(userRepository);
+  const updateUserUseCase = new UpdateUserUseCase(userRepository);
+  const deleteUserUseCase = new DeleteUserUseCase(userRepository);
+  const listUsersUseCase = new ListUsersUseCase(userRepository);
+  const userController = new UserController({
+    createUserUseCase,
+    getUserUseCase,
+    updateUserUseCase,
+    deleteUserUseCase,
+    listUsersUseCase,
+  });
+
+  const userRoutes = new UserRoutes(userController);
+
   return {
     orderPromotionRepository,
     createOrderPromotionUseCase,
@@ -322,6 +351,13 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
     deleteCourierUseCase,
     listCouriersUseCase,
     userRepository,
+    createUserUseCase,
+    getUserUseCase,
+    updateUserUseCase,
+    deleteUserUseCase,
+    listUsersUseCase,
+    userController,
+    userRoutes,
     vendorRepository,
     vendorOutletRepository,
     addressRepository,

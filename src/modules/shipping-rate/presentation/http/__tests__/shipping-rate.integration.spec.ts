@@ -12,7 +12,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 // This variable will be used by our mock to determine the user for each test
-let mockUser: User | null = null;
+let mockUser: User | undefined = undefined;
 
 // Mock the entire auth middleware module. Jest hoists this to the top of the file,
 // so it runs before any imports, ensuring the App is built with our mock middleware.
@@ -70,7 +70,7 @@ describe('ShippingRate Integration Tests', () => {
   });
 
   beforeEach(async () => {
-    mockUser = null; // Reset the user before each test
+    mockUser = undefined; // Reset the user before each test
     await prisma.shippingRate.deleteMany({});
     await prisma.serviceZone.deleteMany({});
     await prisma.vendor.deleteMany({});

@@ -1,12 +1,7 @@
 import { Entity } from '@/core/domain/entity';
 import { Result, success } from '@/core/utils/result';
-
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  CUSTOMER = 'CUSTOMER',
-  DRIVER = 'DRIVER',
-  VENDOR = 'VENDOR',
-}
+import { UserRole } from '@/core/domain/enums';
+export { UserRole };
 
 export interface IUserProps {
   username: string;

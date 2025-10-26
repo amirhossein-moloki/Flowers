@@ -33,7 +33,6 @@ describe('Vendor Outlet Integration Tests', () => {
   let app: App;
   let prisma: PrismaClient;
   let dependencies: Dependencies;
-  let userRepository: IUserRepository;
   let adminToken: string;
   let adminUser: User;
   let testVendor: Vendor;
@@ -48,8 +47,6 @@ describe('Vendor Outlet Integration Tests', () => {
     server = app.start(env.PORT);
     dependencies = app.dependencies;
 
-    userRepository = dependencies.userRepository;
-
     const adminResult = User.create({
       username: 'admin_vendor_outlet_test',
       email: 'admin_vendor_outlet_test@test.com',
@@ -63,7 +60,7 @@ describe('Vendor Outlet Integration Tests', () => {
     }
 
     adminUser = adminResult.value;
-    await userRepository.save(adminUser);
+    await dependencies.userRepository.save(adminUser);
 
     adminToken = sign({ id: adminUser.id, role: adminUser.role }, env.JWT_SECRET, { expiresIn: '1h' });
 
