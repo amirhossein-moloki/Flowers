@@ -13,9 +13,9 @@ export class CreateProductUseCase {
     const productProps: IProductProps = {
       name: dto.name,
       description: dto.description,
-      price: dto.base_price,
+      price: dto.price,
       stock: 0, // Default stock to 0
-      vendorId: dto.vendor_id,
+      vendorId: dto.vendorId,
     };
 
     const productResult = Product.create(productProps);

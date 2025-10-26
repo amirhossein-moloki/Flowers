@@ -1,11 +1,13 @@
 import { IOrderRepository } from '@/modules/order/domain/order.repository';
 import { Order } from '@/modules/order/domain/order.entity';
-import prisma from '@/infrastructure/database/prisma/prisma-client';
+import { PrismaClient } from '@prisma/client';
 import { OrderMapper } from '@/modules/order/infrastructure/order.mapper';
 
 export class PrismaOrderRepository implements IOrderRepository {
+  constructor(private readonly prisma: PrismaClient) {}
+
   async findById(id: string): Promise<Order | null> {
-    const order = await prisma.order.findUnique({
+    const order = await this.prisma.order.findUnique({
       where: { id },
       include: { items: true },
     });
@@ -13,7 +15,7 @@ export class PrismaOrderRepository implements IOrderRepository {
   }
 
   async findByUserId(userId: string, page: number, pageSize: number): Promise<Order[]> {
-    const orders = await prisma.order.findMany({
+    const orders = await this.prisma.order.findMany({
       where: { userId },
       include: { items: true },
       skip: (page - 1) * pageSize,
@@ -26,7 +28,7 @@ export class PrismaOrderRepository implements IOrderRepository {
   async save(order: Order): Promise<void> {
     const { orderData, itemsData } = OrderMapper.toPersistence(order);
 
-    await prisma.$transaction(async (tx) => {
+    await this.prisma.$transaction(async (tx) => {
       // Upsert the order itself
       await tx.order.upsert({
         where: { id: order.id },
@@ -54,7 +56,7 @@ export class PrismaOrderRepository implements IOrderRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await prisma.$transaction(async (tx) => {
+    await this.prisma.$transaction(async (tx) => {
       await tx.orderItem.deleteMany({
         where: { orderId: id },
       });

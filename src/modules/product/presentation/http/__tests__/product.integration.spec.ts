@@ -73,6 +73,8 @@ describe('Product Integration Tests', () => {
         price: 100,
         stock: 10,
         vendorId: vendor.id,
+        sku_code: '12345',
+        photo_url: 'http://example.com/photo.png',
       };
 
       const response = await supertest(app)

@@ -4,9 +4,7 @@ import { GetUserUseCase } from '../application/use-cases/get-user.usecase';
 import { UpdateUserUseCase } from '../application/use-cases/update-user.usecase';
 import { DeleteUserUseCase } from '../application/use-cases/delete-user.usecase';
 import { ListUsersUseCase } from '../application/use-cases/list-users.usecase';
-import { UserPresenter } from './presenter/user.presenter';
-import { PrismaUserRepository } from '../infrastructure/prisma-user.repository';
-import { PrismaClient } from '@prisma/client';
+import { Dependencies } from '@/infrastructure/di';
 
 export class UserController {
   private readonly createUserUseCase: CreateUserUseCase;
@@ -15,13 +13,12 @@ export class UserController {
   private readonly deleteUserUseCase: DeleteUserUseCase;
   private readonly listUsersUseCase: ListUsersUseCase;
 
-  constructor(private readonly prisma: PrismaClient) {
-    const userRepository = new PrismaUserRepository(prisma);
-    this.createUserUseCase = new CreateUserUseCase(userRepository);
-    this.getUserUseCase = new GetUserUseCase(userRepository);
-    this.updateUserUseCase = new UpdateUserUseCase(userRepository);
-    this.deleteUserUseCase = new DeleteUserUseCase(userRepository);
-    this.listUsersUseCase = new ListUsersUseCase(userRepository);
+  constructor(dependencies: Dependencies) {
+    this.createUserUseCase = dependencies.createUserUseCase;
+    this.getUserUseCase = dependencies.getUserUseCase;
+    this.updateUserUseCase = dependencies.updateUserUseCase;
+    this.deleteUserUseCase = dependencies.deleteUserUseCase;
+    this.listUsersUseCase = dependencies.listUsersUseCase;
   }
 
   create = async (req: Request, res: Response) => {

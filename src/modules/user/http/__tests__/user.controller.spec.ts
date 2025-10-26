@@ -9,7 +9,18 @@ import { success, failure } from '@/core/utils/result';
 import { User } from '../../domain/user.entity';
 import { UserRole } from '@prisma/client';
 import { UserDto } from '../../application/dtos/user.dto';
-import { userRoutes } from '../routes';
+import { createUserRoutes } from '../routes';
+import { Dependencies } from '@/infrastructure/di';
+import { Request, Response, NextFunction } from 'express';
+
+// Mock middleware
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: (req: Request, res: Response, next: NextFunction) => {
+    // @ts-ignore
+    req.user = { id: 'mock-user-id' };
+    next();
+  },
+}));
 
 jest.mock('@/config/env', () => ({
   env: {
@@ -20,7 +31,6 @@ jest.mock('@/config/env', () => ({
   },
 }));
 
-// Mock the use cases
 const mockCreateUserUseCase = {
   execute: jest.fn(),
 };
@@ -37,36 +47,18 @@ const mockListUsersUseCase = {
   execute: jest.fn(),
 };
 
-import { Request, Response, NextFunction } from 'express';
-
-// Mock middleware
-jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: (req: Request, res: Response, next: NextFunction) => {
-    // @ts-ignore
-    req.user = { id: 'mock-user-id' };
-    next();
-  },
-}));
-
-jest.mock('../../application/use-cases/create-user.usecase', () => ({
-  CreateUserUseCase: jest.fn(() => mockCreateUserUseCase),
-}));
-jest.mock('../../application/use-cases/get-user.usecase', () => ({
-  GetUserUseCase: jest.fn(() => mockGetUserUseCase),
-}));
-jest.mock('../../application/use-cases/update-user.usecase', () => ({
-  UpdateUserUseCase: jest.fn(() => mockUpdateUserUseCase),
-}));
-jest.mock('../../application/use-cases/delete-user.usecase', () => ({
-  DeleteUserUseCase: jest.fn(() => mockDeleteUserUseCase),
-}));
-jest.mock('../../application/use-cases/list-users.usecase', () => ({
-  ListUsersUseCase: jest.fn(() => mockListUsersUseCase),
-}));
-
 const app = express();
 app.use(express.json());
-app.use('/users', userRoutes);
+app.use(
+  '/users',
+  createUserRoutes({
+    createUserUseCase: mockCreateUserUseCase,
+    getUserUseCase: mockGetUserUseCase,
+    updateUserUseCase: mockUpdateUserUseCase,
+    deleteUserUseCase: mockDeleteUserUseCase,
+    listUsersUseCase: mockListUsersUseCase,
+  } as unknown as Dependencies),
+);
 
 describe('UserController', () => {
   afterEach(() => {

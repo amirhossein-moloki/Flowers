@@ -7,7 +7,7 @@ describe('PrismaOrderRepository', () => {
   let repository: PrismaOrderRepository;
 
   beforeEach(() => {
-    repository = new PrismaOrderRepository();
+    repository = new PrismaOrderRepository(prismaMock);
   });
 
   const orderItemResult = OrderItem.create({
