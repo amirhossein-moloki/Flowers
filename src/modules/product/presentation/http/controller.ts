@@ -8,6 +8,7 @@ import {
 } from '@/modules/product/application';
 import { ProductPresenter } from './presenters/product.presenter';
 import { Dependencies } from '@/infrastructure/di';
+import { Product } from '../../domain/product.entity';
 
 export class ProductController {
   private readonly createProductUseCase: CreateProductUseCase;
@@ -28,7 +29,7 @@ export class ProductController {
     const result = await this.createProductUseCase.execute(req.body);
 
     if (result.success) {
-      return res.status(201).json(ProductPresenter.toJSON(result.value));
+      return res.status(201).json(ProductPresenter.toJSON(result.value as Product));
     } else {
       return res.status(400).json({ error: result.error.message });
     }
@@ -43,7 +44,7 @@ export class ProductController {
     });
 
     if (result.success) {
-      return res.status(200).json(result.value.map(ProductPresenter.toJSON));
+      return res.status(200).json(result.value.map(p => ProductPresenter.toJSON(p as Product)));
     } else {
       return res.status(400).json({ error: result.error.message });
     }
@@ -55,7 +56,7 @@ export class ProductController {
 
     if (result.success) {
       if (result.value) {
-        return res.status(200).json(ProductPresenter.toJSON(result.value));
+        return res.status(200).json(ProductPresenter.toJSON(result.value as Product));
       } else {
         return res.status(404).json({ error: 'Product not found' });
       }
@@ -72,7 +73,7 @@ export class ProductController {
     const result = await this.updateProductUseCase.execute(id, req.body);
 
     if (result.success) {
-      return res.status(200).json(ProductPresenter.toJSON(result.value));
+      return res.status(200).json(ProductPresenter.toJSON(result.value as Product));
     } else {
       return res.status(400).json({ error: result.error.message });
     }

@@ -1,14 +1,13 @@
 import request from 'supertest';
 import App from '@/app';
-import { PrismaClient, UserRole } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import { User, UserRole } from '@/modules/user/domain/user.entity';
 import { Dependencies } from '@/infrastructure/di';
 import { IUserRepository } from '@/modules/user/domain/user.repository.interface';
-import { User } from '@/modules/user/domain/user.entity';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { env } from '@/config/env';
 import { Vendor } from '@/modules/vendor/domain/vendor.entity';
 import { execSync } from 'child_process';
-import { verify } from 'jsonwebtoken';
 
 jest.mock('@/core/middlewares/auth.middleware', () => ({
   ...jest.requireActual('@/core/middlewares/auth.middleware'),
@@ -58,7 +57,7 @@ describe('Vendor Integration Tests', () => {
         is_active: true,
       });
 
-      if (adminResult.failure) {
+      if (!adminResult.success) {
         throw adminResult.error;
       }
 
@@ -67,19 +66,22 @@ describe('Vendor Integration Tests', () => {
 
       adminToken = sign({ id: adminUser.id, role: adminUser.role }, env.JWT_SECRET, { expiresIn: '1h' });
 
-      const vendorResult = Vendor.create({
+      const vendorDto = {
         name: 'Test Vendor',
         description: 'Test Description',
-      email: `vendor${Math.floor(Math.random() * 10000)}@test.com`,
-      phone: `+1555555${Math.floor(Math.random() * 10000)}`,
+        email: `vendor${Math.floor(Math.random() * 10000)}@test.com`,
+        phone: `+1555555${Math.floor(Math.random() * 10000)}`,
         address: '123 Test St',
-      });
-
-      if (vendorResult.failure) {
+      };
+      const vendorResult = await dependencies.createVendorUseCase.execute(vendorDto);
+      if (!vendorResult.success) {
         throw vendorResult.error;
       }
-      testVendor = vendorResult.value;
-      await dependencies.vendorRepository.save(testVendor);
+      const vendor = await dependencies.vendorRepository.findById(vendorResult.value.id);
+      if (!vendor) {
+        throw new Error('Vendor not found');
+      }
+      testVendor = vendor;
   });
 
   afterAll(async () => {
@@ -174,8 +176,10 @@ describe('Vendor Integration Tests', () => {
         .set('Authorization', `Bearer ${adminToken}`)
         .send(updatedData);
 
+      const updatedVendor = await dependencies.vendorRepository.findById(testVendor.id);
+
       expect(response.status).toBe(200);
-      expect(response.body.name).toBe(updatedData.name);
+      expect(updatedVendor?.name).toBe(updatedData.name);
     });
 
     it('should return 404 for non-existent vendor', async () => {

@@ -1,6 +1,21 @@
-import { User as PrismaUser } from '@prisma/client';
-import { User } from '@/modules/user/domain/user.entity';
+import { User as PrismaUser, UserRole as PrismaUserRole } from '@prisma/client';
+import { User, UserRole } from '@/modules/user/domain/user.entity';
 import { UserDto } from '@/modules/user/application/dtos/user.dto';
+
+const toDomainRole = (role: PrismaUserRole): UserRole => {
+  switch (role) {
+    case PrismaUserRole.ADMIN:
+      return UserRole.ADMIN;
+    case PrismaUserRole.CUSTOMER:
+      return UserRole.CUSTOMER;
+    case PrismaUserRole.DRIVER:
+      return UserRole.DRIVER;
+    case PrismaUserRole.VENDOR:
+      return UserRole.VENDOR;
+    default:
+      throw new Error(`Unknown role: ${role}`);
+  }
+};
 
 export class UserMapper {
   /**
@@ -11,7 +26,7 @@ export class UserMapper {
       {
         username: raw.username,
         email: raw.email,
-        role: raw.role, // Assumes role in Prisma is compatible with UserRole enum
+        role: toDomainRole(raw.role),
         password: raw.password,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
@@ -50,7 +65,7 @@ export class UserMapper {
       username: props.username,
       email: props.email,
       role: props.role,
-      createdAt: user.props.createdAt,
+      createdAt: user.props.createdAt ?? new Date(),
     };
   }
 }

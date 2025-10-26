@@ -8,13 +8,12 @@ export class ServiceZoneMapper {
     const serviceZoneResult = ServiceZone.create(
       {
         name: prismaServiceZone.name,
-        city: prismaServiceZone.city,
-        polygon_geojson: prismaServiceZone.polygon_geojson,
+        geo_json: prismaServiceZone.geo_json,
         is_active: prismaServiceZone.is_active,
       },
       prismaServiceZone.id,
     );
-    if (serviceZoneResult.isFailure) {
+    if (!serviceZoneResult.success) {
       throw new Error('Could not map PrismaServiceZone to domain');
     }
     return serviceZoneResult.value;
@@ -22,15 +21,12 @@ export class ServiceZoneMapper {
 
   static toPersistence(
     serviceZone: ServiceZone,
-  ): PrismaServiceZone {
+  ): Prisma.ServiceZoneCreateInput {
     return {
       id: serviceZone.id,
       name: serviceZone.name,
-      city: serviceZone.city,
-      polygon_geojson: serviceZone.polygon_geojson as Prisma.JsonValue,
+      geo_json: serviceZone.geo_json,
       is_active: serviceZone.is_active,
-      created_at: new Date(),
-      updated_at: new Date(),
     };
   }
 }

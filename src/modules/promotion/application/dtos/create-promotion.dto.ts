@@ -2,25 +2,32 @@ import { IsString, IsNumber, IsDate, IsBoolean, IsOptional } from 'class-validat
 
 export class CreatePromotionDto {
   @IsString()
-  code: string;
+  name!: string;
 
   @IsString()
-  type: string;
+  code!: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsString()
+  type!: string;
 
   @IsNumber()
-  amount: number;
+  amount!: number;
 
   @IsNumber()
-  percent: number;
+  percent!: number;
 
   @IsDate()
-  starts_at: Date;
+  starts_at!: Date;
 
   @IsDate()
-  ends_at: Date;
+  ends_at!: Date;
 
   @IsNumber()
-  usage_limit: number;
+  usage_limit!: number;
 
   @IsOptional()
   @IsBoolean()

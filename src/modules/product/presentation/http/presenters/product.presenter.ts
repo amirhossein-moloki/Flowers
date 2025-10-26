@@ -8,8 +8,8 @@ export class ProductPresenter {
       description: product.description,
       price: product.price,
       stock: product.stock,
-      createdAt: product.createdAt,
-      updatedAt: product.updatedAt,
+      createdAt: product.props.createdAt,
+      updatedAt: product.props.updatedAt,
     };
   }
 }

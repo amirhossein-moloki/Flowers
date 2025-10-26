@@ -1,16 +1,34 @@
-import { IUserRepository } from '../../domain/user.repository';
-import { User, IUserProps } from '../../domain/user.entity';
+import { IUserRepository } from '../../domain/user.repository.interface';
+import { User, IUserProps, UserRole as DomainUserRole } from '../../domain/user.entity';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UserDto } from '../dtos/user.dto';
 import { Result, success, failure } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';
 import { UserMapper } from '../../infrastructure/user.mapper';
+import { UserRole as PrismaUserRole } from '@prisma/client';
+
+// Helper function to map Prisma UserRole to Domain UserRole
+const toDomainUserRole = (role: PrismaUserRole): DomainUserRole => {
+  switch (role) {
+    case PrismaUserRole.ADMIN:
+      return DomainUserRole.ADMIN;
+    case PrismaUserRole.CUSTOMER:
+      return DomainUserRole.CUSTOMER;
+    case PrismaUserRole.DRIVER:
+      return DomainUserRole.DRIVER;
+    case PrismaUserRole.VENDOR:
+      return DomainUserRole.VENDOR;
+    default:
+      throw new Error(`Invalid user role: ${role}`);
+  }
+};
+
 
 export class CreateUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
   async execute(dto: CreateUserDto): Promise<Result<UserDto, HttpError>> {
-    const { email, username } = dto.body;
+    const { email, username } = dto;
     // 1. Check for existing user by email or username
     const existingByEmail = await this.userRepository.findByEmail(email);
     if (existingByEmail) {
@@ -22,7 +40,7 @@ export class CreateUserUseCase {
     }
 
     // 2. Create the User entity
-    const userProps: IUserProps = { ...dto.body };
+    const userProps: IUserProps = { ...dto, role: toDomainUserRole(dto.role) };
     const userResult = User.create(userProps);
 
     if (!userResult.success) {

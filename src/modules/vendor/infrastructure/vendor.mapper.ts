@@ -25,15 +25,14 @@ export class VendorMapper {
   }
 
   public static toPersistence(vendor: Vendor) {
-    const props = vendor.props;
     return {
       id: vendor.id,
-      name: props.name,
-      description: props.description,
-      email: props.email,
-      phone: props.phone,
-      address: props.address,
-      is_active: props.is_active,
+      name: vendor.name,
+      description: vendor.description,
+      email: vendor.email,
+      phone: vendor.phone,
+      address: vendor.address,
+      is_active: vendor.is_active,
     };
   }
 
@@ -42,12 +41,12 @@ export class VendorMapper {
     return {
       id: vendor.id,
       name: props.name,
-      description: props.description,
+      description: props.description ?? null,
       email: props.email,
       phone: props.phone,
       address: props.address,
-      is_active: props.is_active,
-      createdAt: vendor.createdAt,
+      is_active: props.is_active ?? false,
+      createdAt: props.createdAt ?? new Date(),
     };
   }
 }

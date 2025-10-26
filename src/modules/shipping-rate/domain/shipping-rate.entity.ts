@@ -69,10 +69,7 @@ export class ShippingRate extends Entity<IShippingRateProps> {
   }
 
   public update(props: Partial<IShippingRateProps>): Result<ShippingRate, Error> {
-    this.props = {
-      ...this.props,
-      ...props,
-    };
-    return success(this);
+    const newProps = { ...this.props, ...props };
+    return ShippingRate.create(newProps, this.id);
   }
 }

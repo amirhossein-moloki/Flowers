@@ -1,18 +1,18 @@
-import { Entity } from '../../../core/domain/entity';
-import { Result, success } from '../../../core/utils/result';
+import { Entity } from '@/core/domain/entity';
+import { Result, success } from '@/core/utils/result';
 
-interface ProofOfDeliveryProps {
+export interface IProofOfDeliveryProps {
   delivery_id: string;
   signature_url?: string;
   photo_url?: string;
   notes?: string;
   is_verified?: boolean;
-  created_at?: Date;
-  updated_at?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export class ProofOfDelivery extends Entity<ProofOfDeliveryProps> {
-  private constructor(props: ProofOfDeliveryProps, id?: string) {
+export class ProofOfDelivery extends Entity<IProofOfDeliveryProps> {
+  private constructor(props: IProofOfDeliveryProps, id?: string) {
     super(props, id);
   }
 
@@ -32,15 +32,18 @@ export class ProofOfDelivery extends Entity<ProofOfDeliveryProps> {
     return this.props.notes;
   }
 
-  get is_verified(): boolean | undefined {
-    return this.props.is_verified;
+  get is_verified(): boolean {
+    return this.props.is_verified ?? false;
   }
 
-  public static create(
-    props: ProofOfDeliveryProps,
-    id?: string,
-  ): Result<ProofOfDelivery, Error> {
-    const proofOfDelivery = new ProofOfDelivery(props, id);
+  public static create(props: IProofOfDeliveryProps, id?: string): Result<ProofOfDelivery, Error> {
+    const proofOfDelivery = new ProofOfDelivery(
+      {
+        ...props,
+        is_verified: props.is_verified ?? false,
+      },
+      id,
+    );
     return success(proofOfDelivery);
   }
 }

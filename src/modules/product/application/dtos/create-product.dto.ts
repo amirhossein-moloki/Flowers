@@ -2,19 +2,19 @@ import { IsString, IsNumber, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
-  vendor_id: string;
+  vendor_id!: string;
 
   @IsString()
-  name: string;
+  name!: string;
 
   @IsString()
-  sku_code: string;
+  sku_code!: string;
 
   @IsString()
-  description: string;
+  description!: string;
 
   @IsNumber()
-  base_price: number;
+  base_price!: number;
 
   @IsOptional()
   @IsNumber()
@@ -25,5 +25,5 @@ export class CreateProductDto {
   is_active?: boolean;
 
   @IsString()
-  photo_url: string;
+  photo_url!: string;
 }

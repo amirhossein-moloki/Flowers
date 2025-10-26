@@ -1,5 +1,5 @@
 import { IProductRepository } from '../../domain/product.repository';
-import { Product } from '../../domain/product.entity';
+import { Product, IProductProps } from '../../domain/product.entity';
 import { CreateProductDto } from '../dtos/create-product.dto';
 import { ProductDto } from '../dtos/product.dto';
 import { Result, success, failure } from '@/core/utils/result';
@@ -10,7 +10,15 @@ export class CreateProductUseCase {
   constructor(private readonly productRepository: IProductRepository) {}
 
   async execute(dto: CreateProductDto): Promise<Result<ProductDto, HttpError>> {
-    const productResult = Product.create(dto);
+    const productProps: IProductProps = {
+      name: dto.name,
+      description: dto.description,
+      price: dto.base_price,
+      stock: 0, // Default stock to 0
+      vendorId: dto.vendor_id,
+    };
+
+    const productResult = Product.create(productProps);
 
     if (!productResult.success) {
       return failure(HttpError.internalServerError(productResult.error.message));

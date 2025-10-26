@@ -5,5 +5,6 @@ export interface IShippingRateRepository {
   findByServiceZoneId(serviceZoneId: string): Promise<ShippingRate[]>;
   findAll(): Promise<ShippingRate[]>;
   save(shippingRate: ShippingRate): Promise<ShippingRate>;
+  update(shippingRate: ShippingRate): Promise<ShippingRate>;
   delete(id: string): Promise<boolean>;
 }

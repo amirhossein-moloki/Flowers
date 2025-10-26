@@ -1,15 +1,14 @@
 import request from 'supertest';
 import App from '@/app';
-import { PrismaClient, UserRole } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { Dependencies } from '@/infrastructure/di';
 import { IUserRepository } from '@/modules/user/domain/user.repository.interface';
-import { User } from '@/modules/user/domain/user.entity';
-import { sign } from 'jsonwebtoken';
+import { User, UserRole } from '@/modules/user/domain/user.entity';
+import { sign, verify } from 'jsonwebtoken';
 import { env } from '@/config/env';
 import { Vendor } from '@/modules/vendor/domain/vendor.entity';
 import { VendorOutlet } from '@/modules/vendor-outlet/domain/vendor-outlet.entity';
 import { execSync } from 'child_process';
-import { verify } from 'jsonwebtoken';
 
 jest.mock('@/core/middlewares/auth.middleware', () => ({
   ...jest.requireActual('@/core/middlewares/auth.middleware'),
@@ -59,7 +58,7 @@ describe('Vendor Outlet Integration Tests', () => {
       is_active: true,
     });
 
-    if (adminResult.failure) {
+    if (!adminResult.success) {
       throw adminResult.error;
     }
 
@@ -76,7 +75,7 @@ describe('Vendor Outlet Integration Tests', () => {
       address: '123 Test St',
     });
 
-    if (vendorResult.failure) {
+    if (!vendorResult.success) {
       throw vendorResult.error;
     }
     testVendor = vendorResult.value;
@@ -88,9 +87,10 @@ describe('Vendor Outlet Integration Tests', () => {
       address: '456 Test St',
       latitude: 40.7128,
       longitude: -74.006,
+      is_active: true,
     });
 
-    if (vendorOutletResult.failure) {
+    if (!vendorOutletResult.success) {
       throw vendorOutletResult.error;
     }
 
@@ -111,6 +111,7 @@ describe('Vendor Outlet Integration Tests', () => {
         address: '789 New St',
         latitude: 34.0522,
         longitude: -118.2437,
+        is_active: true,
       };
 
       const response = await request(app.getServer())

@@ -20,7 +20,7 @@ export class GetVendorOutletUseCase {
         outlet.props.vendor = vendor;
       }
       return success(outlet);
-    } catch (error) {
+    } catch (error: any) {
       return failure(new Error(error.message));
     }
   }

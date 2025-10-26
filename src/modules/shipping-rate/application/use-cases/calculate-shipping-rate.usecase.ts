@@ -7,7 +7,9 @@ export class CalculateShippingRateUseCase {
   constructor(private readonly shippingRateRepository: IShippingRateRepository) {}
 
   async execute(dto: CalculateShippingRateDto): Promise<Result<number, HttpError>> {
-    const shippingRates = await this.shippingRateRepository.findByServiceZoneId(dto.service_zone_id);
+    const shippingRates = await this.shippingRateRepository.findByServiceZoneId(
+      dto.service_zone_id,
+    );
 
     if (!shippingRates || shippingRates.length === 0) {
       return failure(HttpError.notFound('No shipping rates found for this service zone.'));

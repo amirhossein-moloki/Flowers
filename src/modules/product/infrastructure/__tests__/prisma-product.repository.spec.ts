@@ -7,9 +7,12 @@ jest.mock('../../../../infrastructure/database/prisma/prisma-client');
 
 describe('PrismaProductRepository', () => {
   let repository: PrismaProductRepository;
-  const productProps = { name: 'Test Product', description: 'A test product', price: 100, stock: 10 };
+  const productProps = { name: 'Test Product', description: 'A test product', price: 100, stock: 10, vendorId: 'vendor-uuid' };
   const productEntityResult = Product.create(productProps, 'some-uuid');
-  const productEntity = productEntityResult.success ? productEntityResult.value : null;
+  if (!productEntityResult.success) {
+    throw new Error('Failed to create test entity');
+  }
+  const productEntity = productEntityResult.value;
 
   const prismaProduct: PrismaProduct = {
     id: productEntity!.id,
@@ -34,13 +37,14 @@ describe('PrismaProductRepository', () => {
           description: productEntity!.description,
           price: productEntity!.price,
           stock: productEntity!.stock,
+          vendorId: productEntity!.props.vendorId,
         },
         update: {
-          id: productEntity!.id,
           name: productEntity!.name,
           description: productEntity!.description,
           price: productEntity!.price,
           stock: productEntity!.stock,
+          vendorId: productEntity!.props.vendorId,
         },
       });
     });

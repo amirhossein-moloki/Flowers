@@ -1,4 +1,4 @@
-import { IRepository } from '../../../../core/domain/repository';
+import { IRepository } from '@/core/domain/repository';
 import { Product } from './product.entity';
 
 export interface IProductRepository extends IRepository<Product> {

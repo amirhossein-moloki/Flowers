@@ -19,7 +19,7 @@ jest.mock('@prisma/client', () => {
   };
 });
 
-import { promotionRouter } from '../promotion.routes';
+import promotionRouter from '../promotion.routes';
 import { NotFoundError } from '@/core/errors/not-found.error';
 import { PromotionController } from '../promotion.controller';
 import { CreatePromotionUseCase } from '@/modules/promotion/application/use-cases/create-promotion.usecase';
@@ -29,6 +29,7 @@ import { DeletePromotionUseCase } from '@/modules/promotion/application/use-case
 import { GetAllPromotionsUseCase } from '@/modules/promotion/application/use-cases/get-all-promotions.usecase';
 import { PrismaPromotionRepository } from '@/modules/promotion/infrastructure/prisma-promotion.repository';
 import { Router } from 'express';
+import { Dependencies } from '@/infrastructure/di';
 
 const app = express();
 app.use(express.json());
@@ -36,34 +37,25 @@ app.use(express.json());
 beforeEach(() => {
   mockReset(prismaMock);
   const promotionRepository = new PrismaPromotionRepository(prismaMock as unknown as PrismaClient);
-  const createPromotionUseCase = new CreatePromotionUseCase(promotionRepository);
-  const getPromotionUseCase = new GetPromotionUseCase(promotionRepository);
-  const updatePromotionUseCase = new UpdatePromotionUseCase(promotionRepository);
-  const deletePromotionUseCase = new DeletePromotionUseCase(promotionRepository);
-  const getAllPromotionsUseCase = new GetAllPromotionsUseCase(promotionRepository);
-  const promotionController = new PromotionController(
-    createPromotionUseCase,
-    getPromotionUseCase,
-    updatePromotionUseCase,
-    deletePromotionUseCase,
-    getAllPromotionsUseCase,
-  );
-  const router = Router();
-  router.post('/', promotionController.create.bind(promotionController));
-  router.get('/', promotionController.findAll.bind(promotionController));
-  router.get('/:id', promotionController.findById.bind(promotionController));
-  router.put('/:id', promotionController.update.bind(promotionController));
-  router.delete('/:id', promotionController.delete.bind(promotionController));
-  app.use('/promotions', router);
+  const dependencies: Partial<Dependencies> = {
+    createPromotionUseCase: new CreatePromotionUseCase(promotionRepository),
+    getPromotionUseCase: new GetPromotionUseCase(promotionRepository),
+    updatePromotionUseCase: new UpdatePromotionUseCase(promotionRepository),
+    deletePromotionUseCase: new DeletePromotionUseCase(promotionRepository),
+    getAllPromotionsUseCase: new GetAllPromotionsUseCase(promotionRepository),
+  };
+
+  app.use('/promotions', promotionRouter(dependencies as Dependencies));
 });
 
 describe('Promotion Controller', () => {
   it('should create a promotion', async () => {
     const promotion = {
+      name: 'Test Promotion',
       code: 'TEST',
       discount_type: DiscountType.PERCENTAGE,
       discount_value: 10,
-      start_date: new Date().toISOString(),
+      start_date: new Date(),
     };
 
     prismaMock.promotion.findUnique.mockResolvedValue(null);
@@ -79,7 +71,7 @@ describe('Promotion Controller', () => {
       ...promotion,
     });
 
-    const response = await request(app).post('/promotions').send(promotion);
+    const response = await request(app).post('/promotions').send({ ...promotion, start_date: promotion.start_date.toISOString() });
 
     expect(response.status).toBe(201);
     expect(response.body.code).toBe('TEST');
@@ -97,6 +89,7 @@ describe('Promotion Controller', () => {
   it('should get a promotion by id', async () => {
     const promotion = {
       id: '1',
+      name: 'Test Promotion',
       code: 'TEST',
       discount_type: DiscountType.PERCENTAGE,
       discount_value: 10,
@@ -128,6 +121,7 @@ describe('Promotion Controller', () => {
   it('should update a promotion', async () => {
     const promotion = {
       id: '1',
+      name: 'Test Promotion',
       code: 'TEST',
       discount_type: DiscountType.PERCENTAGE,
       discount_value: 10,
@@ -167,6 +161,7 @@ describe('Promotion Controller', () => {
   it('should delete a promotion', async () => {
     const promotion = {
       id: '1',
+      name: 'Test Promotion',
       code: 'TEST',
       discount_type: DiscountType.PERCENTAGE,
       discount_value: 10,

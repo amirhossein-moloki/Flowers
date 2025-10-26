@@ -8,6 +8,8 @@ import { ListUsersUseCase } from '../../application/use-cases/list-users.usecase
 import { success, failure } from '@/core/utils/result';
 import { User } from '../../domain/user.entity';
 import { UserRole } from '@prisma/client';
+import { UserDto } from '../../application/dtos/user.dto';
+import { userRoutes } from '../routes';
 
 jest.mock('@/config/env', () => ({
   env: {
@@ -15,18 +17,6 @@ jest.mock('@/config/env', () => ({
     REDIS_HOST: 'test_host',
     REDIS_PORT: 6379,
     JWT_SECRET: 'test_secret',
-  },
-}));
-
-jest.mock('@prisma/client', () => ({
-  PrismaClient: jest.fn(() => ({
-    $on: jest.fn(),
-  })),
-  UserRole: {
-    ADMIN: 'ADMIN',
-    CUSTOMER: 'CUSTOMER',
-    DRIVER: 'DRIVER',
-    VENDOR: 'VENDOR',
   },
 }));
 
@@ -47,61 +37,32 @@ const mockListUsersUseCase = {
   execute: jest.fn(),
 };
 
+import { Request, Response, NextFunction } from 'express';
+
 // Mock middleware
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: (req, res, next) => {
+  isAuthenticated: (req: Request, res: Response, next: NextFunction) => {
     // @ts-ignore
     req.user = { id: 'mock-user-id' };
     next();
   },
 }));
 
-// @ts-ignore
-new CreateUserUseCase(null);
-// @ts-ignore
-new GetUserUseCase(null);
-
-jest.mock('../../application/use-cases/create-user.usecase', () => {
-  return {
-    CreateUserUseCase: jest.fn().mockImplementation(() => {
-      return mockCreateUserUseCase;
-    }),
-  };
-});
-
-jest.mock('../../application/use-cases/update-user.usecase', () => {
-  return {
-    UpdateUserUseCase: jest.fn().mockImplementation(() => {
-      return mockUpdateUserUseCase;
-    }),
-  };
-});
-
-jest.mock('../../application/use-cases/delete-user.usecase', () => {
-  return {
-    DeleteUserUseCase: jest.fn().mockImplementation(() => {
-      return mockDeleteUserUseCase;
-    }),
-  };
-});
-
-jest.mock('../../application/use-cases/list-users.usecase', () => {
-  return {
-    ListUsersUseCase: jest.fn().mockImplementation(() => {
-      return mockListUsersUseCase;
-    }),
-  };
-});
-
-jest.mock('../../application/use-cases/get-user.usecase', () => {
-  return {
-    GetUserUseCase: jest.fn().mockImplementation(() => {
-      return mockGetUserUseCase;
-    }),
-  };
-});
-
-import { userRoutes } from '../routes';
+jest.mock('../../application/use-cases/create-user.usecase', () => ({
+  CreateUserUseCase: jest.fn(() => mockCreateUserUseCase),
+}));
+jest.mock('../../application/use-cases/get-user.usecase', () => ({
+  GetUserUseCase: jest.fn(() => mockGetUserUseCase),
+}));
+jest.mock('../../application/use-cases/update-user.usecase', () => ({
+  UpdateUserUseCase: jest.fn(() => mockUpdateUserUseCase),
+}));
+jest.mock('../../application/use-cases/delete-user.usecase', () => ({
+  DeleteUserUseCase: jest.fn(() => mockDeleteUserUseCase),
+}));
+jest.mock('../../application/use-cases/list-users.usecase', () => ({
+  ListUsersUseCase: jest.fn(() => mockListUsersUseCase),
+}));
 
 const app = express();
 app.use(express.json());
@@ -121,8 +82,8 @@ describe('UserController', () => {
         password: 'password123',
       };
 
-      const userEntity = User.create({ ...userInput, is_active: true }, 'new-user-id').value;
-      mockCreateUserUseCase.execute.mockResolvedValue(success(userEntity));
+      const userDto = { id: 'new-user-id', ...userInput };
+      mockCreateUserUseCase.execute.mockResolvedValue(success(userDto));
 
       const response = await request(app).post('/users').send(userInput);
 
@@ -150,23 +111,20 @@ describe('UserController', () => {
 
   describe('GET /users/:id', () => {
     it('should return a user by id', async () => {
-      const userEntity = User.create(
-        {
-          username: 'testuser',
-          email: 'test@example.com',
-          role: UserRole.CUSTOMER,
-          is_active: true
-        },
-        'user-id'
-      ).value;
-
-      mockGetUserUseCase.execute.mockResolvedValue(success(userEntity));
+      const userDto: UserDto = {
+        id: 'user-id',
+        username: 'testuser',
+        email: 'test@example.com',
+        role: UserRole.CUSTOMER,
+        createdAt: new Date(),
+      };
+      mockGetUserUseCase.execute.mockResolvedValue(success(userDto));
 
       const response = await request(app).get('/users/user-id');
 
       expect(response.status).toBe(200);
       expect(response.body.id).toBe('user-id');
-      expect(mockGetUserUseCase.execute).toHaveBeenCalledWith({ id: 'user-id' });
+      expect(mockGetUserUseCase.execute).toHaveBeenCalledWith('user-id');
     });
 
     it('should return 404 if user not found', async () => {
@@ -180,40 +138,34 @@ describe('UserController', () => {
 
   describe('GET /users/me', () => {
     it('should return the authenticated user', async () => {
-      const userEntity = User.create(
-        {
-          username: 'me',
-          email: 'me@example.com',
-          role: UserRole.CUSTOMER,
-          is_active: true
-        },
-        'mock-user-id'
-      ).value;
-
-      mockGetUserUseCase.execute.mockResolvedValue(success(userEntity));
+      const userDto: UserDto = {
+        id: 'mock-user-id',
+        username: 'me',
+        email: 'me@example.com',
+        role: UserRole.CUSTOMER,
+        createdAt: new Date(),
+      };
+      mockGetUserUseCase.execute.mockResolvedValue(success(userDto));
 
       const response = await request(app).get('/users/me');
 
       expect(response.status).toBe(200);
       expect(response.body.id).toBe('mock-user-id');
-      expect(mockGetUserUseCase.execute).toHaveBeenCalledWith({ id: 'mock-user-id' });
+      expect(mockGetUserUseCase.execute).toHaveBeenCalledWith('mock-user-id');
     });
   });
 
   describe('PUT /users/:id', () => {
     it('should update a user and return 200', async () => {
       const updateData = { username: 'updateduser' };
-      const userEntity = User.create(
-        {
-          username: 'updateduser',
-          email: 'test@example.com',
-          role: UserRole.CUSTOMER,
-          is_active: true
-        },
-        'user-id'
-      ).value;
-
-      mockUpdateUserUseCase.execute.mockResolvedValue(success(userEntity));
+      const userDto: UserDto = {
+        id: 'user-id',
+        username: 'updateduser',
+        email: 'test@example.com',
+        role: UserRole.CUSTOMER,
+        createdAt: new Date(),
+      };
+      mockUpdateUserUseCase.execute.mockResolvedValue(success(userDto));
 
       const response = await request(app).put('/users/user-id').send(updateData);
 
@@ -236,8 +188,8 @@ describe('UserController', () => {
 
   describe('GET /users', () => {
     it('should return a list of users', async () => {
-      const user1 = User.create({ username: 'user1', email: 'user1@test.com', role: UserRole.CUSTOMER }, '1').value;
-      const user2 = User.create({ username: 'user2', email: 'user2@test.com', role: UserRole.CUSTOMER }, '2').value;
+      const user1: UserDto = { id: '1', username: 'user1', email: 'user1@test.com', role: UserRole.CUSTOMER, createdAt: new Date() };
+      const user2: UserDto = { id: '2', username: 'user2', email: 'user2@test.com', role: UserRole.CUSTOMER, createdAt: new Date() };
       mockListUsersUseCase.execute.mockResolvedValue(success([user1, user2]));
 
       const response = await request(app).get('/users');

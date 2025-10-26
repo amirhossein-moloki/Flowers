@@ -8,7 +8,7 @@ export class CreateShippingRateUseCase {
   constructor(private readonly shippingRateRepository: IShippingRateRepository) {}
 
   async execute(dto: CreateShippingRateDto): Promise<Result<ShippingRate, HttpError>> {
-    const shippingRateProps: IShippingRateProps = { ...dto };
+    const shippingRateProps: IShippingRateProps = { ...dto, is_active: dto.is_active ?? true };
     const shippingRateResult = ShippingRate.create(shippingRateProps, dto.id);
 
     if (!shippingRateResult.success) {

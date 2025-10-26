@@ -1,13 +1,14 @@
 import { Express } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, UserRole } from '@prisma/client';
 import request from 'supertest';
 import { randomUUID } from 'crypto';
 import App from '@/app';
-import { isAuthenticated, hasRole } from '@/core/middlewares/auth.middleware';
+import { isAuthenticated } from '@/core/middlewares/auth.middleware';
+import { Request, Response, NextFunction } from 'express';
 
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: jest.fn((req, res, next) => next()),
-  hasRole: jest.fn(() => (req, res, next) => next()),
+  isAuthenticated: jest.fn((req: Request, res: Response, next: NextFunction) => next()),
+  hasRole: jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
 }));
 
 describe('ProofOfDelivery Integration Tests', () => {
@@ -36,7 +37,7 @@ describe('ProofOfDelivery Integration Tests', () => {
         email: 'test@example.com',
         username: 'testuser',
         password: 'password',
-        role: 'CUSTOMER',
+        role: UserRole.CUSTOMER,
       },
     });
 
@@ -171,7 +172,7 @@ describe('ProofOfDelivery Integration Tests', () => {
 
   describe('Authentication', () => {
     beforeEach(() => {
-      (isAuthenticated as jest.Mock).mockImplementation((req, res, next) => {
+      (isAuthenticated as jest.Mock).mockImplementation((req: Request, res: Response, next: NextFunction) => {
         return res.status(401).json({ message: 'Unauthorized' });
       });
     });

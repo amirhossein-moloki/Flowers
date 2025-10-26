@@ -5,7 +5,7 @@ export class ServiceZonePresenter {
     return {
       id: serviceZone.id,
       name: serviceZone.name,
-      geo_json: serviceZone.polygon_geojson,
+      geo_json: serviceZone.geo_json,
       is_active: serviceZone.is_active,
     };
   }

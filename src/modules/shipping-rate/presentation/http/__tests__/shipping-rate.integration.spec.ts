@@ -1,7 +1,15 @@
 import request from 'supertest';
-import express from 'express';
-import { PrismaClient, ServiceZone, ShippingRate, UserRole } from '@prisma/client';
-import { User } from '@/modules/user/domain/user.entity';
+import express, { Request, Response, NextFunction } from 'express';
+import { PrismaClient, ServiceZone, ShippingRate } from '@prisma/client';
+import { User, UserRole } from '@/modules/user/domain/user.entity';
+import App from '@/app';
+import { execSync } from 'child_process';
+import { env } from '@/config/env';
+
+// Define a custom request type for our tests
+interface AuthenticatedRequest extends Request {
+  user?: User;
+}
 
 // This variable will be used by our mock to determine the user for each test
 let mockUser: User | null = null;
@@ -9,14 +17,14 @@ let mockUser: User | null = null;
 // Mock the entire auth middleware module. Jest hoists this to the top of the file,
 // so it runs before any imports, ensuring the App is built with our mock middleware.
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: (req: any, res: any, next: any) => {
+  isAuthenticated: (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     req.user = mockUser; // Inject the mock user into the request
     if (req.user) {
       return next();
     }
     return res.status(401).json({ message: 'Unauthorized' });
   },
-  hasRole: (roles: UserRole[]) => (req: any, res: any, next: any) => {
+  hasRole: (roles: UserRole[]) => (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // This mock uses the user that was injected by the mocked 'isAuthenticated'
     const userRole = req.user?.role;
     if (!userRole || !roles.includes(userRole)) {
@@ -26,42 +34,54 @@ jest.mock('@/core/middlewares/auth.middleware', () => ({
   },
 }));
 
-// Now, when we import App, it will automatically use our mocked middleware
-import App from '@/app';
-
 describe('ShippingRate Integration Tests', () => {
   let app: express.Application;
   let prisma: PrismaClient;
   let serviceZone: ServiceZone;
   let shippingRate: ShippingRate;
+  let server: any;
+  let vendor: any;
 
-  const adminUser = new User({
-    id: 'admin-user-id',
+  const adminUserResult = User.create({
     username: 'admin',
     email: 'admin@example.com',
     password: 'password',
     role: UserRole.ADMIN,
-  });
+  }, 'admin-user-id');
+  if (!adminUserResult.success) throw new Error('Failed to create admin user');
+  const adminUser = adminUserResult.value;
 
-  const customerUser = new User({
-    id: 'customer-user-id',
+  const customerUserResult = User.create({
     username: 'customer',
     email: 'customer@example.com',
     password: 'password',
     role: UserRole.CUSTOMER,
-  });
+  }, 'customer-user-id');
+  if (!customerUserResult.success) throw new Error('Failed to create customer user');
+  const customerUser = customerUserResult.value;
 
   beforeAll(async () => {
+    execSync('npx prisma migrate reset --force --schema=src/infrastructure/database/prisma/schema.prisma');
     prisma = new PrismaClient();
     await prisma.$connect();
     const application = new App(prisma);
     app = application.getServer();
+    server = application.start(env.PORT);
   });
 
   beforeEach(async () => {
     mockUser = null; // Reset the user before each test
     await prisma.shippingRate.deleteMany({});
     await prisma.serviceZone.deleteMany({});
+    await prisma.vendor.deleteMany({});
+    vendor = await prisma.vendor.create({
+      data: {
+        name: 'Test Vendor',
+        email: 'vendor@test.com',
+        phone: '1234567890',
+        address: '123 Test St',
+      },
+    });
     serviceZone = await prisma.serviceZone.create({
       data: { name: 'Test Zone', geo_json: '{}' },
     });
@@ -81,6 +101,7 @@ describe('ShippingRate Integration Tests', () => {
     await prisma.shippingRate.deleteMany({});
     await prisma.serviceZone.deleteMany({});
     await prisma.$disconnect();
+    await new Promise<void>((resolve) => server.close(() => resolve()));
   });
 
   describe('POST /api/v1/shipping-rates', () => {

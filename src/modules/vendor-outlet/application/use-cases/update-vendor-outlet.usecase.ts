@@ -26,7 +26,7 @@ export class UpdateVendorOutletUseCase {
         id,
       );
 
-      if (updatedOutlet.failure) {
+      if (!updatedOutlet.success) {
         return failure(updatedOutlet.error);
       }
 
@@ -34,7 +34,7 @@ export class UpdateVendorOutletUseCase {
         updatedOutlet.value,
       );
       return success(savedOutlet);
-    } catch (error) {
+    } catch (error: any) {
       return failure(new Error(error.message));
     }
   }

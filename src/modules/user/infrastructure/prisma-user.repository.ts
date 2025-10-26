@@ -21,12 +21,25 @@ export class PrismaUserRepository implements IUserRepository {
     return user ? UserMapper.toDomain(user) : null;
   }
 
+  async findAll(): Promise<User[]> {
+    const users = await this.prisma.user.findMany();
+    return users.map(UserMapper.toDomain);
+  }
+
   async save(user: User): Promise<void> {
     const data = UserMapper.toPersistence(user);
     await this.prisma.user.upsert({
       where: { id: user.id },
-      update: data,
-      create: data,
+      update: {
+        ...data,
+        role: data.role as any,
+        password: data.password ?? '',
+      },
+      create: {
+        ...data,
+        role: data.role as any,
+        password: data.password ?? '',
+      },
     });
   }
 

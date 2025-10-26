@@ -13,12 +13,17 @@ describe('PrismaProofOfDeliveryRepository', () => {
   });
 
   it('should create a new proof of delivery', async () => {
-    const proofOfDeliveryEntity = ProofOfDelivery.create({
+    const proofOfDeliveryResult = ProofOfDelivery.create({
       delivery_id: 'a2a0a4a0-8b0a-4b0a-8b0a-0a4a0a4a0a4a',
       signature_url: 'http://example.com/signature.png',
       photo_url: 'http://example.com/photo.png',
       notes: 'Delivered to front door.',
-    }).value;
+    });
+
+    if (!proofOfDeliveryResult.success) {
+      throw new Error('Failed to create test entity');
+    }
+    const proofOfDeliveryEntity = proofOfDeliveryResult.value;
 
     const createdProofOfDelivery = {
       id: 'some-id',
@@ -67,10 +72,15 @@ describe('PrismaProofOfDeliveryRepository', () => {
 
   it('should update a proof of delivery', async () => {
     const proofOfDeliveryId = 'some-id';
-    const updatedProofOfDeliveryEntity = ProofOfDelivery.create({
+    const updatedProofOfDeliveryResult = ProofOfDelivery.create({
       delivery_id: 'a2a0a4a0-8b0a-4b0a-8b0a-0a4a0a4a0a4a',
       notes: 'Updated notes.',
-    }).value;
+    });
+
+    if (!updatedProofOfDeliveryResult.success) {
+      throw new Error('Failed to create test entity');
+    }
+    const updatedProofOfDeliveryEntity = updatedProofOfDeliveryResult.value;
 
     const updatedPrismaProofOfDelivery = {
       id: proofOfDeliveryId,

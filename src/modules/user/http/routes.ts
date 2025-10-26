@@ -4,9 +4,10 @@ import { validate } from '@/core/middlewares/validate.middleware';
 import { createUserSchema } from './dto/create-user.schema';
 import { updateUserSchema } from './dto/update-user.schema';
 import { isAuthenticated } from '@/core/middlewares/auth.middleware';
+import { PrismaClient } from '@prisma/client';
 
 const router = Router();
-const userController = new UserController();
+const userController = new UserController(new PrismaClient());
 
 router.get('/', userController.findAll);
 router.get('/me', isAuthenticated, userController.me);

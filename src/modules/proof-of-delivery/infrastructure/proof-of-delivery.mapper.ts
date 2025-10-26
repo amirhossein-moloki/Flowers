@@ -1,4 +1,4 @@
-import { ProofOfDelivery as PrismaProofOfDelivery } from '@prisma/client';
+import { ProofOfDelivery as PrismaProofOfDelivery, Prisma } from '@prisma/client';
 import { ProofOfDelivery } from '../domain/proof-of-delivery.entity';
 
 export class ProofOfDeliveryMapper {
@@ -8,15 +8,17 @@ export class ProofOfDeliveryMapper {
     const proofOfDeliveryResult = ProofOfDelivery.create(
       {
         delivery_id: prismaProofOfDelivery.delivery_id,
-        photo_url: prismaProofOfDelivery.photo_url,
-        receiver_name: prismaProofOfDelivery.receiver_name,
-        receiver_signature_url: prismaProofOfDelivery.receiver_signature_url,
-        otp_code: prismaProofOfDelivery.otp_code,
-        created_at: prismaProofOfDelivery.created_at,
+        signature_url: prismaProofOfDelivery.signature_url ?? undefined,
+        photo_url: prismaProofOfDelivery.photo_url ?? undefined,
+        notes: prismaProofOfDelivery.notes ?? undefined,
+        is_verified: prismaProofOfDelivery.is_verified,
+        createdAt: prismaProofOfDelivery.created_at,
+        updatedAt: prismaProofOfDelivery.updated_at,
       },
       prismaProofOfDelivery.id,
     );
-    if (proofOfDeliveryResult.isFailure) {
+
+    if (!proofOfDeliveryResult.success) {
       throw new Error('Could not map PrismaProofOfDelivery to domain');
     }
     return proofOfDeliveryResult.value;
@@ -24,16 +26,14 @@ export class ProofOfDeliveryMapper {
 
   static toPersistence(
     proofOfDelivery: ProofOfDelivery,
-  ): PrismaProofOfDelivery {
+  ): Prisma.ProofOfDeliveryCreateInput {
     return {
       id: proofOfDelivery.id,
-      delivery_id: proofOfDelivery.delivery_id,
+      delivery: { connect: { id: proofOfDelivery.delivery_id } },
+      signature_url: proofOfDelivery.signature_url,
       photo_url: proofOfDelivery.photo_url,
-      receiver_name: proofOfDelivery.receiver_name,
-      receiver_signature_url: proofOfDelivery.receiver_signature_url,
-      otp_code: proofOfDelivery.otp_code,
-      created_at: proofOfDelivery.props.created_at || new Date(),
-      updated_at: new Date(),
+      notes: proofOfDelivery.notes,
+      is_verified: proofOfDelivery.is_verified,
     };
   }
 }
