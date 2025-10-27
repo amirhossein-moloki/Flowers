@@ -77,6 +77,9 @@ import { IDeliveryStatusRepository } from '@/modules/delivery-status/domain/deli
 import { PrismaDeliveryStatusRepository } from '@/modules/delivery-status/infrastructure/prisma-delivery-status.repository';
 import { GetDeliveryStatusUseCase } from '@/modules/delivery-status/application/use-cases/get-delivery-status.usecase';
 import { ListDeliveryStatusesUseCase } from '@/modules/delivery-status/application/use-cases/list-delivery-statuses.usecase';
+import { GetAllOrderStatusesUseCase } from '@/modules/order-status/application/use-cases/get-all-order-statuses.usecase';
+import { GetOrderStatusUseCase } from '@/modules/order-status/application/use-cases/get-order-status.usecase';
+import { PrismaOrderStatusRepository } from '@/modules/order-status/infrastructure/prisma-order-status.repository';
 import { PrismaDeliveryWindowRepository } from '@/modules/delivery-window/infrastructure/prisma-delivery-window.repository';
 import { IDeliveryRepository } from '@/modules/delivery/domain/delivery.repository.interface';
 import { PrismaDeliveryRepository } from '@/modules/delivery/infrastructure/prisma-delivery.repository';
@@ -196,6 +199,8 @@ export interface Dependencies {
   deliveryStatusRepository: IDeliveryStatusRepository;
   getDeliveryStatusUseCase: GetDeliveryStatusUseCase;
   listDeliveryStatusesUseCase: ListDeliveryStatusesUseCase;
+  getAllOrderStatusesUseCase: GetAllOrderStatusesUseCase;
+  getOrderStatusUseCase: GetOrderStatusUseCase;
   deliveryWindowRepository: any;
   deliveryRepository: IDeliveryRepository;
   createDeliveryUseCase: CreateDeliveryUseCase;
@@ -224,7 +229,10 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const productImageRepository = new PrismaProductImageRepository(prisma);
   const promotionRepository = new PrismaPromotionRepository(prisma);
   const orderPromotionRepository = new PrismaOrderPromotionRepository(prisma);
+  const orderStatusRepository = new PrismaOrderStatusRepository(prisma);
 
+  const getAllOrderStatusesUseCase = new GetAllOrderStatusesUseCase(orderStatusRepository);
+  const getOrderStatusUseCase = new GetOrderStatusUseCase(orderStatusRepository);
   const createOrderPromotionUseCase = new CreateOrderPromotionUseCase(orderPromotionRepository);
   const getOrderPromotionUseCase = new GetOrderPromotionUseCase(orderPromotionRepository);
   const updateOrderPromotionUseCase = new UpdateOrderPromotionUseCase(orderPromotionRepository);
@@ -309,11 +317,11 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const deleteUserUseCase = new DeleteUserUseCase(userRepository);
   const listUsersUseCase = new ListUsersUseCase(userRepository);
   const userController = new UserController({
-    createUserUseCase,
-    getUserUseCase,
-    updateUserUseCase,
-    deleteUserUseCase,
-    listUsersUseCase,
+    createUserUseCase: createUserUseCase,
+    getUserUseCase: getUserUseCase,
+    updateUserUseCase: updateUserUseCase,
+    deleteUserUseCase: deleteUserUseCase,
+    listUsersUseCase: listUsersUseCase,
   });
 
   const userRoutes = new UserRoutes(userController);
@@ -401,6 +409,8 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
     deliveryStatusRepository,
     getDeliveryStatusUseCase,
     listDeliveryStatusesUseCase,
+    getAllOrderStatusesUseCase,
+    getOrderStatusUseCase,
     deliveryWindowRepository,
     deliveryRepository,
     createDeliveryUseCase,

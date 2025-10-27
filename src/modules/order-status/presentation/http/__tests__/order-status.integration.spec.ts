@@ -7,9 +7,10 @@ import { prismaMock } from '@/modules/__tests__/helpers/prisma-mock.helper';
 import { OrderStatus } from '../../../domain/order-status.entity';
 import { Dependencies } from '@/infrastructure/di';
 import { success } from '@/core/utils/result';
+import { Router } from 'express';
 
 describe('OrderStatus API', () => {
-  let app: express.Express;
+  let app: express.Application;
 
   beforeEach(() => {
     jest.resetModules();
@@ -18,16 +19,23 @@ describe('OrderStatus API', () => {
   let dependencies: Partial<Dependencies>;
 
   beforeEach(() => {
+    const pendingResult = OrderStatus.create({ code: 'PENDING', name: 'Pending', display_order: 1 });
+    const shippedResult = OrderStatus.create({ code: 'SHIPPED', name: 'Shipped', display_order: 2 });
+
+    if (!pendingResult.success || !shippedResult.success) {
+      throw new Error('Test setup failed');
+    }
+
     dependencies = {
       getAllOrderStatusesUseCase: {
-        execute: jest.fn().mockResolvedValue(success([
-          OrderStatus.create({ code: 'PENDING', name: 'Pending', display_order: 1 }).value,
-          OrderStatus.create({ code: 'SHIPPED', name: 'Shipped', display_order: 2 }).value,
-        ])),
+        execute: jest.fn().mockResolvedValue(success([pendingResult.value, shippedResult.value])),
       },
       getOrderStatusUseCase: {
-        execute: jest.fn().mockResolvedValue(success(OrderStatus.create({ code: 'PENDING', name: 'Pending', display_order: 1 }).value)),
+        execute: jest.fn().mockResolvedValue(success(pendingResult.value)),
       },
+      userController: {
+        router: Router(),
+      } as any,
     };
     const application = new App(prismaMock, dependencies as Dependencies);
     app = application.getServer();

@@ -59,9 +59,8 @@ describe('ProductImage Integration Tests', () => {
   describe('POST /product-images', () => {
     it('should create a new product image and return 201', async () => {
       const dto: CreateProductImageDto = {
-        product_id: product.id,
+        productId: product.id,
         url: 'http://example.com/image.png',
-        sort_order: 1,
       };
 
       await request(app.express)
@@ -69,9 +68,8 @@ describe('ProductImage Integration Tests', () => {
         .send(dto)
         .expect(201)
         .then((res) => {
-          expect(res.body.product_id).toEqual(dto.product_id);
+          expect(res.body.productId).toEqual(dto.productId);
           expect(res.body.url).toEqual(dto.url);
-          expect(res.body.sort_order).toEqual(dto.sort_order);
         });
     });
 
@@ -113,10 +111,8 @@ describe('ProductImage Integration Tests', () => {
 
     describe('PUT /product-images/:id', () => {
         it('should update a product image and return 200', async () => {
-            const dto: UpdateProductImageDto & { product_id: string } = {
+            const dto: UpdateProductImageDto = {
                 url: 'http://example.com/new-image.png',
-                sort_order: 2,
-                product_id: product.id,
             };
 
             await request(app.express)
@@ -125,7 +121,6 @@ describe('ProductImage Integration Tests', () => {
                 .expect(200)
                 .then((res) => {
                     expect(res.body.url).toEqual(dto.url);
-                    expect(res.body.sort_order).toEqual(dto.sort_order);
                 });
         });
 

@@ -3,13 +3,13 @@ import App from '@/app';
 import prisma from '@/infrastructure/database/prisma/prisma-client';
 import { User } from '@/modules/user/domain/user.entity';
 import { UserRole } from '@prisma/client';
-import { IAuthRepository } from '@/modules/auth/domain/auth.repository';
 import * as jwt from 'jsonwebtoken';
 import { isAuthenticated } from '@/core/middlewares/auth.middleware';
+import { Request, Response, NextFunction } from 'express';
 
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: jest.fn((req, res, next) => next()),
-  hasRole: jest.fn(() => (req, res, next) => next()),
+  isAuthenticated: jest.fn((req: Request, res: Response, next: NextFunction) => next()),
+  hasRole: jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
 }));
 
 describe('Order-Promotion Integration Tests', () => {
@@ -20,14 +20,14 @@ describe('Order-Promotion Integration Tests', () => {
   let adminAccessToken: string;
 
   beforeAll(async () => {
-    app = new App();
+    app = new App(prisma);
 
     user = await prisma.user.create({
       data: {
         email: 'user-order-promotion@example.com',
         username: 'user-order-promotion',
         password: 'password123',
-        role: UserRole.USER,
+        role: UserRole.CUSTOMER,
       },
     });
 

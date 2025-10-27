@@ -1,5 +1,5 @@
-import { Entity } from '../../../core/domain/entity';
-import { Result, success } from '../../../core/utils/result';
+import { Entity } from '@/core/domain/entity';
+import { Result, success } from '@/core/utils/result';
 
 interface OrderStatusProps {
   code: string;
@@ -25,7 +25,7 @@ export class OrderStatus extends Entity<OrderStatusProps> {
     return this.props.display_order;
   }
 
-  get is_terminal(): boolean {
+  get is_terminal(): boolean | undefined {
     return this.props.is_terminal;
   }
 

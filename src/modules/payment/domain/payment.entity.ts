@@ -43,15 +43,15 @@ export class Payment extends Entity<PaymentProps> {
     return this.props.amount;
   }
 
-  get paid_at(): Date {
+  get paid_at(): Date | undefined {
     return this.props.paid_at;
   }
 
-  get idempotency_key(): string {
+  get idempotency_key(): string | undefined {
     return this.props.idempotency_key;
   }
 
-  get created_at(): Date {
+  get created_at(): Date | undefined {
     return this.props.created_at;
   }
 

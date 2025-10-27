@@ -13,7 +13,7 @@ export class PaymentMapper {
         gateway: raw.gateway,
         gateway_ref: raw.gateway_ref,
         amount: raw.amount,
-        paid_at: raw.paid_at,
+        paid_at: raw.paid_at || undefined,
         created_at: raw.created_at,
       },
       raw.id,
@@ -30,8 +30,8 @@ export class PaymentMapper {
     return {
       id: payment.id,
       order_id: props.order_id,
-      method: String(props.method).toUpperCase(),
-      status: String(props.status).toUpperCase(),
+      method: props.method,
+      status: props.status,
       gateway: props.gateway,
       gateway_ref: props.gateway_ref,
       amount: props.amount,
@@ -42,6 +42,9 @@ export class PaymentMapper {
 
   public static toDto(payment: Payment): PaymentDto {
     const props = payment.props;
+    if (!payment.created_at) {
+      throw new Error('Payment created_at is not defined');
+    }
     return {
       id: payment.id,
       order_id: props.order_id,

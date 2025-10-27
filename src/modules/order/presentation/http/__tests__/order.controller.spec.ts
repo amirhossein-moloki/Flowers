@@ -47,10 +47,11 @@ jest.mock('@/modules/order/application/use-cases/cancel-order.usecase', () => ({
 }));
 
 import orderRoutes from '../order.routes';
+import { Request, Response, NextFunction } from 'express';
 
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: jest.fn((req, res, next) => next()),
-  hasRole: jest.fn(() => (req, res, next) => next()),
+  isAuthenticated: jest.fn((req: Request, res: Response, next: NextFunction) => next()),
+  hasRole: jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
 }));
 
 const app = express();
@@ -64,14 +65,18 @@ describe('OrderController', () => {
 
   const orderId = 'a1b2c3d4-e5f6-7890-1234-567890abcdef';
   const userId = 'a1b2c3d4-e5f6-7890-1234-567890abcdea';
+  const orderItemResult = OrderItem.create({
+    orderId: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
+    productId: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
+    quantity: 1,
+    price: 100,
+  });
+  if (!orderItemResult.success) {
+    throw new Error('Test setup failed');
+  }
   const orderResult = Order.create({
     userId,
-    items: [OrderItem.create({
-      orderId: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
-      productId: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
-      quantity: 1,
-      price: 100,
-    }).value],
+    items: [orderItemResult.value],
     status: OrderStatus.PENDING,
     total: 100,
   });

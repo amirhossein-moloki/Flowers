@@ -6,6 +6,7 @@ import { success } from '@/core/utils/result';
 import { CreatePaymentUseCase } from '@/modules/payment/application/use-cases/create-payment.usecase';
 import { VerifyPaymentUseCase } from '@/modules/payment/application/use-cases/verify-payment.usecase';
 import { PaymentMethod, PaymentStatus } from '@/core/domain/enums';
+import { PaymentMapper } from '@/modules/payment/infrastructure/payment.mapper';
 
 // Mock the use cases
 const mockCreatePaymentUseCase = mock<CreatePaymentUseCase>();
@@ -22,9 +23,11 @@ jest.mock('@/modules/payment/application/use-cases/verify-payment.usecase', () =
 
 import paymentRoutes from '../payment.routes';
 
+import { Request, Response, NextFunction } from 'express';
+
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: jest.fn((req, res, next) => next()),
-  hasRole: jest.fn(() => (req, res, next) => next()),
+  isAuthenticated: jest.fn((req: Request, res: Response, next: NextFunction) => next()),
+  hasRole: jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
 }));
 
 const app = express();
@@ -54,7 +57,7 @@ describe('PaymentController', () => {
 
   describe('POST /payments', () => {
     it('should create a payment and return 201', async () => {
-      mockCreatePaymentUseCase.execute.mockResolvedValue(success(payment));
+      mockCreatePaymentUseCase.execute.mockResolvedValue(success(PaymentMapper.toDto(payment)));
 
       const response = await request(app)
         .post('/api/v1/payments')
@@ -71,7 +74,7 @@ describe('PaymentController', () => {
 
   describe('POST /payments/verify', () => {
     it('should verify a payment and return 200', async () => {
-      mockVerifyPaymentUseCase.execute.mockResolvedValue(success(payment));
+      mockVerifyPaymentUseCase.execute.mockResolvedValue(success(PaymentMapper.toDto(payment)));
 
       const response = await request(app)
         .post('/api/v1/payments/verify')

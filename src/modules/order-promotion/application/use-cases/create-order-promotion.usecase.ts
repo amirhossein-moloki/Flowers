@@ -10,7 +10,10 @@ export class CreateOrderPromotionUseCase {
   constructor(private readonly orderPromotionRepository: IOrderPromotionRepository) {}
 
   async execute(dto: CreateOrderPromotionDto): Promise<Result<OrderPromotionDto, HttpError>> {
-    const orderPromotionResult = OrderPromotion.create(dto);
+    const orderPromotionResult = OrderPromotion.create({
+      ...dto,
+      created_at: new Date(),
+    });
 
     if (!orderPromotionResult.success) {
       return failure(HttpError.internalServerError(orderPromotionResult.error.message));

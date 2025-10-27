@@ -13,12 +13,13 @@ describe('PrismaPaymentRepository', () => {
 
   const paymentProps = {
     order_id: 'order-uuid',
-    method: DomainPaymentMethod.CREDIT_CARD,
-    status: DomainPaymentStatus.COMPLETED,
+    method: DomainPaymentMethod.ONLINE,
+    status: DomainPaymentStatus.PAID,
     gateway: 'stripe',
     gateway_ref: 'txn_123',
     amount: 100,
     paid_at: new Date(),
+    idempotency_key: 'idempotency-key',
   };
   const paymentEntityResult = Payment.create(paymentProps, 'payment-uuid');
   const paymentEntity = paymentEntityResult.success ? paymentEntityResult.value : null;

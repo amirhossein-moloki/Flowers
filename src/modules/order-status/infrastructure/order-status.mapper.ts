@@ -14,7 +14,7 @@ export class OrderStatusMapper {
       },
       prismaOrderStatus.id,
     );
-    if (orderStatusResult.isFailure) {
+    if (orderStatusResult.success === false) {
       throw new Error('Could not map PrismaOrderStatus to domain');
     }
     return orderStatusResult.value;
@@ -25,12 +25,22 @@ export class OrderStatusMapper {
   ): PrismaOrderStatus {
     return {
       id: orderStatus.id,
-      code: orderStatus.code,
-      name: orderStatus.name,
-      display_order: orderStatus.display_order,
-      is_terminal: orderStatus.is_terminal,
+      code: orderStatus.props.code,
+      name: orderStatus.props.name,
+      display_order: orderStatus.props.display_order,
+      is_terminal: orderStatus.props.is_terminal,
       created_at: new Date(),
       updated_at: new Date(),
+    };
+  }
+
+  static toDto(orderStatus: OrderStatus): any {
+    return {
+      id: orderStatus.id,
+      code: orderStatus.props.code,
+      name: orderStatus.props.name,
+      display_order: orderStatus.props.display_order,
+      is_terminal: orderStatus.props.is_terminal,
     };
   }
 }

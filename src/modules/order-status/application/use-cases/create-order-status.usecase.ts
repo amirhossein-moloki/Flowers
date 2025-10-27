@@ -2,8 +2,8 @@ import { IOrderStatusRepository } from '../../domain/order-status.repository';
 import { OrderStatus } from '../../domain/order-status.entity';
 import { CreateOrderStatusDto } from '../dtos/create-order-status.dto';
 import { OrderStatusDto } from '../dtos/order-status.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { OrderStatusMapper } from '../../infrastructure/order-status.mapper';
 
 export class CreateOrderStatusUseCase {
@@ -18,9 +18,13 @@ export class CreateOrderStatusUseCase {
 
     const orderStatus = orderStatusResult.value;
 
-    await this.orderStatusRepository.save(orderStatus);
+    const savedOrderStatus = await this.orderStatusRepository.save(orderStatus);
 
-    const orderStatusDto = OrderStatusMapper.toDto(orderStatus);
+    if (savedOrderStatus.success === false) {
+      return failure(HttpError.internalServerError(savedOrderStatus.error.message));
+    }
+
+    const orderStatusDto = OrderStatusMapper.toDto(savedOrderStatus.value);
     return success(orderStatusDto);
   }
 }

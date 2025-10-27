@@ -2,7 +2,7 @@ import { Entity } from '../../../core/domain/entity';
 import { Result, success } from '../../../core/utils/result';
 
 export interface ProductImageProps {
-  productId: string;
+  product_id: string;
   url: string;
   sort_order?: number;
 }
@@ -12,8 +12,8 @@ export class ProductImage extends Entity<ProductImageProps> {
     super(props, id);
   }
 
-  get productId(): string {
-    return this.props.productId;
+  get product_id(): string {
+    return this.props.product_id;
   }
 
   get url(): string {
