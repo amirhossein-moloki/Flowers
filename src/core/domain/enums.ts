@@ -16,16 +16,16 @@ export enum VehicleType {
 }
 
 export enum PaymentMethod {
-  ONLINE = 'online',
-  COD = 'cod',
+  ONLINE = 'ONLINE',
+  COD = 'COD',
 }
 
 export enum PaymentStatus {
-  PENDING = 'pending',
-  PAID = 'paid',
-  FAILED = 'failed',
-  REFUNDED = 'refunded',
-  PARTIAL_REFUND = 'partial_refund',
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  FAILED = 'FAILED',
+  REFUNDED = 'REFUNDED',
+  PARTIAL_REFUND = 'PARTIAL_REFUND',
 }
 
 export enum NotificationChannel {
@@ -42,4 +42,12 @@ export enum ActorType {
   COURIER = 'courier',
   OPS = 'ops',
   ADMIN = 'admin',
+}
+
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  SHIPPED = 'SHIPPED',
+  DELIVERED = 'DELIVERED',
+  CANCELED = 'CANCELED',
 }

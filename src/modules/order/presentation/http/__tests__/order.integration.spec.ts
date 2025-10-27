@@ -16,16 +16,19 @@ jest.mock('@prisma/client', () => {
 
 let mockUser: User | null = null;
 
+import { Request, Response, NextFunction } from 'express';
+
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: jest.fn((req, res, next) => {
+  isAuthenticated: jest.fn((req: Request, res: Response, next: NextFunction) => {
     if (mockUser) {
+      // @ts-ignore
       req.user = mockUser;
       next();
     } else {
       res.status(401).json({ message: 'Unauthorized' });
     }
   }),
-  hasRole: jest.fn(() => (req, res, next) => next()),
+  hasRole: jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
 }));
 
 describe('Order Integration Tests', () => {
@@ -125,7 +128,9 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser!.id,
+          user: {
+            connect: { id: mockUser!.id },
+          },
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -175,7 +180,9 @@ describe('Order Integration Tests', () => {
 
       await prismaClient.order.create({
         data: {
-          userId: mockUser!.id,
+          user: {
+            connect: { id: mockUser!.id },
+          },
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -216,7 +223,9 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser!.id,
+          user: {
+            connect: { id: mockUser!.id },
+          },
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -263,7 +272,9 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser!.id,
+          user: {
+            connect: { id: mockUser!.id },
+          },
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -304,7 +315,9 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser!.id,
+          user: {
+            connect: { id: mockUser!.id },
+          },
           total: 100,
           status: OrderStatus.PENDING,
           items: {
@@ -346,7 +359,9 @@ describe('Order Integration Tests', () => {
 
       const order = await prismaClient.order.create({
         data: {
-          userId: mockUser!.id,
+          user: {
+            connect: { id: mockUser!.id },
+          },
           total: 100,
           status: OrderStatus.PENDING,
           items: {

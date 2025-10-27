@@ -30,11 +30,13 @@ describe('OrderStatusController', () => {
 
   describe('GET /order-statuses', () => {
     it('should return a list of order statuses', async () => {
-      const orderStatuses = [
-        OrderStatus.create({ code: 'pending', name: 'Pending', display_order: 1 }).value,
-        OrderStatus.create({ code: 'processing', name: 'Processing', display_order: 2 }).value,
-      ];
-      (dependencies.getAllOrderStatusesUseCase.execute as jest.Mock).mockResolvedValue(success(orderStatuses));
+      const pendingResult = OrderStatus.create({ code: 'pending', name: 'Pending', display_order: 1 });
+      const processingResult = OrderStatus.create({ code: 'processing', name: 'Processing', display_order: 2 });
+      if (!pendingResult.success || !processingResult.success) {
+        throw new Error('Test setup failed');
+      }
+      const orderStatuses = [pendingResult.value, processingResult.value];
+      (dependencies.getAllOrderStatusesUseCase!.execute as jest.Mock).mockResolvedValue(success(orderStatuses));
 
       const response = await request(app).get('/order-statuses');
 
@@ -46,8 +48,12 @@ describe('OrderStatusController', () => {
 
   describe('GET /order-statuses/:id', () => {
     it('should return an order status by id', async () => {
-      const orderStatus = OrderStatus.create({ code: 'pending', name: 'Pending', display_order: 1 }).value;
-      (dependencies.getOrderStatusUseCase.execute as jest.Mock).mockResolvedValue(success(orderStatus));
+      const orderStatusResult = OrderStatus.create({ code: 'pending', name: 'Pending', display_order: 1 });
+      if (!orderStatusResult.success) {
+        throw new Error('Test setup failed');
+      }
+      const orderStatus = orderStatusResult.value;
+      (dependencies.getOrderStatusUseCase!.execute as jest.Mock).mockResolvedValue(success(orderStatus));
 
       const response = await request(app).get(`/order-statuses/${orderStatus.id}`);
 

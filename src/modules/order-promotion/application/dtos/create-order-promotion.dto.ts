@@ -8,5 +8,15 @@ export class CreateOrderPromotionDto {
   promotion_id: string;
 
   @IsNumber()
-  discount_amount: number;
+  discount_applied: number;
+
+  constructor(
+    order_id: string,
+    promotion_id: string,
+    discount_applied: number,
+  ) {
+    this.order_id = order_id;
+    this.promotion_id = promotion_id;
+    this.discount_applied = discount_applied;
+  }
 }

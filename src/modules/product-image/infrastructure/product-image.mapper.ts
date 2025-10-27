@@ -5,7 +5,7 @@ export class ProductImageMapper {
   static toEntity(model: ProductImageModel): ProductImage {
     const entityResult = ProductImage.create(
       {
-        productId: model.product_id,
+        product_id: model.product_id,
         url: model.url,
         sort_order: model.sort_order,
       },
@@ -15,15 +15,15 @@ export class ProductImageMapper {
     if (entityResult.success) {
       return entityResult.value;
     }
-    return null;
+    throw new Error('Could not create ProductImage entity from model');
   }
 
   static toModel(entity: ProductImage): ProductImageModel {
     return {
       id: entity.id,
-      product_id: entity.productId,
+      product_id: entity.product_id,
       url: entity.url,
-      sort_order: entity.sort_order,
+      sort_order: entity.sort_order || 0,
       created_at: new Date(),
       updated_at: new Date(),
     };
@@ -32,7 +32,7 @@ export class ProductImageMapper {
   static toDto(entity: ProductImage): any {
     return {
       id: entity.id,
-      productId: entity.productId,
+      product_id: entity.product_id,
       url: entity.url,
       sort_order: entity.sort_order,
     };

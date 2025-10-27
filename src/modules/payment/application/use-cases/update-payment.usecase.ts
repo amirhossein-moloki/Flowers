@@ -1,8 +1,8 @@
 import { IPaymentRepository } from '../../domain/payment.repository';
 import { UpdatePaymentDto } from '../dtos/update-payment.dto';
 import { PaymentDto } from '../dtos/payment.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { PaymentMapper } from '../../infrastructure/payment.mapper';
 import { Payment } from '../../domain/payment.entity';
 
@@ -19,8 +19,8 @@ export class UpdatePaymentUseCase {
     const updatedPaymentProps = { ...payment.props, ...dto };
     const updatedPaymentResult = Payment.create(updatedPaymentProps, payment.id);
 
-    if(!updatedPaymentResult.success){
-        return failure(HttpError.internalServerError(updatedPaymentResult.error.message));
+    if (updatedPaymentResult.success === false) {
+      return failure(HttpError.internalServerError(updatedPaymentResult.error.message));
     }
 
     const updatedPayment = updatedPaymentResult.value;

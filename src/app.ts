@@ -49,7 +49,7 @@ class App {
     this.express.get('/', (req, res) => {
       res.send('API is running...');
     });
-    this.express.use('/api/v1/users', createUserRoutes(this.dependencies));
+    this.express.use('/api/v1/users', createUserRoutes(this.dependencies.userController));
     this.express.use('/api/v1/vendors', createVendorRoutes(this.dependencies));
     this.express.use('/api/v1/service-zones', createServiceZoneRoutes(this.dependencies));
     this.express.use('/api/v1/shipping-rates', createShippingRateRoutes(this.dependencies));

@@ -125,7 +125,7 @@ describe('ShippingRate Integration Tests', () => {
     });
 
     it('should return 401 for an unauthenticated user', async () => {
-      mockUser = null;
+      mockUser = undefined;
       const response = await request(app).post('/api/v1/shipping-rates').send({});
       expect(response.status).toBe(401);
     });
@@ -168,7 +168,7 @@ describe('ShippingRate Integration Tests', () => {
     });
 
     it('should return 401 for an unauthenticated user', async () => {
-      mockUser = null;
+      mockUser = undefined;
       const response = await request(app).get('/api/v1/shipping-rates');
       expect(response.status).toBe(401);
     });

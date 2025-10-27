@@ -10,7 +10,7 @@ import { GetOrderPromotionUseCase } from '@/modules/order-promotion/application/
 import { UpdateOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/update-order-promotion.usecase';
 import { DeleteOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/delete-order-promotion.usecase';
 import { PrismaOrderPromotionRepository } from '@/modules/order-promotion/infrastructure/prisma-order-promotion.repository';
-import { prisma } from '@/infrastructure/database/prisma/prisma-client';
+import { PrismaClient } from '@prisma/client';
 
 export const createOrderPromotionRoutes = (
   orderPromotionRepository: PrismaOrderPromotionRepository,

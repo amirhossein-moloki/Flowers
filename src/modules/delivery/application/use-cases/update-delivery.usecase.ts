@@ -19,8 +19,10 @@ export class UpdateDeliveryUseCase {
     const updatedDeliveryProps = { ...delivery.props, ...dto };
     const updatedDeliveryResult = Delivery.create(updatedDeliveryProps, delivery.id);
 
-    if(!updatedDeliveryResult.success){
-        return failure(HttpError.internalServerError(updatedDeliveryResult.error.message));
+    if (updatedDeliveryResult.success === false) {
+      return failure(
+        HttpError.internalServerError(updatedDeliveryResult.error.message),
+      );
     }
 
     const updatedDelivery = updatedDeliveryResult.value;

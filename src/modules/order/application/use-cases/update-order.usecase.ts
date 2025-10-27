@@ -2,7 +2,7 @@ import { IOrderRepository } from '@/modules/order/domain/order.repository';
 import { UpdateOrderDto } from '@/modules/order/application/dtos/update-order.dto';
 import { Result, success, failure } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';
-import { Order } from '@/modules/order/domain/order.entity';
+import { Order, OrderItem } from '@/modules/order/domain/order.entity';
 
 export class UpdateOrderUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}
@@ -14,11 +14,18 @@ export class UpdateOrderUseCase {
       return failure(HttpError.notFound('Order not found.'));
     }
 
-    const updatedOrderProps = { ...order.props, ...dto };
-    const updatedOrderResult = Order.create(updatedOrderProps, order.id);
+    const items = dto.items ? dto.items.map((item) => {
+      const orderItemResult = OrderItem.create({ ...item, orderId: order.id });
+      if (orderItemResult.success === false) {
+        throw new Error('Could not create order item');
+      }
+      return orderItemResult.value;
+    }) : order.props.items;
+    const updatedOrderProps = { ...order.props, ...dto, items };
+    const updatedOrderResult = Order.create(updatedOrderProps as any, order.id);
 
-    if(!updatedOrderResult.success){
-        return failure(HttpError.internalServerError(updatedOrderResult.error.message));
+    if (updatedOrderResult.success === false) {
+      return failure(HttpError.internalServerError(updatedOrderResult.error.message));
     }
 
     const updatedOrder = updatedOrderResult.value;

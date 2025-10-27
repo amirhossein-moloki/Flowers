@@ -3,7 +3,6 @@ import { CreateNotificationUseCase } from '../../application/use-cases/create-no
 import { GetNotificationUseCase } from '../../application/use-cases/get-notification.usecase';
 import { UpdateNotificationUseCase } from '../../application/use-cases/update-notification.usecase';
 import { DeleteNotificationUseCase } from '../../application/use-cases/delete-notification.usecase';
-import { NotificationPresenter } from './presenters/notification.presenter';
 
 export class NotificationController {
   constructor(
@@ -17,7 +16,7 @@ export class NotificationController {
     const result = await this.createNotification.execute(req.body);
 
     if (result.success) {
-      res.status(201).json(NotificationPresenter.toJson(result.value));
+      res.status(201).json(result.value);
     } else {
       res.status(400).json({ error: result.error.message });
     }
@@ -27,7 +26,7 @@ export class NotificationController {
     const result = await this.getNotification.execute(req.params.id);
 
     if (result.success) {
-      res.status(200).json(NotificationPresenter.toJson(result.value));
+      res.status(200).json(result.value);
     } else {
       res.status(404).json({ error: result.error.message });
     }
@@ -37,7 +36,7 @@ export class NotificationController {
     const result = await this.updateNotification.execute(req.params.id, req.body);
 
     if (result.success) {
-      res.status(200).json(NotificationPresenter.toJson(result.value));
+      res.status(200).json(result.value);
     } else {
       res.status(result.error.statusCode).json({ error: result.error.message });
     }

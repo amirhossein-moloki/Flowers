@@ -6,7 +6,6 @@ import {
   UpdateProductImageUseCase,
   FindAllProductImageUseCase,
 } from '../../application/use-cases';
-import { ProductImagePresenter } from './presenters/product-image.presenter';
 import { NotFoundError } from '@/core/errors/not-found.error';
 
 export class ProductImageController {
@@ -22,8 +21,7 @@ export class ProductImageController {
     const result = await this.createProductImageUseCase.execute(req.body);
 
     if (result.success) {
-      const presenter = new ProductImagePresenter(result.value);
-      return res.status(201).json(presenter.toJSON());
+      return res.status(201).json(result.value);
     }
 
     return res.status(500).json({ error: result.error.message });
@@ -51,7 +49,7 @@ export class ProductImageController {
 
       if (result.success) {
         if (result.value) {
-          res.status(200).json(ProductImagePresenter.toJSON(result.value));
+          res.status(200).json(result.value);
         } else {
           res.status(404).json({ error: 'Product image not found' });
         }
@@ -64,13 +62,10 @@ export class ProductImageController {
   }
 
   async findAll(req: Request, res: Response): Promise<Response> {
-    const result = await this.findAllProductImageUseCase.execute();
+    const result = await this.findAllProductImageUseCase.execute(req.query.productId as string);
 
     if (result.success) {
-      const presenters = result.value.map(
-        (image) => new ProductImagePresenter(image),
-      );
-      return res.status(200).json(presenters.map((p) => p.toJSON()));
+      return res.status(200).json(result.value);
     }
 
     return res.status(500).json({ error: result.error.message });
@@ -78,16 +73,10 @@ export class ProductImageController {
 
   async update(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    const { product_id } = req.body;
-    const result = await this.updateProductImageUseCase.execute({
-      id,
-      product_id,
-      data: req.body,
-    });
+    const result = await this.updateProductImageUseCase.execute(id, req.body);
 
     if (result.success) {
-      const presenter = new ProductImagePresenter(result.value);
-      return res.status(200).json(presenter.toJSON());
+      return res.status(200).json(result.value);
     }
 
     if (result.error.name === 'NotFoundError') {

@@ -12,6 +12,7 @@ import { UserDto } from '../../application/dtos/user.dto';
 import { createUserRoutes } from '../routes';
 import { Dependencies } from '@/infrastructure/di';
 import { Request, Response, NextFunction } from 'express';
+import { UserController } from '../../presentation/http/user.controller';
 
 // Mock middleware
 jest.mock('@/core/middlewares/auth.middleware', () => ({
@@ -49,15 +50,16 @@ const mockListUsersUseCase = {
 
 const app = express();
 app.use(express.json());
+const userController = new UserController({
+  createUserUseCase: mockCreateUserUseCase as unknown as CreateUserUseCase,
+  getUserUseCase: mockGetUserUseCase as unknown as GetUserUseCase,
+  updateUserUseCase: mockUpdateUserUseCase as unknown as UpdateUserUseCase,
+  deleteUserUseCase: mockDeleteUserUseCase as unknown as DeleteUserUseCase,
+  listUsersUseCase: mockListUsersUseCase as unknown as ListUsersUseCase,
+});
 app.use(
   '/users',
-  createUserRoutes({
-    createUserUseCase: mockCreateUserUseCase,
-    getUserUseCase: mockGetUserUseCase,
-    updateUserUseCase: mockUpdateUserUseCase,
-    deleteUserUseCase: mockDeleteUserUseCase,
-    listUsersUseCase: mockListUsersUseCase,
-  } as unknown as Dependencies),
+  createUserRoutes(userController),
 );
 
 describe('UserController', () => {

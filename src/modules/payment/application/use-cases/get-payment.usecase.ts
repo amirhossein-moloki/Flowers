@@ -1,7 +1,7 @@
 import { IPaymentRepository } from '../../domain/payment.repository';
 import { PaymentDto } from '../dtos/payment.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { PaymentMapper } from '../../infrastructure/payment.mapper';
 
 export class GetPaymentUseCase {

@@ -12,6 +12,7 @@ import {
 } from '@/modules/product-image/application/use-cases';
 import { ProductImage } from '@/modules/product-image/domain/product-image.entity';
 import { success } from '@/core/utils/result';
+import { ProductImageMapper } from '@/modules/product-image/infrastructure/product-image.mapper';
 import { CreateProductImageSchema } from '../dto/create-product-image.schema';
 import { UpdateProductImageSchema } from '../dto/update-product-image.schema';
 import { validate } from '@/core/middlewares/validate.middleware';
@@ -69,10 +70,14 @@ describe('ProductImageController', () => {
         product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
         url: 'http://example.com/image.png',
       };
-      const productImage = ProductImage.create(dto).value;
+      const productImageResult = ProductImage.create(dto);
+      if (!productImageResult.success) {
+        throw new Error('Test setup failed: could not create product image');
+      }
+      const productImage = productImageResult.value;
 
       mockCreateProductImageUseCase.execute.mockResolvedValue(
-        success(productImage),
+        success(ProductImageMapper.toDto(productImage)),
       );
 
       await request(app)
@@ -88,13 +93,17 @@ describe('ProductImageController', () => {
 
   describe('GET /product-images/:id', () => {
     it('should get a product image by id and return 200', async () => {
-      const productImage = ProductImage.create({
+      const productImageResult = ProductImage.create({
         product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
         url: 'http://example.com/image.png',
-      }).value;
+      });
+      if (!productImageResult.success) {
+        throw new Error('Test setup failed: could not create product image');
+      }
+      const productImage = productImageResult.value;
 
       mockGetProductImageUseCase.execute.mockResolvedValue(
-        success(productImage),
+        success(ProductImageMapper.toDto(productImage)),
       );
 
       await request(app)
@@ -108,12 +117,16 @@ describe('ProductImageController', () => {
 
   describe('GET /product-images', () => {
     it('should get all product images and return 200', async () => {
-      const productImage = ProductImage.create({
+      const productImageResult = ProductImage.create({
         product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
         url: 'http://example.com/image.png',
-      }).value;
+      });
+      if (!productImageResult.success) {
+        throw new Error('Test setup failed: could not create product image');
+      }
+      const productImage = productImageResult.value;
 
-      mockFindAllProductImageUseCase.execute.mockResolvedValue(success([productImage]));
+      mockFindAllProductImageUseCase.execute.mockResolvedValue(success([ProductImageMapper.toDto(productImage)]));
 
       await request(app)
         .get('/product-images')
@@ -127,7 +140,7 @@ describe('ProductImageController', () => {
 
   describe('DELETE /product-images/:id', () => {
     it('should delete a product image and return 204', async () => {
-      mockDeleteProductImageUseCase.execute.mockResolvedValue(success(true));
+      mockDeleteProductImageUseCase.execute.mockResolvedValue(success(undefined));
 
       await request(app)
         .delete('/product-images/a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a')
@@ -140,13 +153,17 @@ describe('ProductImageController', () => {
       const dto = {
         url: 'http://example.com/new-image.png',
       };
-      const productImage = ProductImage.create({
+      const productImageResult = ProductImage.create({
         product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
         url: dto.url,
-      }).value;
+      });
+      if (!productImageResult.success) {
+        throw new Error('Test setup failed: could not create product image');
+      }
+      const productImage = productImageResult.value;
 
       mockUpdateProductImageUseCase.execute.mockResolvedValue(
-        success(productImage),
+        success(ProductImageMapper.toDto(productImage)),
       );
 
       await request(app)

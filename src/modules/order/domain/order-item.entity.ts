@@ -1,5 +1,5 @@
-import { Entity } from '../../../../core/domain/entity';
-import { Result, success } from '../../../../core/utils/result';
+import { Entity } from '@/core/domain/entity';
+import { Result, success } from '@/core/utils/result';
 
 export interface IOrderItemProps {
   order_id?: string; // Is optional because it's set by the Order aggregate
@@ -13,7 +13,7 @@ export class OrderItem extends Entity<IOrderItemProps> {
     super(props, id);
   }
 
-  get order_id(): string {
+  get order_id(): string | undefined {
     return this.props.order_id;
   }
 
@@ -35,7 +35,7 @@ export class OrderItem extends Entity<IOrderItemProps> {
   }
 
   public static create(
-    props: Omit<IOrderItemProps, 'order_id'>, // order_id is not needed on creation
+    props: IOrderItemProps,
     id?: string,
   ): Result<OrderItem, Error> {
     // Validation can be added here (e.g., quantity > 0)

@@ -1,6 +1,6 @@
 import { IOrderStatusRepository } from '../../domain/order-status.repository';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 
 export class DeleteOrderStatusUseCase {
   constructor(private readonly orderStatusRepository: IOrderStatusRepository) {}

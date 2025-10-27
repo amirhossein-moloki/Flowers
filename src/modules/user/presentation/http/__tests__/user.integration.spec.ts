@@ -5,18 +5,28 @@ import { UserController } from '../user.controller';
 import { PrismaUserRepository } from '@/modules/user/infrastructure/prisma-user.repository';
 import { CreateUserUseCase } from '@/modules/user/application/use-cases/create-user.usecase';
 import { GetUserUseCase } from '@/modules/user/application/use-cases/get-user.usecase';
+import { UpdateUserUseCase } from '@/modules/user/application/use-cases/update-user.usecase';
+import { DeleteUserUseCase } from '@/modules/user/application/use-cases/delete-user.usecase';
+import { ListUsersUseCase } from '@/modules/user/application/use-cases/list-users.usecase';
 import { UserRole } from '@prisma/client';
 
 const app = express();
 app.use(express.json());
 
-// This instance is now shared between the test and the repository
 const prisma = new PrismaClient();
 const userRepository = new PrismaUserRepository(prisma);
-const userController = new UserController(
-  new CreateUserUseCase(userRepository),
-  new GetUserUseCase(userRepository),
-);
+const createUserUseCase = new CreateUserUseCase(userRepository);
+const getUserUseCase = new GetUserUseCase(userRepository);
+const updateUserUseCase = new UpdateUserUseCase(userRepository);
+const deleteUserUseCase = new DeleteUserUseCase(userRepository);
+const listUsersUseCase = new ListUsersUseCase(userRepository);
+const userController = new UserController({
+  createUserUseCase,
+  getUserUseCase,
+  updateUserUseCase,
+  deleteUserUseCase,
+  listUsersUseCase,
+});
 
 app.use('/users', userController.router);
 
