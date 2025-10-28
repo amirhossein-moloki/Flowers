@@ -7,32 +7,50 @@ import { prismaMock } from '@/modules/__tests__/helpers/prisma-mock.helper';
 import { OrderStatus } from '../../../domain/order-status.entity';
 import { Dependencies } from '@/infrastructure/di';
 import { success } from '@/core/utils/result';
+import { Router } from 'express';
+import { PaymentController } from '@/modules/payment/presentation/http/payment.controller';
+import { OrderController } from '@/modules/order/presentation/http/order.controller';
 
 describe('OrderStatus API', () => {
-  let app: express.Express;
-
-  beforeEach(() => {
-    jest.resetModules();
-  });
-
+  let app: express.Application;
   let dependencies: Partial<Dependencies>;
 
   beforeEach(() => {
+    jest.resetModules();
+    const pendingResult = OrderStatus.create({
+      code: 'PENDING',
+      name: 'Pending',
+      display_order: 1,
+    });
+    const shippedResult = OrderStatus.create({
+      code: 'SHIPPED',
+      name: 'Shipped',
+      display_order: 2,
+    });
+
+    if (!pendingResult.success || !shippedResult.success) {
+      throw new Error('Test setup failed');
+    }
+
     dependencies = {
       getAllOrderStatusesUseCase: {
-        execute: jest.fn().mockResolvedValue(success([
-          OrderStatus.create({ code: 'PENDING', name: 'Pending', display_order: 1 }).value,
-          OrderStatus.create({ code: 'SHIPPED', name: 'Shipped', display_order: 2 }).value,
-        ])),
+        execute: jest
+          .fn()
+          .mockResolvedValue(success([pendingResult.value, shippedResult.value])),
       },
       getOrderStatusUseCase: {
-        execute: jest.fn().mockResolvedValue(success(OrderStatus.create({ code: 'PENDING', name: 'Pending', display_order: 1 }).value)),
+        execute: jest.fn().mockResolvedValue(success(pendingResult.value)),
       },
+      userRoutes: Router(),
+      automationLogRoutes: Router(),
+      paymentController: {
+        router: Router(),
+      } as any,
+      orderRoutes: Router(),
     };
     const application = new App(prismaMock, dependencies as Dependencies);
     app = application.getServer();
   });
-
 
   describe('GET /order-statuses', () => {
     it('should return a list of order statuses', async () => {
@@ -58,9 +76,13 @@ describe('OrderStatus API', () => {
     });
 
     it('should return 404 if the order status does not exist', async () => {
-      (dependencies.getOrderStatusUseCase.execute as jest.Mock).mockResolvedValue(success(null));
+      (
+        dependencies.getOrderStatusUseCase.execute as jest.Mock
+      ).mockResolvedValue(success(null));
       // Act
-      const response = await request(app).get('/api/v1/order-statuses/non-existent-id');
+      const response = await request(app).get(
+        '/api/v1/order-statuses/non-existent-id',
+      );
 
       // Assert
       expect(response.status).toBe(404);

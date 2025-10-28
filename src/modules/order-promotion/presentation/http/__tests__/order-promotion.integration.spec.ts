@@ -20,14 +20,14 @@ describe('Order-Promotion Integration Tests', () => {
   let adminAccessToken: string;
 
   beforeAll(async () => {
-    app = new App();
+    app = new App(prisma);
 
     user = await prisma.user.create({
       data: {
         email: 'user-order-promotion@example.com',
         username: 'user-order-promotion',
         password: 'password123',
-        role: UserRole.USER,
+        role: UserRole.CUSTOMER,
       },
     });
 

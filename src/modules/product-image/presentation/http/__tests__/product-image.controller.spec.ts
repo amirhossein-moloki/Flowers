@@ -66,7 +66,7 @@ describe('ProductImageController', () => {
   describe('POST /product-images', () => {
     it('should create a new product image and return 201', async () => {
       const dto = {
-        product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
+        productId: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
         url: 'http://example.com/image.png',
       };
       const productImage = ProductImage.create(dto).value;
@@ -81,7 +81,7 @@ describe('ProductImageController', () => {
         .expect(201)
         .then((res) => {
           expect(res.body.id).toEqual(productImage.id);
-          expect(res.body.product_id).toEqual(dto.product_id);
+          expect(res.body.productId).toEqual(dto.productId);
         });
     });
   });
@@ -89,7 +89,7 @@ describe('ProductImageController', () => {
   describe('GET /product-images/:id', () => {
     it('should get a product image by id and return 200', async () => {
       const productImage = ProductImage.create({
-        product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
+        productId: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
         url: 'http://example.com/image.png',
       }).value;
 
@@ -109,7 +109,7 @@ describe('ProductImageController', () => {
   describe('GET /product-images', () => {
     it('should get all product images and return 200', async () => {
       const productImage = ProductImage.create({
-        product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
+        productId: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
         url: 'http://example.com/image.png',
       }).value;
 
@@ -141,7 +141,7 @@ describe('ProductImageController', () => {
         url: 'http://example.com/new-image.png',
       };
       const productImage = ProductImage.create({
-        product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
+        productId: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
         url: dto.url,
       }).value;
 

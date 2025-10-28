@@ -3,16 +3,6 @@ import App from '@/app';
 import prismaClient from '@/infrastructure/database/prisma/prisma-client';
 import { User, UserRole, OrderStatus } from '@prisma/client';
 
-jest.mock('@prisma/client', () => {
-  const originalModule = jest.requireActual('@prisma/client');
-  return {
-    ...originalModule,
-    DiscountType: {
-      PERCENTAGE: 'PERCENTAGE',
-      FIXED_AMOUNT: 'FIXED_AMOUNT',
-    },
-  };
-});
 
 let mockUser: User | null = null;
 

@@ -18,14 +18,16 @@ export class ProductImageMapper {
     return null;
   }
 
-  static toModel(entity: ProductImage): ProductImageModel {
+  static toModel(entity: ProductImage): any {
     return {
       id: entity.id,
-      product_id: entity.productId,
       url: entity.url,
       sort_order: entity.sort_order,
-      created_at: new Date(),
-      updated_at: new Date(),
+      product: {
+        connect: {
+          id: entity.productId,
+        },
+      },
     };
   }
 

@@ -4,17 +4,19 @@ import { mock } from 'jest-mock-extended';
 import { AutomationLog } from '@/modules/automation-log/domain/automation-log.entity';
 import { success } from '@/core/utils/result';
 import { FindAllAutomationLogsUseCase } from '@/modules/automation-log/application/use-cases/find-all-automation-logs.usecase';
+import { AutomationLogController } from '../automation-log.controller';
+import { createAutomationLogRoutes } from '../automation-log.routes';
 
 // Mock the use cases
 const mockFindAllAutomationLogsUseCase = mock<FindAllAutomationLogsUseCase>();
 
-// Mock the modules that instantiate the use cases and repositories
-jest.mock('@/modules/automation-log/infrastructure/prisma-automation-log.repository');
-jest.mock('@/modules/automation-log/application/use-cases/find-all-automation-logs.usecase', () => ({
-  FindAllAutomationLogsUseCase: jest.fn().mockImplementation(() => mockFindAllAutomationLogsUseCase),
-}));
+// Instantiate the controller with the mocked use case
+const automationLogController = new AutomationLogController(
+  mockFindAllAutomationLogsUseCase,
+);
 
-import automationLogRoutes from '../automation-log.routes';
+// Create the router using the factory function
+const automationLogRoutes = createAutomationLogRoutes(automationLogController);
 
 const app = express();
 app.use(express.json());
@@ -41,12 +43,15 @@ describe('AutomationLogController', () => {
 
   describe('GET /automation-logs', () => {
     it('should return an array of automation logs and 200', async () => {
-      mockFindAllAutomationLogsUseCase.execute.mockResolvedValue(success([automationLog]));
+      mockFindAllAutomationLogsUseCase.execute.mockResolvedValue(
+        success([automationLog]),
+      );
 
       const response = await request(app).get('/automation-logs');
 
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Array);
+      expect(response.body[0].order_id).toBe(automationLog.order_id);
     });
   });
 });

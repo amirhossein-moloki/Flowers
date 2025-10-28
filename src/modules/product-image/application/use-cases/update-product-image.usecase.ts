@@ -8,21 +8,32 @@ import { UpdateProductImageDto } from '../dtos/update-product-image.dto';
 export class UpdateProductImageUseCase {
   constructor(private readonly productImageRepository: IProductImageRepository) {}
 
-  async execute(
-    id: string,
-    dto: UpdateProductImageDto,
-  ): Promise<Result<ProductImageDto, HttpError>> {
-    const existingProductImage = await this.productImageRepository.findById(id);
+  async execute({
+    id,
+    data,
+  }: {
+    id: string;
+    data: UpdateProductImageDto;
+  }): Promise<Result<ProductImage, HttpError>> {
+    const existingProductImageResult =
+      await this.productImageRepository.findById(id);
 
-    if (!existingProductImage) {
-      return failure(HttpError.notFound('Product image not found'));
+    if (!existingProductImageResult.success) {
+      return existingProductImageResult;
     }
 
-    const updatedProductImage = Object.assign(existingProductImage, dto);
+    const existingProductImage = existingProductImageResult.value;
 
-    await this.productImageRepository.save(updatedProductImage);
+    const updatedProductImageResult = existingProductImage.update(data);
 
-    const productImageDto = ProductImageMapper.toDto(updatedProductImage);
-    return success(productImageDto);
+    if (!updatedProductImageResult.success) {
+      return updatedProductImageResult;
+    }
+
+    const updatedProductImage = updatedProductImageResult.value;
+
+    await this.productImageRepository.update(updatedProductImage);
+
+    return success(updatedProductImage);
   }
 }

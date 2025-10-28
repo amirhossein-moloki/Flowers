@@ -5,27 +5,46 @@ import { Payment } from '@/modules/payment/domain/payment.entity';
 import { success } from '@/core/utils/result';
 import { CreatePaymentUseCase } from '@/modules/payment/application/use-cases/create-payment.usecase';
 import { VerifyPaymentUseCase } from '@/modules/payment/application/use-cases/verify-payment.usecase';
-import { PaymentMethod, PaymentStatus } from '@/core/domain/enums';
+import { PaymentController } from '../payment.controller';
+import { createPaymentRoutes } from '../payment.routes';
+import { PaymentMethod, PaymentStatus } from '@prisma/client';
+import { randomUUID } from 'crypto';
+
+// Mock the auth middleware
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: (req, res, next) => next(),
+}));
+
+// Mock the validate middleware
+jest.mock('@/core/middlewares/validate.middleware', () => ({
+  validate: () => (req, res, next) => next(),
+}));
+
+jest.mock('@prisma/client', () => {
+    const originalModule = jest.requireActual('@prisma/client');
+    return {
+        ...originalModule,
+        PaymentMethod: {
+            CREDIT_CARD: 'CREDIT_CARD',
+        },
+        PaymentStatus: {
+            PENDING: 'PENDING',
+        },
+    };
+});
 
 // Mock the use cases
 const mockCreatePaymentUseCase = mock<CreatePaymentUseCase>();
 const mockVerifyPaymentUseCase = mock<VerifyPaymentUseCase>();
 
-// Mock the modules that instantiate the use cases and repositories
-jest.mock('@/modules/payment/infrastructure/prisma-payment.repository');
-jest.mock('@/modules/payment/application/use-cases/create-payment.usecase', () => ({
-  CreatePaymentUseCase: jest.fn().mockImplementation(() => mockCreatePaymentUseCase),
-}));
-jest.mock('@/modules/payment/application/use-cases/verify-payment.usecase', () => ({
-  VerifyPaymentUseCase: jest.fn().mockImplementation(() => mockVerifyPaymentUseCase),
-}));
+// Instantiate the controller with the mocked use cases
+const paymentController = new PaymentController(
+  mockCreatePaymentUseCase,
+  mockVerifyPaymentUseCase,
+);
 
-import paymentRoutes from '../payment.routes';
-
-jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: jest.fn((req, res, next) => next()),
-  hasRole: jest.fn(() => (req, res, next) => next()),
-}));
+// Create the router using the factory function
+const paymentRoutes = createPaymentRoutes(paymentController);
 
 const app = express();
 app.use(express.json());
@@ -37,13 +56,12 @@ describe('PaymentController', () => {
   });
 
   const paymentResult = Payment.create({
-    order_id: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
-    amount: 100,
-    method: PaymentMethod.ONLINE,
+    order_id: randomUUID(),
+    method: PaymentMethod.CREDIT_CARD,
     status: PaymentStatus.PENDING,
-    gateway: 'test-gateway',
-    gateway_ref: 'test-ref',
-    paid_at: new Date(),
+    gateway: 'stripe',
+    gateway_ref: 'pi_123456789',
+    amount: 100,
   });
 
   if (!paymentResult.success) {
@@ -52,36 +70,34 @@ describe('PaymentController', () => {
 
   const payment = paymentResult.value;
 
-  describe('POST /payments', () => {
-    it('should create a payment and return 201', async () => {
+  describe('POST /api/v1/payments', () => {
+    it('should return a payment and 201', async () => {
       mockCreatePaymentUseCase.execute.mockResolvedValue(success(payment));
 
-      const response = await request(app)
-        .post('/api/v1/payments')
-        .send({
-          orderId: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
-          amount: 100,
-          method: 'online',
-        });
+      const response = await request(app).post('/api/v1/payments').send({
+        order_id: payment.order_id,
+        method: payment.method,
+        amount: payment.amount,
+      });
 
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body.order_id).toBe(payment.order_id);
     });
   });
 
-  describe('POST /payments/verify', () => {
-    it('should verify a payment and return 200', async () => {
+  describe('POST /api/v1/payments/verify', () => {
+    it('should return a payment and 200', async () => {
       mockVerifyPaymentUseCase.execute.mockResolvedValue(success(payment));
 
       const response = await request(app)
         .post('/api/v1/payments/verify')
         .send({
-          paymentId: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
-          verificationCode: '123456',
+          payment_id: payment.id,
+          gateway_ref: payment.gateway_ref,
         });
 
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body.id).toBe(payment.id);
     });
   });
 });

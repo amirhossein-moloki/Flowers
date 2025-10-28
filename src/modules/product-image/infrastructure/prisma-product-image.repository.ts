@@ -42,4 +42,11 @@ export class PrismaProductImageRepository implements IProductImageRepository {
     await this.prisma.productImage.delete({ where: { id } });
     return success(true);
   }
+
+  async findAllByProductId(productId: string): Promise<Result<ProductImage[], Error>> {
+    const results = await this.prisma.productImage.findMany({
+      where: { product_id: productId },
+    });
+    return success(results.map(ProductImageMapper.toEntity));
+  }
 }

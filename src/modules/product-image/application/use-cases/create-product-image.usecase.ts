@@ -11,9 +11,9 @@ export class CreateProductImageUseCase {
 
   async execute(
     dto: CreateProductImageDto,
-  ): Promise<Result<ProductImageDto, HttpError>> {
+  ): Promise<Result<ProductImage, HttpError>> {
     const productImageProps: ProductImageProps = {
-      product_id: dto.product_id,
+      productId: dto.productId,
       url: dto.url,
       sort_order: dto.sort_order,
     };
@@ -26,9 +26,8 @@ export class CreateProductImageUseCase {
 
     const productImage = productImageResult.value;
 
-    await this.productImageRepository.save(productImage);
+    await this.productImageRepository.create(productImage);
 
-    const productImageDto = ProductImageMapper.toDto(productImage);
-    return success(productImageDto);
+    return success(productImage);
   }
 }

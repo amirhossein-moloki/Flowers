@@ -2,6 +2,7 @@ import { Application } from 'express';
 import request from 'supertest';
 import { PrismaClient } from '@prisma/client';
 import App from '@/app';
+import { randomUUID } from 'crypto';
 
 jest.mock('@/core/middlewares/auth.middleware', () => ({
   isAuthenticated: (req, res, next) => next(),
@@ -52,8 +53,8 @@ describe('DriverLocation API', () => {
       const courier = await prisma.courier.create({
         data: {
           name: 'Test Courier',
-          email: 'test.courier@example.com',
-          phone: '1234567890',
+          email: `test.courier.${randomUUID()}@example.com`,
+          phone: randomUUID(),
         },
       });
 
@@ -114,8 +115,8 @@ describe('DriverLocation API', () => {
       const courier = await prisma.courier.create({
         data: {
           name: 'Test Courier',
-          email: 'test.courier@example.com',
-          phone: '1234567890',
+          email: `test.courier.${randomUUID()}@example.com`,
+          phone: randomUUID(),
         },
       });
 
@@ -172,8 +173,8 @@ describe('DriverLocation API', () => {
       const courier = await prisma.courier.create({
         data: {
           name: 'Test Courier',
-          email: 'test.courier@example.com',
-          phone: '1234567890',
+          email: `test.courier.${randomUUID()}@example.com`,
+          phone: randomUUID(),
         },
       });
 
@@ -230,8 +231,8 @@ describe('DriverLocation API', () => {
       const courier = await prisma.courier.create({
         data: {
           name: 'Test Courier',
-          email: 'test.courier@example.com',
-          phone: '1234567890',
+          email: `test.courier.${randomUUID()}@example.com`,
+          phone: randomUUID(),
         },
       });
 

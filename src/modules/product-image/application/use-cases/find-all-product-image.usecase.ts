@@ -9,13 +9,14 @@ export class FindAllProductImageUseCase {
 
   async execute(
     productId: string,
-  ): Promise<Result<ProductImageDto[], HttpError>> {
-    const productImages = await this.productImageRepository.findAllByProductId(
-      productId,
-    );
-    const productImagesDto = productImages.map(productImage =>
-      ProductImageMapper.toDto(productImage),
-    );
-    return success(productImagesDto);
+  ): Promise<Result<ProductImage[], HttpError>> {
+    const productImagesResult =
+      await this.productImageRepository.findAllByProductId(productId);
+
+    if (!productImagesResult.success) {
+      return productImagesResult;
+    }
+
+    return success(productImagesResult.value);
   }
 }

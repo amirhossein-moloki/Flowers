@@ -1,12 +1,16 @@
 import { PrismaOrderRepository } from '../prisma-order.repository';
 import { Order, OrderItem, OrderStatus } from '../../domain/order.entity';
 import { prismaMock } from '../../../__tests__/helpers/prisma-mock.helper';
-import { Order as PrismaOrder, OrderItem as PrismaOrderItem, OrderStatus, Product as PrismaProduct } from '@prisma/client';
-
-jest.mock('../../../../infrastructure/database/prisma/prisma-client');
+import { Order as PrismaOrder, OrderItem as PrismaOrderItem, Product as PrismaProduct } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 describe('PrismaOrderRepository', () => {
   let repository: PrismaOrderRepository;
+  let prisma: PrismaClient;
+
+  beforeAll(() => {
+    prisma = new PrismaClient();
+  });
 
   // Helper data
   const userId = 'user-uuid';
@@ -19,15 +23,21 @@ describe('PrismaOrderRepository', () => {
     quantity: 2,
     price: 50,
   }, 'order-item-uuid');
-  const orderItemEntity = orderItemEntityResult.success ? orderItemEntityResult.value : null;
+  if (!orderItemEntityResult.success) {
+    throw new Error('Failed to create order item entity');
+  }
+  const orderItemEntity = orderItemEntityResult.value;
 
   const orderEntityResult = Order.create({
     userId,
-    items: [orderItemEntity!],
+    items: [orderItemEntity],
     status: OrderStatus.PENDING,
     total: 100,
   }, orderId);
-  const orderEntity = orderEntityResult.success ? orderEntityResult.value : null;
+  if (!orderEntityResult.success) {
+    throw new Error('Failed to create order entity');
+  }
+  const orderEntity = orderEntityResult.value;
 
   const prismaOrder = {
     id: orderId,
@@ -46,7 +56,7 @@ describe('PrismaOrderRepository', () => {
   };
 
   beforeEach(() => {
-    repository = new PrismaOrderRepository();
+    repository = new PrismaOrderRepository(prismaMock);
   });
 
   describe('findById', () => {
@@ -60,12 +70,22 @@ describe('PrismaOrderRepository', () => {
       expect(result!.items).toHaveLength(1);
       expect(result!.items[0]).toBeInstanceOf(OrderItem);
     });
+
+    it('should return null if order is not found', async () => {
+      prismaMock.order.findUnique.mockResolvedValue(null);
+
+      const result = await repository.findById(orderId);
+
+      expect(result).toBeNull();
+    });
   });
 
   describe('save', () => {
     it('should use a transaction to save an order and its items', async () => {
       // Mock the transaction
       prismaMock.$transaction.mockImplementation((callback: any) => callback(prismaMock));
+      prismaMock.order.upsert.mockResolvedValue(prismaOrder as any);
+      prismaMock.orderItem.upsert.mockResolvedValue({} as any);
 
       await repository.save(orderEntity!);
 

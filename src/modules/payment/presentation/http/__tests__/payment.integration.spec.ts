@@ -3,6 +3,11 @@ import prismaClient from '@/infrastructure/database/prisma/prisma-client';
 import { Order, User, PaymentMethod, PaymentStatus, OrderStatus } from '@prisma/client';
 import App from '@/app';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: (req, res, next) => next(),
+  hasRole: (roles) => (req, res, next) => next(),
+}));
+
 let app: App;
 let server: any;
 let user: User;

@@ -49,6 +49,7 @@ describe('ProductImage Integration Tests', () => {
     await prisma.productImage.deleteMany({});
     await prisma.orderItem.deleteMany({});
     await prisma.product.deleteMany({});
+    await prisma.vendorOutlet.deleteMany({});
     await prisma.vendor.deleteMany({});
   });
 
@@ -59,17 +60,17 @@ describe('ProductImage Integration Tests', () => {
   describe('POST /product-images', () => {
     it('should create a new product image and return 201', async () => {
       const dto: CreateProductImageDto = {
-        product_id: product.id,
+        productId: product.id,
         url: 'http://example.com/image.png',
         sort_order: 1,
       };
 
       await request(app.express)
-        .post('/api/v1/product-image')
+        .post('/api/v1/product-images')
         .send(dto)
         .expect(201)
         .then((res) => {
-          expect(res.body.product_id).toEqual(dto.product_id);
+          expect(res.body.productId).toEqual(dto.productId);
           expect(res.body.url).toEqual(dto.url);
           expect(res.body.sort_order).toEqual(dto.sort_order);
         });
@@ -77,17 +78,17 @@ describe('ProductImage Integration Tests', () => {
 
     it('should return 422 for invalid data', async () => {
       const dto = {
-        // Missing product_id and url
+        // Missing productId and url
       };
 
-      await request(app.express).post('/api/v1/product-image').send(dto).expect(422);
+      await request(app.express).post('/api/v1/product-images').send(dto).expect(422);
     });
   });
 
   describe('GET /product-images', () => {
     it('should return a list of product images', async () => {
         await request(app.express)
-        .get('/api/v1/product-image')
+        .get(`/api/v1/product-images?productId=${product.id}`)
         .expect(200)
         .then((res) => {
             expect(res.body).toHaveLength(1);
@@ -99,7 +100,7 @@ describe('ProductImage Integration Tests', () => {
     describe('GET /product-images/:id', () => {
         it('should return a product image by id', async () => {
             await request(app.express)
-            .get(`/api/v1/product-image/${productImage.id}`)
+            .get(`/api/v1/product-images/${productImage.id}`)
             .expect(200)
             .then((res) => {
                 expect(res.body.id).toEqual(productImage.id);
@@ -107,20 +108,19 @@ describe('ProductImage Integration Tests', () => {
         });
 
         it('should return 404 for a non-existent product image', async () => {
-            await request(app.express).get('/api/v1/product-image/invalid-id').expect(404);
+            await request(app.express).get('/api/v1/product-images/invalid-id').expect(404);
         });
     });
 
     describe('PUT /product-images/:id', () => {
         it('should update a product image and return 200', async () => {
-            const dto: UpdateProductImageDto & { product_id: string } = {
+            const dto: UpdateProductImageDto = {
                 url: 'http://example.com/new-image.png',
                 sort_order: 2,
-                product_id: product.id,
             };
 
             await request(app.express)
-                .put(`/api/v1/product-image/${productImage.id}`)
+                .put(`/api/v1/product-images/${productImage.id}`)
                 .send(dto)
                 .expect(200)
                 .then((res) => {
@@ -134,14 +134,14 @@ describe('ProductImage Integration Tests', () => {
                 url: '',
             };
 
-            await request(app.express).put(`/api/v1/product-image/${productImage.id}`).send(dto).expect(422);
+            await request(app.express).put(`/api/v1/product-images/${productImage.id}`).send(dto).expect(422);
         });
     });
 
     describe('DELETE /product-images/:id', () => {
         it('should delete a product image and return 204', async () => {
             await request(app.express)
-                .delete(`/api/v1/product-image/${productImage.id}`)
+                .delete(`/api/v1/product-images/${productImage.id}`)
                 .expect(204);
         });
     });

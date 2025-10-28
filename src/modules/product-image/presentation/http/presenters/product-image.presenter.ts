@@ -6,7 +6,7 @@ export class ProductImagePresenter {
   toJSON() {
     return {
       id: this.productImage.id,
-      product_id: this.productImage.product_id,
+      productId: this.productImage.productId,
       url: this.productImage.url,
       sort_order: this.productImage.sort_order,
     };

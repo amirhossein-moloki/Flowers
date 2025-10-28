@@ -10,7 +10,7 @@ describe('PrismaProductImageRepository', () => {
   });
 
   const productImageProps = {
-    product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
+    productId: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
     url: 'http://example.com/image.png',
   };
   const productImageResult = ProductImage.create(productImageProps, 'image-id-1');
@@ -21,7 +21,8 @@ describe('PrismaProductImageRepository', () => {
 
   const prismaProductImage = {
     id: productImageEntity.id,
-    ...productImageProps,
+    product_id: productImageEntity.productId,
+    url: productImageEntity.url,
     sort_order: 0,
     created_at: new Date(),
     updated_at: new Date(),
@@ -35,9 +36,14 @@ describe('PrismaProductImageRepository', () => {
     expect(result.success).toBe(true);
     expect(prismaMock.productImage.create).toHaveBeenCalledWith({
       data: {
-        ...prismaProductImage,
-        created_at: expect.any(Date),
-        updated_at: expect.any(Date),
+        id: productImageEntity.id,
+        url: productImageEntity.url,
+        sort_order: productImageEntity.sort_order,
+        product: {
+          connect: {
+            id: productImageEntity.productId,
+          },
+        },
       },
     });
   });
@@ -75,9 +81,14 @@ describe('PrismaProductImageRepository', () => {
     expect(prismaMock.productImage.update).toHaveBeenCalledWith({
       where: { id: productImageEntity.id },
       data: {
-        ...prismaProductImage,
-        created_at: expect.any(Date),
-        updated_at: expect.any(Date),
+        id: productImageEntity.id,
+        url: productImageEntity.url,
+        sort_order: productImageEntity.sort_order,
+        product: {
+          connect: {
+            id: productImageEntity.productId,
+          },
+        },
       },
     });
   });

@@ -35,7 +35,9 @@ import {
 } from '@/modules/user/application/use-cases';
 import { IUserRepository } from '@/modules/user/domain/user.repository.interface';
 import { PrismaUserRepository } from '@/modules/user/infrastructure';
-import { UserController, UserRoutes } from '@/modules/user/presentation/http';
+import { UserController } from '@/modules/user/presentation/http';
+import { createUserRoutes } from '@/modules/user/http/routes';
+import { Router } from 'express';
 import { IVendorRepository } from '@/modules/vendor/domain/vendor.repository';
 import { IVendorOutletRepository } from '@/modules/vendor-outlet/domain/vendor-outlet.repository';
 import { PrismaVendorOutletRepository } from '@/modules/vendor-outlet/infrastructure/prisma-vendor-outlet.repository';
@@ -113,8 +115,33 @@ import {
   UpdateOrderPromotionUseCase,
   DeleteOrderPromotionUseCase,
 } from '@/modules/order-promotion/application/use-cases';
+import { PrismaAutomationLogRepository } from '@/modules/automation-log/infrastructure/prisma-automation-log.repository';
+import { FindAllAutomationLogsUseCase } from '@/modules/automation-log/application/use-cases/find-all-automation-logs.usecase';
+import { AutomationLogController } from '@/modules/automation-log/presentation/http/automation-log.controller';
+import { createAutomationLogRoutes } from '@/modules/automation-log/presentation/http/automation-log.routes';
+import { PrismaPaymentRepository } from '@/modules/payment/infrastructure/prisma-payment.repository';
+import { CreatePaymentUseCase } from '@/modules/payment/application/use-cases/create-payment.usecase';
+import { VerifyPaymentUseCase } from '@/modules/payment/application/use-cases/verify-payment.usecase';
+import { PaymentController } from '@/modules/payment/presentation/http/payment.controller';
+import { createPaymentRoutes } from '@/modules/payment/presentation/http/payment.routes';
+import { PrismaOrderRepository } from '@/modules/order/infrastructure/prisma-order.repository';
+import { CreateOrderUseCase } from '@/modules/order/application/use-cases/create-order.usecase';
+import { GetOrderUseCase } from '@/modules/order/application/use-cases/get-order.usecase';
+import { FindAllOrdersUseCase } from '@/modules/order/application/use-cases/find-all-orders.usecase';
+import { UpdateOrderUseCase } from '@/modules/order/application/use-cases/update-order.usecase';
+import { DeleteOrderUseCase } from '@/modules/order/application/use-cases/delete-order.usecase';
+import { ConfirmOrderUseCase } from '@/modules/order/application/use-cases/confirm-order.usecase';
+import { CancelOrderUseCase } from '@/modules/order/application/use-cases/cancel-order.usecase';
+import { OrderController } from '@/modules/order/presentation/http/order.controller';
+import { createOrderRoutes } from '@/modules/order/presentation/http/order.routes';
+import { PrismaOrderStatusRepository } from '@/modules/order-status/infrastructure/prisma-order-status.repository';
 
 export interface Dependencies {
+  automationLogRoutes: Router;
+  paymentController: PaymentController;
+  paymentRoutes: Router;
+  orderController: OrderController;
+  orderRoutes: Router;
   orderPromotionRepository: PrismaOrderPromotionRepository;
   createOrderPromotionUseCase: CreateOrderPromotionUseCase;
   getOrderPromotionUseCase: GetOrderPromotionUseCase;
@@ -152,7 +179,7 @@ export interface Dependencies {
   deleteUserUseCase: DeleteUserUseCase;
   listUsersUseCase: ListUsersUseCase;
   userController: UserController;
-  userRoutes: UserRoutes;
+  userRoutes: Router;
   vendorRepository: IVendorRepository;
   vendorOutletRepository: IVendorOutletRepository;
   addressRepository: IAddressRepository;
@@ -224,6 +251,50 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const productImageRepository = new PrismaProductImageRepository(prisma);
   const promotionRepository = new PrismaPromotionRepository(prisma);
   const orderPromotionRepository = new PrismaOrderPromotionRepository(prisma);
+  const orderStatusRepository = new PrismaOrderStatusRepository(prisma);
+  const automationLogRepository = new PrismaAutomationLogRepository(prisma);
+  const paymentRepository = new PrismaPaymentRepository(prisma);
+  const orderRepository = new PrismaOrderRepository(prisma);
+
+  const findAllAutomationLogsUseCase = new FindAllAutomationLogsUseCase(
+    automationLogRepository,
+  );
+
+  const automationLogController = new AutomationLogController(
+    findAllAutomationLogsUseCase,
+  );
+
+  const automationLogRoutes = createAutomationLogRoutes(automationLogController);
+
+  const createPaymentUseCase = new CreatePaymentUseCase(paymentRepository);
+  const verifyPaymentUseCase = new VerifyPaymentUseCase(paymentRepository);
+
+  const paymentController = new PaymentController(
+    createPaymentUseCase,
+    verifyPaymentUseCase,
+  );
+
+  const paymentRoutes = createPaymentRoutes(paymentController);
+
+  const createOrderUseCase = new CreateOrderUseCase(orderRepository);
+  const getOrderUseCase = new GetOrderUseCase(orderRepository);
+  const findAllOrdersUseCase = new FindAllOrdersUseCase(orderRepository);
+  const updateOrderUseCase = new UpdateOrderUseCase(orderRepository);
+  const deleteOrderUseCase = new DeleteOrderUseCase(orderRepository);
+  const confirmOrderUseCase = new ConfirmOrderUseCase(orderRepository);
+  const cancelOrderUseCase = new CancelOrderUseCase(orderRepository);
+
+  const orderController = new OrderController(
+    createOrderUseCase,
+    getOrderUseCase,
+    findAllOrdersUseCase,
+    updateOrderUseCase,
+    deleteOrderUseCase,
+    confirmOrderUseCase,
+    cancelOrderUseCase,
+  );
+
+  const orderRoutes = createOrderRoutes(orderController);
 
   const createOrderPromotionUseCase = new CreateOrderPromotionUseCase(orderPromotionRepository);
   const getOrderPromotionUseCase = new GetOrderPromotionUseCase(orderPromotionRepository);
@@ -316,9 +387,14 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
     listUsersUseCase,
   });
 
-  const userRoutes = new UserRoutes(userController);
+  const userRoutes = createUserRoutes(userController);
 
   return {
+    automationLogRoutes,
+    paymentController,
+    paymentRoutes,
+    orderController,
+    orderRoutes,
     orderPromotionRepository,
     createOrderPromotionUseCase,
     getOrderPromotionUseCase,

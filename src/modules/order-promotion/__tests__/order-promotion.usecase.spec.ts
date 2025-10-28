@@ -10,7 +10,12 @@ describe('OrderPromotion UseCase Tests', () => {
   let promotion: Promotion;
   let user: User;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
+    await prisma.orderPromotion.deleteMany();
+    await prisma.order.deleteMany();
+    await prisma.promotion.deleteMany();
+    await prisma.user.deleteMany();
+
     const orderPromotionRepository = new PrismaOrderPromotionRepository(prisma);
     createOrderPromotionUseCase = new CreateOrderPromotionUseCase(orderPromotionRepository);
 
@@ -18,7 +23,7 @@ describe('OrderPromotion UseCase Tests', () => {
       data: {
         id: randomUUID(),
         email: 'test-user@example.com',
-        username: 'test-user',
+        username: `test-user-${randomUUID()}`,
         password: 'password',
       },
     });

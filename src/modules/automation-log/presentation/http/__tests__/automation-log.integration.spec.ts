@@ -1,7 +1,6 @@
 import request from 'supertest';
 import App from '@/app';
-import prisma from '@/infrastructure/database/prisma/prisma-client';
-import { Order, User, AutomationLog, Vendor, Product, Address, CustomerAddress, ServiceZone, VendorOutlet, OrderItem } from '@prisma/client';
+import { PrismaClient, Order, User, AutomationLog, Vendor, Product, Address, CustomerAddress, ServiceZone, VendorOutlet, OrderItem } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 
 // Mock the faker module to ensure consistent test data
@@ -39,6 +38,7 @@ jest.mock('@faker-js/faker', () => ({
 
 describe('AutomationLog Integration Tests', () => {
   let app: App;
+  let prisma: PrismaClient;
   let user: User;
   let vendor: Vendor;
   let product: Product;
@@ -50,7 +50,8 @@ describe('AutomationLog Integration Tests', () => {
   let automationLog: AutomationLog;
 
   beforeAll(() => {
-    app = new App();
+    prisma = new PrismaClient();
+    app = new App(prisma);
   });
 
   beforeEach(async () => {

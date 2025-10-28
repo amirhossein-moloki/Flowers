@@ -24,9 +24,9 @@ import { createProductImageRoutes } from './modules/product-image/presentation/h
 import promotionRouter from './modules/promotion/presentation/http/promotion.routes';
 import { createOrderStatusRoutes } from './modules/order-status/presentation/http/routes';
 import { createOrderPromotionRoutes } from './modules/order-promotion/presentation/http/order-promotion.routes';
-import orderRouter from './modules/order/presentation/http/order.routes';
-import paymentRouter from './modules/payment/presentation/http/payment.routes';
-import automationLogRouter from './modules/automation-log/presentation/http/automation-log.routes';
+import { createOrderRoutes } from './modules/order/presentation/http/order.routes';
+import { createPaymentRoutes } from './modules/payment/presentation/http/payment.routes';
+import { createAutomationLogRoutes } from './modules/automation-log/presentation/http/automation-log.routes';
 
 class App {
   public express: Application;
@@ -49,7 +49,7 @@ class App {
     this.express.get('/', (req, res) => {
       res.send('API is running...');
     });
-    this.express.use('/api/v1/users', createUserRoutes(this.dependencies));
+    this.express.use('/api/v1/users', this.dependencies.userRoutes);
     this.express.use('/api/v1/vendors', createVendorRoutes(this.dependencies));
     this.express.use('/api/v1/service-zones', createServiceZoneRoutes(this.dependencies));
     this.express.use('/api/v1/shipping-rates', createShippingRateRoutes(this.dependencies));
@@ -73,13 +73,19 @@ class App {
     this.express.use('/api/v1/deliveries', createDeliveryRoutes(this.dependencies));
     this.express.use('/api/v1/notifications', createNotificationRoutes(this.dependencies));
     this.express.use('/api/v1/products', createProductRoutes(this.dependencies));
-    this.express.use('/api/v1/product-image', createProductImageRoutes(this.dependencies));
+    this.express.use('/api/v1/product-images', createProductImageRoutes(this.dependencies));
     this.express.use('/api/v1/promotions', promotionRouter(this.dependencies));
     this.express.use('/api/v1/order-statuses', createOrderStatusRoutes(this.dependencies));
     this.express.use('/api/v1/order-promotions', createOrderPromotionRoutes(this.dependencies.orderPromotionRepository));
-    this.express.use('/api/v1/orders', orderRouter);
-    this.express.use('/api/v1/payments', paymentRouter);
-    this.express.use('/api/v1/automation-logs', automationLogRouter);
+    this.express.use('/api/v1/orders', this.dependencies.orderRoutes);
+    this.express.use(
+      '/api/v1/payments',
+      createPaymentRoutes(this.dependencies.paymentController),
+    );
+    this.express.use(
+      '/api/v1/automation-logs',
+      this.dependencies.automationLogRoutes,
+    );
   }
 
   private setupErrorHandlers(): void {

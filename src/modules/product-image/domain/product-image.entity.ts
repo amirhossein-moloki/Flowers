@@ -37,4 +37,11 @@ export class ProductImage extends Entity<ProductImageProps> {
     );
     return success(productImage);
   }
+
+  public update(props: Partial<ProductImageProps>): Result<ProductImage, Error> {
+    this.props.productId = props.productId ?? this.props.productId;
+    this.props.url = props.url ?? this.props.url;
+    this.props.sort_order = props.sort_order ?? this.props.sort_order;
+    return success(this);
+  }
 }

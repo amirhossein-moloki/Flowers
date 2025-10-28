@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --write .",
-    "test": "jest"
+    "test": "jest --dotenv-config=.env.test"
   },
   "keywords": [],
   "author": "",

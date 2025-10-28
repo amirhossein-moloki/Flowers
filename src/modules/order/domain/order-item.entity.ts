@@ -1,5 +1,5 @@
-import { Entity } from '../../../../core/domain/entity';
-import { Result, success } from '../../../../core/utils/result';
+import { Entity } from '@/core/domain/entity';
+import { Result, success } from '@/core/utils/result';
 
 export interface IOrderItemProps {
   order_id?: string; // Is optional because it's set by the Order aggregate

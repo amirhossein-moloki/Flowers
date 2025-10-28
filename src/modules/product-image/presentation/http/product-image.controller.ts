@@ -44,27 +44,31 @@ export class ProductImageController {
     return res.status(500).json({ error: result.error.message });
   }
 
-  async findById(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const { id } = req.params;
-      const result = await this.getProductImageUseCase.execute(id);
+  async findById(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    const { id } = req.params;
+    const result = await this.getProductImageUseCase.execute(id);
 
-      if (result.success) {
-        if (result.value) {
-          res.status(200).json(ProductImagePresenter.toJSON(result.value));
-        } else {
-          res.status(404).json({ error: 'Product image not found' });
-        }
+    if (result.success) {
+      if (result.value) {
+        const presenter = new ProductImagePresenter(result.value);
+        return res.status(200).json(presenter.toJSON());
       } else {
-        next(result.error);
+        return res.status(404).json({ error: 'Product image not found' });
       }
-    } catch (error) {
-      next(error);
     }
+
+    if (result.error instanceof NotFoundError) {
+      return res.status(404).json({ error: result.error.message });
+    }
+
+    return res.status(500).json({ error: result.error.message });
   }
 
   async findAll(req: Request, res: Response): Promise<Response> {
-    const result = await this.findAllProductImageUseCase.execute();
+    const { productId } = req.query;
+    const result = await this.findAllProductImageUseCase.execute(
+      productId as string,
+    );
 
     if (result.success) {
       const presenters = result.value.map(
@@ -78,10 +82,8 @@ export class ProductImageController {
 
   async update(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    const { product_id } = req.body;
     const result = await this.updateProductImageUseCase.execute({
       id,
-      product_id,
       data: req.body,
     });
 
