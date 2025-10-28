@@ -1,5 +1,5 @@
-import { Delivery } from '../domain/delivery.entity';
-import { DeliveryDto } from '../application/dtos/delivery.dto';
+import { Delivery } from '../../domain/delivery.entity';
+import { DeliveryDto } from '../../application/dtos/delivery.dto';
 
 export class DeliveryPresenter {
   static toJSON(delivery: DeliveryDto) {
@@ -15,6 +15,7 @@ export class DeliveryPresenter {
       distance_meters: delivery.distance_meters,
       eta_seconds: delivery.eta_seconds,
       failure_reason: delivery.failure_reason,
+      tracking_number: delivery.tracking_number,
     };
   }
 
@@ -31,6 +32,7 @@ export class DeliveryPresenter {
       distance_meters: delivery.props.distance_meters,
       eta_seconds: delivery.props.eta_seconds,
       failure_reason: delivery.props.failure_reason,
+      tracking_number: delivery.props.tracking_number,
     };
   }
 }

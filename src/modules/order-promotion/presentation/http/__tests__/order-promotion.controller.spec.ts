@@ -57,6 +57,7 @@ describe('OrderPromotionController', () => {
     order_id: 'a7e5e3c2-c5f1-4a7b-8b0e-3e1a6c4c5b3d',
     promotion_id: 'b8f6e4c3-c6f2-4b8c-9a1f-4d2a7d5e6c4e',
     discount_applied: 10,
+    created_at: new Date(),
   };
 
   beforeEach(() => {

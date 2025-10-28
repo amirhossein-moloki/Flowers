@@ -1,8 +1,7 @@
 import request from 'supertest';
-import { PrismaClient, UserRole } from '@prisma/client';
+import { PrismaClient, UserRole, VehicleType } from '@prisma/client';
 import App from '@/app';
 import { randomUUID } from 'crypto';
-import { VehicleType } from '@/core/domain/enums';
 
 const appInstance = new App(new PrismaClient());
 const app = appInstance.getServer();
@@ -145,6 +144,7 @@ describe('Delivery Integration Tests', () => {
           assigned_at: isoDate,
           expected_delivery_date: isoDate,
           tracking_number: randomUUID(),
+          vehicle_type: VehicleType.CAR,
         },
       });
 
@@ -169,6 +169,7 @@ describe('Delivery Integration Tests', () => {
           assigned_at: isoDate,
           expected_delivery_date: isoDate,
           tracking_number: randomUUID(),
+          vehicle_type: VehicleType.CAR,
         },
       });
 
@@ -197,6 +198,7 @@ describe('Delivery Integration Tests', () => {
           assigned_at: isoDate,
           expected_delivery_date: isoDate,
           tracking_number: randomUUID(),
+          vehicle_type: VehicleType.CAR,
         },
       });
 
@@ -220,6 +222,7 @@ describe('Delivery Integration Tests', () => {
           assigned_at: isoDate,
           expected_delivery_date: isoDate,
           tracking_number: randomUUID(),
+          vehicle_type: VehicleType.CAR,
         },
       });
       const response = await request(app).post(`/api/v1/deliveries/${delivery.id}/assign-driver`);

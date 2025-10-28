@@ -11,6 +11,7 @@ import { DeleteDeliveryWindowUseCase } from '../../application/use-cases/delete-
 import { success, failure } from '@/core/utils/result';
 import { DeliveryWindow } from '../../domain/delivery-window.entity';
 import { DeliveryWindowPresenter } from '../presenters/delivery-window.presenter';
+import { HttpError } from '@/core/errors/http-error';
 
 describe('DeliveryWindow Routes', () => {
   let app: Express;
@@ -20,7 +21,7 @@ describe('DeliveryWindow Routes', () => {
   let mockUpdateUseCase: DeepMockProxy<UpdateDeliveryWindowUseCase>;
   let mockDeleteUseCase: DeepMockProxy<DeleteDeliveryWindowUseCase>;
 
-  const mockDeliveryWindow = DeliveryWindow.create({
+  const mockDeliveryWindowResult = DeliveryWindow.create({
     id: '123',
     label: 'Morning',
     start_time: '09:00',
@@ -28,7 +29,12 @@ describe('DeliveryWindow Routes', () => {
     cutoff_time: '08:00',
     zone_id: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
     is_active: true,
-  }).value;
+  });
+
+  if (!mockDeliveryWindowResult.success) {
+    throw mockDeliveryWindowResult.error;
+  }
+  const mockDeliveryWindow = mockDeliveryWindowResult.value;
 
   const mockDeliveryWindowDto = DeliveryWindowPresenter.toJSON(mockDeliveryWindow);
 
@@ -82,7 +88,7 @@ describe('DeliveryWindow Routes', () => {
     });
 
     it('should return 400 on failure', async () => {
-        mockCreateUseCase.execute.mockResolvedValue(failure(new Error('Creation failed')));
+        mockCreateUseCase.execute.mockResolvedValue(failure(HttpError.badRequest('Creation failed')));
 
         const response = await request(app)
         .post('/delivery-windows')
@@ -118,7 +124,7 @@ describe('DeliveryWindow Routes', () => {
     });
 
     it('should return 404 if not found', async () => {
-        mockGetByIdUseCase.execute.mockResolvedValue(failure(new Error('Not Found')));
+        mockGetByIdUseCase.execute.mockResolvedValue(failure(HttpError.notFound('Not Found')));
         const response = await request(app).get('/delivery-windows/non-existent-id');
         expect(response.status).toBe(404);
     })
@@ -126,7 +132,11 @@ describe('DeliveryWindow Routes', () => {
 
   describe('PUT /delivery-windows/:id', () => {
     it('should update a delivery window', async () => {
-        const updatedEntity = DeliveryWindow.create({ ...mockDeliveryWindow.props, label: 'Updated Label' }, mockDeliveryWindow.id).value;
+        const updatedEntityResult = DeliveryWindow.create({ ...mockDeliveryWindow.props, label: 'Updated Label' }, mockDeliveryWindow.id);
+        if (!updatedEntityResult.success) {
+            throw updatedEntityResult.error;
+        }
+        const updatedEntity = updatedEntityResult.value;
         mockUpdateUseCase.execute.mockResolvedValue(success(updatedEntity));
       const response = await request(app)
         .put(`/delivery-windows/${mockDeliveryWindow.id}`)
@@ -137,7 +147,7 @@ describe('DeliveryWindow Routes', () => {
     });
 
     it('should return 404 if not found', async () => {
-        mockUpdateUseCase.execute.mockResolvedValue(failure(new Error('Not Found')));
+        mockUpdateUseCase.execute.mockResolvedValue(failure(HttpError.notFound('Not Found')));
         const response = await request(app)
         .put('/delivery-windows/non-existent-id')
         .send({ label: 'Updated Label' });
@@ -155,7 +165,7 @@ describe('DeliveryWindow Routes', () => {
     });
 
     it('should return 404 if not found', async () => {
-        mockDeleteUseCase.execute.mockResolvedValue(failure(new Error('Not Found')));
+        mockDeleteUseCase.execute.mockResolvedValue(failure(HttpError.notFound('Not Found')));
         const response = await request(app).delete('/delivery-windows/non-existent-id');
         expect(response.status).toBe(404);
     });

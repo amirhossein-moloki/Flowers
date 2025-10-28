@@ -1,5 +1,5 @@
 import { DriverLocation } from '../../domain/driver-location.entity';
-import { DriverLocationDto } from '../http/dto/driver-location.dto';
+import { DriverLocationDto } from '../../application/dtos/driver-location.dto';
 import { DriverLocation as PrismaDriverLocation } from '@prisma/client';
 
 export class DriverLocationMapper {
@@ -29,7 +29,12 @@ export class DriverLocationMapper {
       },
       prismaDriverLocation.id,
     );
-    return result.value as DriverLocation;
+
+    if (result.success) {
+      return result.value;
+    } else {
+      throw result.error;
+    }
   }
 
   static toPersistence(driverLocation: DriverLocation) {

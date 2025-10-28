@@ -13,6 +13,7 @@ interface DeliveryProps {
   distance_meters: number;
   eta_seconds: number;
   failure_reason: string;
+  tracking_number: string;
   created_at?: Date;
   updated_at?: Date;
 }
@@ -20,6 +21,10 @@ interface DeliveryProps {
 export class Delivery extends Entity<DeliveryProps> {
   private constructor(props: DeliveryProps, id?: string) {
     super(props, id);
+  }
+
+  get tracking_number(): string {
+    return this.props.tracking_number;
   }
 
   get order_id(): string {

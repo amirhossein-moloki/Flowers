@@ -29,7 +29,11 @@ export class PrismaDeliveryRepository implements IDeliveryRepository {
     const { id, ...updateData } = data;
     await this.prisma.delivery.upsert({
       where: { id: delivery.id },
-      update: updateData,
+      update: {
+        ...updateData,
+        vehicle_type: data.vehicle_type,
+        actual_delivery_date: data.actual_delivery_date,
+      },
       create: data,
     });
   }
