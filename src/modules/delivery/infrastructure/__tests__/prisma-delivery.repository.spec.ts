@@ -22,6 +22,7 @@ describe('PrismaDeliveryRepository', () => {
     distance_meters: 1000,
     eta_seconds: 600,
     failure_reason: '',
+    tracking_number: '12345',
   };
   const deliveryEntityResult = Delivery.create(deliveryProps, 'delivery-uuid');
   const deliveryEntity = deliveryEntityResult.success ? deliveryEntityResult.value : null;
@@ -29,8 +30,12 @@ describe('PrismaDeliveryRepository', () => {
   const prismaDelivery: PrismaDelivery = {
     id: deliveryEntity!.id,
     ...deliveryProps,
+    vehicle_type: VehicleType.CAR,
     created_at: new Date(),
     updated_at: new Date(),
+    delivered_at: new Date(),
+    expected_delivery_date: new Date(),
+    actual_delivery_date: new Date(),
   };
 
   beforeEach(() => {

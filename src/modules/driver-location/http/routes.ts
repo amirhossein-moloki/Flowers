@@ -3,11 +3,11 @@ import { validate } from '@/core/middlewares/validate.middleware';
 import { DriverLocationController } from './controller';
 import { createDriverLocationSchema } from './dto/create-driver-location.schema';
 import { updateDriverLocationSchema } from './dto/update-driver-location.schema';
-import { DIContainer } from '@/infrastructure/di';
+import { Dependencies } from '@/infrastructure/di';
 
-export const driverLocationRoutes = (diContainer: DIContainer): Router => {
+export const createDriverLocationRoutes = (dependencies: Dependencies): Router => {
   const router = Router();
-  const controller = new DriverLocationController(diContainer);
+  const controller = new DriverLocationController(dependencies);
 
   router.post('/', validate(createDriverLocationSchema), controller.create);
   router.get('/:id', controller.getById);

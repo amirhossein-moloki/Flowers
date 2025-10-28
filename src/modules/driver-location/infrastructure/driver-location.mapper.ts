@@ -6,13 +6,13 @@ export class DriverLocationMapper {
   static toDto(driverLocation: DriverLocation): DriverLocationDto {
     return {
       id: driverLocation.id,
-      delivery_id: driverLocation.delivery_id,
-      courier_id: driverLocation.courier_id,
-      lat: driverLocation.lat,
-      lng: driverLocation.lng,
-      speed_kmh: driverLocation.speed_kmh,
-      heading_deg: driverLocation.heading_deg,
-      recorded_at: driverLocation.recorded_at,
+      delivery_id: driverLocation.props.delivery_id,
+      courier_id: driverLocation.props.courier_id,
+      lat: driverLocation.props.lat,
+      lng: driverLocation.props.lng,
+      speed_kmh: driverLocation.props.speed_kmh,
+      heading_deg: driverLocation.props.heading_deg,
+      recorded_at: driverLocation.props.recorded_at,
     };
   }
 
@@ -44,13 +44,13 @@ export class DriverLocationMapper {
   ): Omit<PrismaDriverLocation, 'createdAt' | 'updatedAt'> {
     return {
       id: driverLocation.id,
-      delivery_id: driverLocation.delivery_id,
-      courier_id: driverLocation.courier_id,
-      lat: driverLocation.lat,
-      lng: driverLocation.lng,
-      speed_kmh: driverLocation.speed_kmh,
-      heading_deg: driverLocation.heading_deg,
-      recorded_at: driverLocation.recorded_at,
+      delivery_id: driverLocation.props.delivery_id,
+      courier_id: driverLocation.props.courier_id,
+      lat: driverLocation.props.lat,
+      lng: driverLocation.props.lng,
+      speed_kmh: driverLocation.props.speed_kmh,
+      heading_deg: driverLocation.props.heading_deg,
+      recorded_at: driverLocation.props.recorded_at,
     };
   }
 }

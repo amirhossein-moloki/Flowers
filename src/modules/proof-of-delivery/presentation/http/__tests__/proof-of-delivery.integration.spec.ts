@@ -66,6 +66,7 @@ describe('ProofOfDelivery Integration Tests', () => {
         assigned_at: new Date(),
         expected_delivery_date: new Date(),
         tracking_number: '12345',
+        vehicle_type: 'CAR',
       },
     });
   });

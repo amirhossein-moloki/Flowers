@@ -156,6 +156,7 @@ export interface Dependencies {
   listUsersUseCase: ListUsersUseCase;
   userController: UserController;
   userRoutes: UserRoutes;
+  userRepository: IUserRepository;
   vendorRepository: IVendorRepository;
   vendorOutletRepository: IVendorOutletRepository;
   addressRepository: IAddressRepository;
@@ -327,6 +328,7 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const userRoutes = new UserRoutes(userController);
 
   return {
+    userRepository,
     orderPromotionRepository,
     createOrderPromotionUseCase,
     getOrderPromotionUseCase,
