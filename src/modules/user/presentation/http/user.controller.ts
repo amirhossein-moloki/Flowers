@@ -59,7 +59,11 @@ export class UserController extends Controller {
 
   private async getUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      let { id } = req.params;
+      if (id === 'me') {
+        // @ts-ignore
+        id = req.user.id;
+      }
       const result = await this.dependencies.getUserUseCase.execute(id);
       if (result.success) {
         res.status(200).json(result.value);

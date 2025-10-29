@@ -6,7 +6,7 @@ import { updateVendorSchema } from './dto/update-vendor.schema';
 import { Dependencies } from '@/infrastructure/di';
 import { isAuthenticated } from '@/core/middlewares/auth.middleware';
 import { hasRole } from '@/core/middlewares/auth.middleware';
-import { UserRole } from '@/core/domain/enums';
+import { UserRole } from '@prisma/client';
 
 export const createVendorRoutes = (dependencies: Dependencies) => {
   const router = Router();

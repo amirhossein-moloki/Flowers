@@ -14,7 +14,7 @@ import { VendorOutletDependencies } from './modules/vendor-outlet/vendor-outlet.
 import { createAddressRoutes } from './modules/address/http/routes';
 import { createCustomerAddressRoutes } from './modules/customer-address/http/routes';
 import { createCourierRoutes } from './modules/courier/http/routes';
-import { driverLocationRoutes } from './modules/driver-location/http/routes';
+import { createDriverLocationRoutes } from './modules/driver-location/http/routes';
 import { createDeliveryStatusRoutes } from './modules/delivery-status/http/routes';
 import { createDeliveryWindowRoutes } from './modules/delivery-window/http/routes';
 import { createDeliveryRoutes } from './modules/delivery/http/routes';
@@ -22,7 +22,7 @@ import { createNotificationRoutes } from './modules/notification/presentation/ht
 import { createProductRoutes } from './modules/product/presentation/http/routes';
 import { createProductImageRoutes } from './modules/product-image/presentation/http/product-image.routes';
 import promotionRouter from './modules/promotion/presentation/http/promotion.routes';
-import { createOrderStatusRoutes } from './modules/order-status/presentation/http/routes';
+// import { createOrderStatusRoutes } from './modules/order-status/presentation/http/routes';
 import { createOrderPromotionRoutes } from './modules/order-promotion/presentation/http/order-promotion.routes';
 import orderRouter from './modules/order/presentation/http/order.routes';
 import paymentRouter from './modules/payment/presentation/http/payment.routes';
@@ -32,9 +32,10 @@ class App {
   public express: Application;
   public dependencies: Dependencies;
 
-  constructor(prisma: PrismaClient, dependencies?: Dependencies) {
+  constructor(prisma: PrismaClient, dependencies?: Dependencies, userController?: any) {
     this.express = express();
     this.dependencies = dependencies || createDependencies(prisma);
+    this.dependencies.userController = userController || new (require('@/modules/user/presentation/http').UserController)(this.dependencies);
     this.setupMiddlewares();
     this.setupRoutes();
     this.setupErrorHandlers();
@@ -49,7 +50,6 @@ class App {
     this.express.get('/', (req, res) => {
       res.send('API is running...');
     });
-    this.express.use('/api/v1/users', createUserRoutes(this.dependencies.userController));
     this.express.use('/api/v1/vendors', createVendorRoutes(this.dependencies));
     this.express.use('/api/v1/service-zones', createServiceZoneRoutes(this.dependencies));
     this.express.use('/api/v1/shipping-rates', createShippingRateRoutes(this.dependencies));
@@ -67,7 +67,7 @@ class App {
         this.dependencies.listCouriersUseCase,
       ),
     );
-    this.express.use('/api/v1/driver-locations', driverLocationRoutes(this.dependencies));
+    this.express.use('/api/v1/driver-locations', createDriverLocationRoutes(this.dependencies));
     this.express.use('/api/v1/delivery-status', createDeliveryStatusRoutes(this.dependencies));
     this.express.use('/api/v1/delivery-windows', createDeliveryWindowRoutes(this.dependencies));
     this.express.use('/api/v1/deliveries', createDeliveryRoutes(this.dependencies));
@@ -75,11 +75,12 @@ class App {
     this.express.use('/api/v1/products', createProductRoutes(this.dependencies));
     this.express.use('/api/v1/product-image', createProductImageRoutes(this.dependencies));
     this.express.use('/api/v1/promotions', promotionRouter(this.dependencies));
-    this.express.use('/api/v1/order-statuses', createOrderStatusRoutes(this.dependencies));
+    // this.express.use('/api/v1/order-statuses', createOrderStatusRoutes(this.dependencies));
     this.express.use('/api/v1/order-promotions', createOrderPromotionRoutes(this.dependencies.orderPromotionRepository));
     this.express.use('/api/v1/orders', orderRouter);
     this.express.use('/api/v1/payments', paymentRouter);
     this.express.use('/api/v1/automation-logs', automationLogRouter);
+    this.express.use('/api/v1/users', createUserRoutes(this.dependencies.userController));
   }
 
   private setupErrorHandlers(): void {

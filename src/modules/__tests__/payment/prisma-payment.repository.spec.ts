@@ -2,7 +2,7 @@ import { prismaMock } from '../helpers/prisma-mock.helper';
 import { PrismaPaymentRepository } from '@/modules/payment/infrastructure/prisma-payment.repository';
 import { Payment } from '@/modules/payment/domain/payment.entity';
 import { PaymentMapper } from '@/modules/payment/infrastructure/payment.mapper';
-import { PaymentMethod, PaymentStatus } from '@/core/domain/enums';
+import { PaymentMethod, PaymentStatus } from '@prisma/client';
 
 describe('PrismaPaymentRepository', () => {
   let repository: PrismaPaymentRepository;

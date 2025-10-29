@@ -2,7 +2,7 @@ import { prismaMock } from '../helpers/prisma-mock.helper';
 import { PrismaUserRepository } from '@/modules/user/infrastructure/prisma-user.repository';
 import { User } from '@/modules/user/domain/user.entity';
 import { UserMapper } from '@/modules/user/infrastructure/user.mapper';
-import { UserRole } from '@/core/domain/enums';
+import { UserRole } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 
 describe('PrismaUserRepository', () => {

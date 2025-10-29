@@ -57,10 +57,12 @@ const userController = new UserController({
   deleteUserUseCase: mockDeleteUserUseCase as unknown as DeleteUserUseCase,
   listUsersUseCase: mockListUsersUseCase as unknown as ListUsersUseCase,
 });
+import { errorHandler } from '@/infrastructure/http/middlewares/error-handler';
 app.use(
   '/users',
   createUserRoutes(userController),
 );
+app.use(errorHandler);
 
 describe('UserController', () => {
   afterEach(() => {

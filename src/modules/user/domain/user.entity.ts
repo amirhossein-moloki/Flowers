@@ -1,14 +1,13 @@
 import { Entity } from '@/core/domain/entity';
 import { Result, success } from '@/core/utils/result';
-import { UserRole } from '@/core/domain/enums';
+import { UserRole } from '@prisma/client';
 export { UserRole };
 
 export interface IUserProps {
   username: string;
-  email: string;
+  email:string;
   role: UserRole;
   password?: string;
-  is_active?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -35,15 +34,10 @@ export class User extends Entity<IUserProps> {
     return this.props.role;
   }
 
-  get is_active(): boolean {
-    return this.props.is_active ?? false;
-  }
-
   public static create(props: IUserProps, id?: string): Result<User, Error> {
     const user = new User(
       {
         ...props,
-        is_active: props.is_active ?? true,
       },
       id,
     );

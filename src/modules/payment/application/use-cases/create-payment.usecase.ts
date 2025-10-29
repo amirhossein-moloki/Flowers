@@ -5,7 +5,7 @@ import { PaymentDto } from '../dtos/payment.dto';
 import { Result, success, failure } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';
 import { PaymentMapper } from '../../infrastructure/payment.mapper';
-import { PaymentStatus, PaymentMethod } from '@/core/domain/enums';
+import { PaymentStatus, PaymentMethod } from '@prisma/client';
 
 export class CreatePaymentUseCase {
   constructor(private readonly paymentRepository: IPaymentRepository) {}
