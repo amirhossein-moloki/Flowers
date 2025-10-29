@@ -1,4 +1,4 @@
-import { VehicleType } from '@/core/domain/enums';
+import { VehicleType } from '@prisma/client';
 
 export interface DeliveryDto {
   id: string;

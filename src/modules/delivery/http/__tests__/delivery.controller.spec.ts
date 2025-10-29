@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import { createDeliveryRoutes } from '../routes';
-import { VehicleType } from '@/core/domain/enums';
+import { VehicleType } from '@prisma/client';
 import { Dependencies } from '@/infrastructure/di';
 
 import { success } from '@/core/utils/result';

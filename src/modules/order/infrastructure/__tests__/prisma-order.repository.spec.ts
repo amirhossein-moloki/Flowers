@@ -2,7 +2,7 @@ import { PrismaOrderRepository } from '../prisma-order.repository';
 import { Order, OrderItem } from '../../domain/order.entity';
 import { prismaMock } from '../../../__tests__/helpers/prisma-mock.helper';
 import { Order as PrismaOrder, OrderItem as PrismaOrderItem, Product as PrismaProduct } from '@prisma/client';
-import { OrderStatus } from '@/core/domain/enums';
+import { OrderStatus } from '@prisma/client';
 
 jest.mock('../../../../infrastructure/database/prisma/prisma-client');
 

@@ -152,7 +152,6 @@ export interface Dependencies {
   deleteUserUseCase: DeleteUserUseCase;
   listUsersUseCase: ListUsersUseCase;
   userController: UserController;
-  userRoutes: UserRoutes;
   userRepository: IUserRepository;
   vendorRepository: IVendorRepository;
   vendorOutletRepository: IVendorOutletRepository;
@@ -309,18 +308,22 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
   const updateUserUseCase = new UpdateUserUseCase(userRepository);
   const deleteUserUseCase = new DeleteUserUseCase(userRepository);
   const listUsersUseCase = new ListUsersUseCase(userRepository);
-  const userController = new UserController({
-    createUserUseCase: createUserUseCase,
-    getUserUseCase: getUserUseCase,
-    updateUserUseCase: updateUserUseCase,
-    deleteUserUseCase: deleteUserUseCase,
-    listUsersUseCase: listUsersUseCase,
+  const userController = new (require('@/modules/user/presentation/http').UserController)({
+    createUserUseCase,
+    getUserUseCase,
+    updateUserUseCase,
+    deleteUserUseCase,
+    listUsersUseCase,
   });
-
-  const userRoutes = new UserRoutes(userController);
 
   return {
     userRepository,
+    userController,
+    createUserUseCase,
+    getUserUseCase,
+    updateUserUseCase,
+    deleteUserUseCase,
+    listUsersUseCase,
     orderPromotionRepository,
     createOrderPromotionUseCase,
     getOrderPromotionUseCase,
@@ -359,7 +362,6 @@ export function createDependencies(prisma: PrismaClient): Dependencies {
     deleteUserUseCase,
     listUsersUseCase,
     userController,
-    userRoutes,
     vendorRepository,
     vendorOutletRepository,
     addressRepository,

@@ -1,6 +1,6 @@
 import { Entity } from '@/core/domain/entity';
 import { Result, success } from '@/core/utils/result';
-import { VehicleType } from '@/core/domain/enums';
+import { VehicleType } from '@prisma/client';
 
 interface DeliveryProps {
   order_id: string;

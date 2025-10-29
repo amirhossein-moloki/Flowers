@@ -2,7 +2,7 @@ import { prismaMock } from '../helpers/prisma-mock.helper';
 import { PrismaNotificationRepository } from '@/modules/notification/infrastructure/prisma-notification.repository';
 import { Notification } from '@/modules/notification/domain/notification.entity';
 import { NotificationMapper } from '@/modules/notification/infrastructure/notification.mapper';
-import { NotificationChannel } from '@/core/domain/enums';
+import { NotificationChannel } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 
 describe('PrismaNotificationRepository', () => {

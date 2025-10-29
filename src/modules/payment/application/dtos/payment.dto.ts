@@ -1,4 +1,4 @@
-import { PaymentMethod, PaymentStatus } from '@/core/domain/enums';
+import { PaymentMethod, PaymentStatus } from '@prisma/client';
 
 export class PaymentDto {
   id: string;

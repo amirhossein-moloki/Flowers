@@ -3,7 +3,7 @@ import { PrismaDeliveryRepository } from '@/modules/delivery/infrastructure/pris
 import { Delivery } from '@/modules/delivery/domain/delivery.entity';
 import { DeliveryMapper } from '@/modules/delivery/infrastructure/delivery.mapper';
 import { VehicleType } from '@prisma/client';
-import { VehicleType as DomainVehicleType } from '@/core/domain/enums';
+import { VehicleType as DomainVehicleType } from '@prisma/client';
 
 describe('PrismaDeliveryRepository', () => {
   let repository: PrismaDeliveryRepository;

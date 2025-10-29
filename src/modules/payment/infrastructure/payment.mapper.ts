@@ -1,15 +1,18 @@
-import { Payment as PrismaPayment } from '@prisma/client';
+import {
+  Payment as PrismaPayment,
+  PaymentMethod,
+  PaymentStatus,
+} from '@prisma/client';
 import { Payment } from '@/modules/payment/domain/payment.entity';
 import { PaymentDto } from '@/modules/payment/application/dtos/payment.dto';
-import { PaymentMethod, PaymentStatus } from '@/core/domain/enums';
 
 export class PaymentMapper {
   public static toDomain(raw: PrismaPayment): Payment {
     const paymentResult = Payment.create(
       {
         order_id: raw.order_id,
-        method: raw.method as PaymentMethod,
-        status: raw.status as PaymentStatus,
+        method: raw.method,
+        status: raw.status,
         gateway: raw.gateway,
         gateway_ref: raw.gateway_ref,
         amount: raw.amount,

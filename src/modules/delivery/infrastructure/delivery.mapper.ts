@@ -1,6 +1,5 @@
 import { Delivery as PrismaDelivery, VehicleType } from '@prisma/client';
 import { Delivery } from '../domain/delivery.entity';
-import { VehicleType as DomainVehicleType } from '@/core/domain/enums';
 
 export class DeliveryMapper {
   public static toDomain(raw: PrismaDelivery): Delivery {
@@ -10,7 +9,7 @@ export class DeliveryMapper {
         courier_id: raw.courier_id,
         status_id: raw.status_id ?? '',
         assigned_at: raw.assigned_at,
-        vehicle_type: raw.vehicle_type as unknown as DomainVehicleType,
+        vehicle_type: raw.vehicle_type,
         pickup_at: raw.delivered_at ?? new Date(),
         dropoff_at: raw.delivered_at ?? new Date(),
         distance_meters: 0,

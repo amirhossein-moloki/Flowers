@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { VehicleType } from '@/core/domain/enums';
+import { VehicleType } from '@prisma/client';
 
 export const updateDeliverySchema = z.object({
   order_id: z.string().min(1, 'Order ID is required').optional(),

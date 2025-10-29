@@ -7,7 +7,7 @@ import { updateVendorOutletSchema } from './dto/update-vendor-outlet.schema';
 import { z } from 'zod';
 import { isAuthenticated } from '@/core/middlewares/auth.middleware';
 import { hasRole } from '@/core/middlewares/auth.middleware';
-import { UserRole } from '@/core/domain/enums';
+import { UserRole } from '@prisma/client';
 
 export const createVendorOutletRoutes = (
   dependencies: VendorOutletDependencies,

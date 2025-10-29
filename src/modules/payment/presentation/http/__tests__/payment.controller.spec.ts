@@ -5,7 +5,7 @@ import { Payment } from '@/modules/payment/domain/payment.entity';
 import { success } from '@/core/utils/result';
 import { CreatePaymentUseCase } from '@/modules/payment/application/use-cases/create-payment.usecase';
 import { VerifyPaymentUseCase } from '@/modules/payment/application/use-cases/verify-payment.usecase';
-import { PaymentMethod, PaymentStatus } from '@/core/domain/enums';
+import { PaymentMethod, PaymentStatus } from '@prisma/client';
 import { PaymentMapper } from '@/modules/payment/infrastructure/payment.mapper';
 
 // Mock the use cases
