@@ -1,24 +1,26 @@
-import { IsString, IsNumber, IsDate } from 'class-validator';
+import { IsString, IsNumber, IsDate, IsOptional } from 'class-validator';
 
 export class CreateDriverLocationDto {
   @IsString()
-  delivery_id: string;
+  delivery_id?: string;
 
   @IsString()
-  courier_id: string;
+  courier_id?: string;
 
   @IsNumber()
-  lat: number;
+  lat?: number;
 
   @IsNumber()
-  lng: number;
+  lng?: number;
 
   @IsNumber()
-  speed_kmh: number;
+  @IsOptional()
+  speed_kmh?: number;
 
   @IsNumber()
-  heading_deg: number;
+  @IsOptional()
+  heading_deg?: number;
 
   @IsDate()
-  recorded_at: Date;
+  recorded_at?: Date;
 }

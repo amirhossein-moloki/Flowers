@@ -1,6 +1,6 @@
 export class DeliveryStatusDto {
-  id: string;
-  code: string;
-  name: string;
-  display_order: number;
+  id?: string;
+  delivery_id?: string;
+  status?: string;
+  notes?: string | null;
 }

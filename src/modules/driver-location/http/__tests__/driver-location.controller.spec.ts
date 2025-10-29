@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express, { Express } from 'express';
-import { driverLocationRoutes } from '../routes';
+import { createDriverLocationRoutes } from '../routes';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { HttpError } from '@/core/errors/http-error';
 import { StatusCodes } from 'http-status-codes';
@@ -24,7 +24,7 @@ describe('DriverLocationController', () => {
     dependencies = mockDeep<Dependencies>();
     app = express();
     app.use(express.json());
-    app.use('/driver-locations', driverLocationRoutes(dependencies));
+    app.use('/driver-locations', createDriverLocationRoutes(dependencies));
   });
 
   afterEach(() => {

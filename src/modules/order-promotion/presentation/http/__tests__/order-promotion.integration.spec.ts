@@ -14,8 +14,8 @@ jest.mock('@/core/middlewares/auth.middleware', () => ({
 
 describe('Order-Promotion Integration Tests', () => {
   let app: App;
-  let user: User;
-  let admin: User;
+  let user: any;
+  let admin: any;
   let accessToken: string;
   let adminAccessToken: string;
 

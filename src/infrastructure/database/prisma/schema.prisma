@@ -45,6 +45,15 @@ enum PaymentStatus {
   PARTIAL_REFUND
 }
 
+enum VehicleType {
+  BICYCLE
+  MOTORCYCLE
+  SCOOTER
+  CAR
+  VAN
+  TRUCK
+}
+
 
 // --- Application Models ---
 
@@ -266,6 +275,7 @@ model Delivery {
   order_id                 String            @unique
   courier_id               String
   status_id                String?
+  vehicle_type             VehicleType
   assigned_at              DateTime
   delivered_at             DateTime?
   expected_delivery_date   DateTime

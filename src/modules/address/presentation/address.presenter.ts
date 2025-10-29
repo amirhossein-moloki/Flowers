@@ -1,7 +1,7 @@
-import { Address } from '../domain/address.entity';
+import { AddressDto } from '../application/dtos/address.dto';
 
 export class AddressPresenter {
-    static toJSON(address: Address) {
+    static toJSON(address: AddressDto) {
         return {
             id: address.id,
             street: address.street,

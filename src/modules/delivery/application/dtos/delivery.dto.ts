@@ -12,4 +12,5 @@ export interface DeliveryDto {
   distance_meters: number;
   eta_seconds: number;
   failure_reason: string;
+  tracking_number: string;
 }

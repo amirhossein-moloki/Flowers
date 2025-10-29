@@ -41,8 +41,8 @@ export class CourierMapper {
       name: props.name,
       phone: props.phone,
       email: props.email,
-      vehicle: props.vehicle,
-      isAvailable: props.isAvailable,
+      vehicle: props.vehicle ?? null,
+      isAvailable: props.isAvailable ?? true,
     };
   }
 }

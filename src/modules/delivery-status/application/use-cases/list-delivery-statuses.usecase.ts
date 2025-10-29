@@ -1,5 +1,5 @@
-import { IDeliveryStatusRepository } from '../domain/delivery-status.repository';
-import { DeliveryStatus } from '../domain/delivery-status.entity';
+import { IDeliveryStatusRepository } from '../../domain/delivery-status.repository';
+import { DeliveryStatus } from '../../domain/delivery-status.entity';
 import { Result, success } from '@/core/utils/result';
 
 export class ListDeliveryStatusesUseCase {

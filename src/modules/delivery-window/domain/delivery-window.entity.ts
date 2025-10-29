@@ -35,7 +35,7 @@ export class DeliveryWindow extends Entity<DeliveryWindowProps> {
     return this.props.zone_id;
   }
 
-  get is_active(): boolean {
+  get is_active(): boolean | undefined {
     return this.props.is_active;
   }
 

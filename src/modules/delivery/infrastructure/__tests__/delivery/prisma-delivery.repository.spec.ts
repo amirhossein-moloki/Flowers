@@ -2,7 +2,8 @@ import { prismaMock } from '@/modules/__tests__/helpers/prisma-mock.helper';
 import { PrismaDeliveryRepository } from '@/modules/delivery/infrastructure/prisma-delivery.repository';
 import { Delivery } from '@/modules/delivery/domain/delivery.entity';
 import { DeliveryMapper } from '@/modules/delivery/infrastructure/delivery.mapper';
-import { VehicleType } from '@/core/domain/enums';
+import { VehicleType } from '@prisma/client';
+import { VehicleType as DomainVehicleType } from '@/core/domain/enums';
 
 describe('PrismaDeliveryRepository', () => {
   let repository: PrismaDeliveryRepository;
@@ -15,13 +16,14 @@ describe('PrismaDeliveryRepository', () => {
     order_id: 'order-123',
     courier_id: 'courier-456',
     status_id: 'status-789',
-    vehicle_type: VehicleType.MOTORCYCLE,
+    vehicle_type: DomainVehicleType.MOTORCYCLE,
     assigned_at: new Date(),
     pickup_at: new Date(),
     dropoff_at: new Date(),
     distance_meters: 5000,
     eta_seconds: 1800,
     failure_reason: '',
+    tracking_number: 'TRACK-123',
   };
   const deliveryResult = Delivery.create(deliveryProps, 'delivery-id-1');
   if (!deliveryResult.success) {
@@ -34,6 +36,10 @@ describe('PrismaDeliveryRepository', () => {
     ...deliveryProps,
     created_at: new Date(),
     updated_at: new Date(),
+    delivered_at: null,
+    expected_delivery_date: new Date(),
+    actual_delivery_date: null,
+    status_id: 'status-789',
   };
 
   test('findById should return a delivery entity when found', async () => {

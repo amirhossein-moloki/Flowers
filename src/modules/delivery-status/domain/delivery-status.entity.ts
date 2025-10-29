@@ -4,7 +4,7 @@ import { Result, success } from '@/core/utils/result';
 interface DeliveryStatusProps {
   delivery_id: string;
   status: string;
-  notes?: string;
+  notes?: string | null;
 }
 
 export class DeliveryStatus extends Entity<DeliveryStatusProps> {
@@ -16,7 +16,7 @@ export class DeliveryStatus extends Entity<DeliveryStatusProps> {
     return this.props.status;
   }
 
-  get notes(): string | undefined {
+  get notes(): string | undefined | null {
     return this.props.notes;
   }
 

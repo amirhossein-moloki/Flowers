@@ -4,9 +4,11 @@ import { createCourierRoutes } from '../routes';
 import { success } from '@/core/utils/result';
 import { CourierDto } from '../../application/dtos/courier.dto';
 
+import { Request, Response, NextFunction } from 'express';
+
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: (req, res, next) => next(),
-  hasRole: (roles) => (req, res, next) => next(),
+  isAuthenticated: (req: Request, res: Response, next: NextFunction) => next(),
+  hasRole: (roles: string[]) => (req: Request, res: Response, next: NextFunction) => next(),
 }));
 
 const app = express();

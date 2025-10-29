@@ -2,15 +2,19 @@ import { IDeliveryStatusRepository } from '../../domain/delivery-status.reposito
 import { DeliveryStatus } from '../../domain/delivery-status.entity';
 import { CreateDeliveryStatusDto } from '../dtos/create-delivery-status.dto';
 import { DeliveryStatusDto } from '../dtos/delivery-status.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { DeliveryStatusMapper } from '../../infrastructure/delivery-status.mapper';
 
 export class CreateDeliveryStatusUseCase {
   constructor(private readonly deliveryStatusRepository: IDeliveryStatusRepository) {}
 
   async execute(dto: CreateDeliveryStatusDto): Promise<Result<DeliveryStatusDto, HttpError>> {
-    const deliveryStatusResult = DeliveryStatus.create(dto);
+    const deliveryStatusResult = DeliveryStatus.create({
+      delivery_id: dto.delivery_id,
+      status: dto.status,
+      notes: dto.notes,
+    });
 
     if (!deliveryStatusResult.success) {
       return failure(HttpError.internalServerError(deliveryStatusResult.error.message));
@@ -20,7 +24,7 @@ export class CreateDeliveryStatusUseCase {
 
     await this.deliveryStatusRepository.save(deliveryStatus);
 
-    const deliveryStatusDto = DeliveryStatusMapper.toDto(deliveryStatus);
+    const deliveryStatusDto = DeliveryStatusMapper.toDomain(deliveryStatus);
     return success(deliveryStatusDto);
   }
 }

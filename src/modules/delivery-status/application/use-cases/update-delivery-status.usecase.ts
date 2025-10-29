@@ -1,8 +1,8 @@
 import { IDeliveryStatusRepository } from '../../domain/delivery-status.repository';
 import { UpdateDeliveryStatusDto } from '../dtos/update-delivery-status.dto';
 import { DeliveryStatusDto } from '../dtos/delivery-status.dto';
-import { Result, success, failure } from '../../../../../core/utils/result';
-import { HttpError } from '../../../../../core/errors/http-error';
+import { Result, success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 import { DeliveryStatusMapper } from '../../infrastructure/delivery-status.mapper';
 import { DeliveryStatus } from '../../domain/delivery-status.entity';
 

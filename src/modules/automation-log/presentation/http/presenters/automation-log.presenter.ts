@@ -1,7 +1,7 @@
-import { AutomationLog } from '../../../domain/automation-log.entity';
+import { AutomationLogDto } from '../../../application/dtos/automation-log.dto';
 
 export class AutomationLogPresenter {
-  static toJSON(automationLog: AutomationLog) {
+  static toJSON(automationLog: AutomationLogDto) {
     return {
       id: automationLog.id,
       order_id: automationLog.order_id,

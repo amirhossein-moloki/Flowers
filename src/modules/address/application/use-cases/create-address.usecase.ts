@@ -10,7 +10,14 @@ export class CreateAddressUseCase {
   constructor(private readonly addressRepository: IAddressRepository) {}
 
   async execute(dto: CreateAddressDto): Promise<Result<AddressDto, HttpError>> {
-    const addressResult = Address.create(dto);
+    const addressResult = Address.create({
+      street: dto.street ?? '',
+      city: dto.city ?? '',
+      state: dto.state ?? '',
+      zipCode: dto.zipCode ?? '',
+      country: dto.country ?? '',
+      isResidential: dto.isResidential ?? false,
+    });
 
     if (!addressResult.success) {
       return failure(HttpError.internalServerError(addressResult.error.message));

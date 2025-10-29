@@ -8,7 +8,14 @@ export class CreateDeliveryWindowUseCase {
   constructor(private readonly deliveryWindowRepository: IDeliveryWindowRepository) {}
 
   async execute(dto: CreateDeliveryWindowDto): Promise<Result<DeliveryWindow, HttpError>> {
-    const deliveryWindowResult = DeliveryWindow.create(dto);
+    const deliveryWindowResult = DeliveryWindow.create({
+      label: dto.label ?? '',
+      start_time: dto.start_time ?? '',
+      end_time: dto.end_time ?? '',
+      cutoff_time: dto.cutoff_time ?? '',
+      zone_id: dto.zone_id ?? '',
+      is_active: dto.is_active ?? true,
+    });
 
     if (deliveryWindowResult.success === false) {
       return failure(HttpError.internalServerError(deliveryWindowResult.error.message));

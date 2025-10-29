@@ -40,10 +40,12 @@ export class CourierController {
     const { id } = req.params;
     const result = await this.getCourierUseCase.execute(id);
 
-    if (result.success && result.value) {
-      return res.status(200).json(CourierPresenter.toJSON(result.value));
-    } else if (!result.value) {
-      return res.status(404).json({ error: 'Courier not found' });
+    if (result.success) {
+      if (result.value) {
+        return res.status(200).json(CourierPresenter.toJSON(result.value));
+      } else {
+        return res.status(404).json({ error: 'Courier not found' });
+      }
     } else {
       return res.status(400).json({ error: result.error.message });
     }
@@ -56,7 +58,7 @@ export class CourierController {
         const couriersJSON = result.value.map(CourierPresenter.toJSON);
         return res.status(200).json(couriersJSON);
     } else {
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: result.error.message });
     }
   }
 

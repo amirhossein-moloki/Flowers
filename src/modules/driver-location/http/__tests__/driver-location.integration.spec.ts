@@ -1,6 +1,6 @@
 import { Application } from 'express';
 import request from 'supertest';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, VehicleType } from '@prisma/client';
 import App from '@/app';
 
 jest.mock('@/core/middlewares/auth.middleware', () => ({
@@ -64,6 +64,7 @@ describe('DriverLocation API', () => {
           assigned_at: new Date(),
           expected_delivery_date: new Date(),
           tracking_number: '12345',
+          vehicle_type: VehicleType.CAR,
         },
       });
 
@@ -126,6 +127,7 @@ describe('DriverLocation API', () => {
           assigned_at: new Date(),
           expected_delivery_date: new Date(),
           tracking_number: '12345',
+          vehicle_type: VehicleType.CAR,
         },
       });
 
@@ -184,6 +186,7 @@ describe('DriverLocation API', () => {
           assigned_at: new Date(),
           expected_delivery_date: new Date(),
           tracking_number: '12345',
+          vehicle_type: VehicleType.CAR,
         },
       });
 
@@ -242,6 +245,7 @@ describe('DriverLocation API', () => {
           assigned_at: new Date(),
           expected_delivery_date: new Date(),
           tracking_number: '12345',
+          vehicle_type: VehicleType.CAR,
         },
       });
 

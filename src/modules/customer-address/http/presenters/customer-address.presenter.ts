@@ -1,9 +1,9 @@
-import { CustomerAddress } from '@/modules/customer-address/domain/customer-address.entity';
+import { CustomerAddressDto } from '../../application/dtos/customer-address.dto';
 
 import { AddressPresenter } from '@/modules/address/presentation/address.presenter';
 
 export class CustomerAddressPresenter {
-  static toJSON(customerAddress: CustomerAddress) {
+  static toJSON(customerAddress: CustomerAddressDto) {
     return {
       id: customerAddress.id,
       user_id: customerAddress.user_id,

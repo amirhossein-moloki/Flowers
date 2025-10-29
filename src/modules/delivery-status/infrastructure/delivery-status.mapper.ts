@@ -1,5 +1,6 @@
 import { DeliveryStatus as PrismaDeliveryStatus } from '@prisma/client';
 import { DeliveryStatus } from '../domain/delivery-status.entity';
+import { DeliveryStatusDto } from '../application/dtos/delivery-status.dto';
 
 export class DeliveryStatusMapper {
   static toDomain(
@@ -27,9 +28,18 @@ export class DeliveryStatusMapper {
       id: deliveryStatus.id,
       delivery_id: deliveryStatus.delivery_id,
       status: deliveryStatus.status,
-      notes: deliveryStatus.notes,
+      notes: deliveryStatus.notes ?? null,
       created_at: new Date(),
       updated_at: new Date(),
+    };
+  }
+
+  static toDto(deliveryStatus: DeliveryStatus): DeliveryStatusDto {
+    return {
+      id: deliveryStatus.id,
+      delivery_id: deliveryStatus.delivery_id,
+      status: deliveryStatus.status,
+      notes: deliveryStatus.notes,
     };
   }
 }

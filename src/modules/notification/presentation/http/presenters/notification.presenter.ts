@@ -7,7 +7,7 @@ export class NotificationPresenter {
       title: notification.title,
       message: notification.message,
       recipient: notification.recipient,
-      createdAt: notification.createdAt.toISOString(),
+      createdAt: notification.createdAt?.toISOString(),
     };
   }
 }

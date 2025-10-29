@@ -1,11 +1,12 @@
 import request from 'supertest';
 import App from '@/app';
 import { PrismaClient, ServiceZone } from '@prisma/client';
+import { Server } from 'http';
 
 describe('DeliveryWindow API', () => {
   let app: App;
   let prisma: PrismaClient;
-  let server;
+  let server: Server;
   let zone: ServiceZone;
 
   beforeAll(async () => {

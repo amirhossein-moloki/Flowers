@@ -3,6 +3,7 @@ import { GetCustomerAddressUseCase } from './application/use-cases/get-customer-
 import { UpdateCustomerAddressUseCase } from './application/use-cases/update-customer-address.usecase';
 import { DeleteCustomerAddressUseCase } from './application/use-cases/delete-customer-address.usecase';
 import { ListCustomerAddressesUseCase } from './application/use-cases/list-customer-addresses.usecase';
+import { ICustomerAddressRepository } from './domain/customer-address.repository.interface';
 
 export interface CustomerAddressDependencies {
   createCustomerAddressUseCase: CreateCustomerAddressUseCase;
@@ -10,4 +11,5 @@ export interface CustomerAddressDependencies {
   updateCustomerAddressUseCase: UpdateCustomerAddressUseCase;
   deleteCustomerAddressUseCase: DeleteCustomerAddressUseCase;
   listCustomerAddressesUseCase: ListCustomerAddressesUseCase;
+  customerAddressRepository: ICustomerAddressRepository;
 }

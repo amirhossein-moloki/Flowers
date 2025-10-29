@@ -1,4 +1,4 @@
-import { IRepository } from '../../../../core/domain/repository';
+import { IRepository } from '@/core/domain/repository.interface';
 import { Courier } from './courier.entity';
 
 export interface ICourierRepository extends IRepository<Courier> {

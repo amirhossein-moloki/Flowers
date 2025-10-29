@@ -3,5 +3,5 @@ export interface NotificationDto {
   title: string;
   message: string;
   recipient: string;
-  createdAt: Date;
+  createdAt?: Date;
 }
