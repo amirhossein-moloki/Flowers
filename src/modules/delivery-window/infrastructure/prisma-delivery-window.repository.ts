@@ -32,12 +32,13 @@ export class PrismaDeliveryWindowRepository implements IDeliveryWindowRepository
     return deliveryWindows.map(DeliveryWindowMapper.toDomain);
   }
 
-  async update(deliveryWindow: DeliveryWindow): Promise<void> {
+  async update(deliveryWindow: DeliveryWindow): Promise<DeliveryWindow> {
     const data = DeliveryWindowMapper.toPersistence(deliveryWindow);
-    await this.prisma.deliveryWindow.update({
+    const updated = await this.prisma.deliveryWindow.update({
       where: { id: deliveryWindow.id },
       data,
     });
+    return DeliveryWindowMapper.toDomain(updated);
   }
 
   async delete(id: string): Promise<void> {

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { AppDependencies } from '@/main';
+import { Dependencies } from '@/infrastructure/di';
 import { DeliveryWindowController } from './controller';
 import { validate } from '@/core/middlewares/validate.middleware';
 import { createDeliveryWindowSchema } from './dto/create-delivery-window.schema';
@@ -11,7 +11,7 @@ import { UpdateDeliveryWindowUseCase } from '../application/use-cases/update-del
 import { DeleteDeliveryWindowUseCase } from '../application/use-cases/delete-delivery-window.usecase';
 
 
-export function createDeliveryWindowRoutes(dependencies: AppDependencies): Router {
+export function createDeliveryWindowRoutes(dependencies: Dependencies): Router {
   const router = Router();
   const createUseCase = new CreateDeliveryWindowUseCase(dependencies.deliveryWindowRepository);
   const getAllUseCase = new GetAllDeliveryWindowsUseCase(dependencies.deliveryWindowRepository);

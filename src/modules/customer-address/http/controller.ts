@@ -35,7 +35,7 @@ export class CustomerAddressController {
 
     if (result.success && result.value) {
       return res.status(200).json(CustomerAddressPresenter.toJSON(result.value));
-    } else if (result.failure) {
+    } else if (!result.success) {
         return res.status(result.error.statusCode).json({ error: result.error.message });
     } else {
         return res.status(404).json({ error: 'CustomerAddress not found' });

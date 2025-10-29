@@ -1,7 +1,7 @@
 import request from 'supertest';
 import App from '@/app';
 import { Server } from 'http';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, VehicleType } from '@prisma/client';
 
 describe('DeliveryStatus Integration Tests', () => {
   let server: Server;
@@ -37,6 +37,7 @@ describe('DeliveryStatus Integration Tests', () => {
           assigned_at: new Date(),
           expected_delivery_date: new Date(),
           tracking_number: 'tracking-1',
+          vehicle_type: VehicleType.CAR,
         },
       });
       await prisma.deliveryStatus.create({
@@ -66,6 +67,7 @@ describe('DeliveryStatus Integration Tests', () => {
           assigned_at: new Date(),
           expected_delivery_date: new Date(),
           tracking_number: 'tracking-1',
+          vehicle_type: VehicleType.CAR,
         },
       });
       const deliveryStatus = await prisma.deliveryStatus.create({

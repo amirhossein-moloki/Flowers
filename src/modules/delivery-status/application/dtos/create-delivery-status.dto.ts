@@ -1,12 +1,13 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 export class CreateDeliveryStatusDto {
   @IsString()
-  code: string;
+  delivery_id: string;
 
   @IsString()
-  name: string;
+  status: string;
 
-  @IsNumber()
-  display_order: number;
+  @IsString()
+  @IsOptional()
+  notes?: string;
 }

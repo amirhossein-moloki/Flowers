@@ -1,5 +1,6 @@
 import { DeliveryWindow } from '../domain/delivery-window.entity';
 import { DeliveryWindowDto } from '../application/dtos/delivery-window.dto';
+import { DeliveryWindow as PrismaDeliveryWindow } from '@prisma/client';
 
 export class DeliveryWindowMapper {
   static toDto(deliveryWindow: DeliveryWindow): DeliveryWindowDto {
@@ -10,11 +11,11 @@ export class DeliveryWindowMapper {
       end_time: deliveryWindow.end_time,
       cutoff_time: deliveryWindow.cutoff_time,
       zone_id: deliveryWindow.zone_id,
-      is_active: deliveryWindow.is_active,
+      is_active: deliveryWindow.is_active ?? true,
     };
   }
 
-  static toDomain(dto: DeliveryWindowDto): DeliveryWindow {
+  static toDomain(dto: PrismaDeliveryWindow): DeliveryWindow {
     const result = DeliveryWindow.create({
       label: dto.label,
       start_time: dto.start_time,

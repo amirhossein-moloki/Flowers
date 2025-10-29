@@ -58,14 +58,14 @@ describe('CustomerAddress Integration Tests', () => {
       is_active: true,
     });
 
-    if (customerResult.failure) {
+    if (!customerResult.success) {
       throw customerResult.error;
     }
 
     customerUser = customerResult.value;
     await userRepository.save(customerUser);
 
-    customerToken = sign({ id: customerUser.id, role: customerUser.role }, env.JWT_SECRET, { expiresIn: '1h' });
+    customerToken = sign({ id: customerUser.id, role: customerUser.props.role }, env.JWT_SECRET, { expiresIn: '1h' });
 
     const addressResult = Address.create({
       street: '123 Test St',
@@ -75,7 +75,7 @@ describe('CustomerAddress Integration Tests', () => {
       country: 'Testland',
     });
 
-    if (addressResult.failure) {
+    if (!addressResult.success) {
       throw addressResult.error;
     }
     testAddress = addressResult.value;
@@ -88,7 +88,7 @@ describe('CustomerAddress Integration Tests', () => {
         is_default: true,
     });
 
-    if (customerAddressResult.failure) {
+    if (!customerAddressResult.success) {
         throw customerAddressResult.error;
     }
 
@@ -164,7 +164,7 @@ describe('CustomerAddress Integration Tests', () => {
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Array);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].label).toBe(testCustomerAddress.label);
+      expect(response.body[0].label).toBe(testCustomerAddress.props.label);
     });
   });
 
@@ -176,7 +176,7 @@ describe('CustomerAddress Integration Tests', () => {
 
       expect(response.status).toBe(200);
       expect(response.body.id).toBe(testCustomerAddress.id);
-      expect(response.body.label).toBe(testCustomerAddress.label);
+      expect(response.body.label).toBe(testCustomerAddress.props.label);
     });
 
     it('should return 404 if customer address not found', async () => {
