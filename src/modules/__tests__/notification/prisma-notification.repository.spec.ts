@@ -2,7 +2,6 @@ import { prismaMock } from '../helpers/prisma-mock.helper';
 import { PrismaNotificationRepository } from '@/modules/notification/infrastructure/prisma-notification.repository';
 import { Notification } from '@/modules/notification/domain/notification.entity';
 import { NotificationMapper } from '@/modules/notification/infrastructure/notification.mapper';
-import { NotificationChannel } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 
 describe('PrismaNotificationRepository', () => {
@@ -33,24 +32,31 @@ describe('PrismaNotificationRepository', () => {
   test('findById should return a notification entity when found', async () => {
     prismaMock.notification.findUnique.mockResolvedValue(prismaNotification);
 
-    const foundNotification = await repository.findById('notif-id-1');
+    const result = await repository.findById('notif-id-1');
 
-    expect(foundNotification).toBeInstanceOf(Notification);
-    expect(foundNotification?.id).toBe('notif-id-1');
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.value).toBeInstanceOf(Notification);
+      expect(result.value?.id).toBe('notif-id-1');
+    }
     expect(prismaMock.notification.findUnique).toHaveBeenCalledWith({ where: { id: 'notif-id-1' } });
   });
 
   test('findAll should return an array of notification entities', async () => {
     prismaMock.notification.findMany.mockResolvedValue([prismaNotification]);
 
-    const notifications = await repository.findAll();
+    const result = await repository.findAll();
 
-    expect(notifications).toHaveLength(1);
-    expect(notifications[0]).toBeInstanceOf(Notification);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.value).toHaveLength(1);
+      expect(result.value[0]).toBeInstanceOf(Notification);
+    }
     expect(prismaMock.notification.findMany).toHaveBeenCalledWith();
   });
 
   test('save should call upsert on prisma client', async () => {
+    prismaMock.notification.upsert.mockResolvedValue(prismaNotification);
     await repository.save(notificationEntity);
 
     expect(prismaMock.notification.upsert).toHaveBeenCalledWith({

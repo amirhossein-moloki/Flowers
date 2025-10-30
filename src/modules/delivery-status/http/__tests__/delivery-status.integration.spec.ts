@@ -3,6 +3,11 @@ import App from '@/app';
 import { Server } from 'http';
 import { PrismaClient, VehicleType } from '@prisma/client';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: (req, res, next) => next(),
+  hasRole: (roles) => (req, res, next) => next(),
+}));
+
 describe('DeliveryStatus Integration Tests', () => {
   let server: Server;
   let app: App;

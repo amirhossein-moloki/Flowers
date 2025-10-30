@@ -16,6 +16,7 @@ import { ProductImageMapper } from '@/modules/product-image/infrastructure/produ
 import { CreateProductImageSchema } from '../dto/create-product-image.schema';
 import { UpdateProductImageSchema } from '../dto/update-product-image.schema';
 import { validate } from '@/core/middlewares/validate.middleware';
+import { randomUUID } from 'crypto';
 
 describe('ProductImageController', () => {
   let app: express.Express;
@@ -67,7 +68,7 @@ describe('ProductImageController', () => {
   describe('POST /product-images', () => {
     it('should create a new product image and return 201', async () => {
       const dto = {
-        product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
+        product_id: randomUUID(),
         url: 'http://example.com/image.png',
       };
       const productImageResult = ProductImage.create(dto);

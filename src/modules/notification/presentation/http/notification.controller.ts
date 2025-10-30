@@ -26,6 +26,9 @@ export class NotificationController {
     const result = await this.getNotification.execute(req.params.id);
 
     if (result.success) {
+      if (!result.value) {
+        return res.status(404).json({ error: 'Notification not found' });
+      }
       res.status(200).json(result.value);
     } else {
       res.status(404).json({ error: result.error.message });

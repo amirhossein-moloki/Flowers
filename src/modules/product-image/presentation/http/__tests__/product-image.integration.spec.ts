@@ -2,8 +2,13 @@ import 'reflect-metadata';
 import request from 'supertest';
 import App from '@/app';
 import { PrismaClient, Product, Vendor, ProductImage } from '@prisma/client';
-import { CreateProductImageDto } from '../dto/create-product-image.dto';
-import { UpdateProductImageDto } from '../dto/update-product-image.dto';
+import { CreateProductImageDto } from '../dto/create-product-image.schema';
+import { UpdateProductImageDto } from '../dto/update-product-image.schema';
+
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: (req, res, next) => next(),
+  hasRole: (roles) => (req, res, next) => next(),
+}));
 
 describe('ProductImage Integration Tests', () => {
   let app: App;
@@ -49,6 +54,7 @@ describe('ProductImage Integration Tests', () => {
     await prisma.productImage.deleteMany({});
     await prisma.orderItem.deleteMany({});
     await prisma.product.deleteMany({});
+    await prisma.vendorOutlet.deleteMany({});
     await prisma.vendor.deleteMany({});
   });
 
@@ -59,7 +65,7 @@ describe('ProductImage Integration Tests', () => {
   describe('POST /product-images', () => {
     it('should create a new product image and return 201', async () => {
       const dto: CreateProductImageDto = {
-        productId: product.id,
+        product_id: product.id,
         url: 'http://example.com/image.png',
       };
 
@@ -68,7 +74,7 @@ describe('ProductImage Integration Tests', () => {
         .send(dto)
         .expect(201)
         .then((res) => {
-          expect(res.body.productId).toEqual(dto.productId);
+          expect(res.body.product_id).toEqual(dto.product_id);
           expect(res.body.url).toEqual(dto.url);
         });
     });

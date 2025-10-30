@@ -4,8 +4,8 @@ export const CreateProductImageSchema = z.object({
   body: z.object({
     product_id: z.string().uuid(),
     url: z.string().url(),
-    sort_order: z.number().int().optional(),
+    sort_order: z.number().optional(),
   }),
 });
 
-export type CreateProductImageDto = z.infer<typeof CreateProductImageSchema>['body'];
+export type CreateProductImageDto = z.infer<typeof CreateProductImageSchema>;

@@ -6,15 +6,13 @@ import { PaymentMapper } from '../payment.mapper';
 
 jest.mock('../../../../infrastructure/database/prisma/prisma-client');
 
-import { PaymentMethod as DomainPaymentMethod, PaymentStatus as DomainPaymentStatus } from '../../../../core/domain/enums';
-
 describe('PrismaPaymentRepository', () => {
   let repository: PrismaPaymentRepository;
 
   const paymentProps = {
     order_id: 'order-uuid',
-    method: DomainPaymentMethod.ONLINE,
-    status: DomainPaymentStatus.PAID,
+    method: PaymentMethod.ONLINE,
+    status: PaymentStatus.PAID,
     gateway: 'stripe',
     gateway_ref: 'txn_123',
     amount: 100,

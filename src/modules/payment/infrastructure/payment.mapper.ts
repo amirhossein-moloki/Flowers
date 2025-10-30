@@ -45,9 +45,6 @@ export class PaymentMapper {
 
   public static toDto(payment: Payment): PaymentDto {
     const props = payment.props;
-    if (!payment.created_at) {
-      throw new Error('Payment created_at is not defined');
-    }
     return {
       id: payment.id,
       order_id: props.order_id,
@@ -58,7 +55,7 @@ export class PaymentMapper {
       amount: props.amount,
       paid_at: props.paid_at,
       idempotency_key: props.idempotency_key,
-      created_at: payment.created_at,
+      created_at: payment.created_at || new Date(),
     };
   }
 }

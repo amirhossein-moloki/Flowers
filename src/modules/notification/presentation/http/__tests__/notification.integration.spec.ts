@@ -4,6 +4,11 @@ import App from '@/app';
 import { User } from '@prisma/client';
 import { randomUUID } from 'crypto';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: (req, res, next) => next(),
+  hasRole: (roles) => (req, res, next) => next(),
+}));
+
 describe('Notification Integration Tests', () => {
   let app: App;
   let prisma: PrismaClient;

@@ -47,7 +47,7 @@ export class CourierController {
         return res.status(404).json({ error: 'Courier not found' });
       }
     } else {
-      return res.status(400).json({ error: result.error.message });
+      return res.status(404).json({ error: result.error.message });
     }
   }
 

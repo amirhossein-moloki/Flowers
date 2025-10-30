@@ -6,7 +6,7 @@ export class PaymentPresenter {
       id: payment.id,
       order_id: payment.order_id,
       method: payment.method,
-      status: payment.status,
+      status: payment.status.toLowerCase(),
       gateway: payment.gateway,
       gateway_ref: payment.gateway_ref,
       amount: payment.amount,

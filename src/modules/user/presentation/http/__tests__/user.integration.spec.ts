@@ -10,6 +10,10 @@ import { DeleteUserUseCase } from '@/modules/user/application/use-cases/delete-u
 import { ListUsersUseCase } from '@/modules/user/application/use-cases/list-users.usecase';
 import { UserRole } from '@prisma/client';
 
+jest.mock('@/core/middlewares/auth.middleware', () => ({
+  isAuthenticated: (req, res, next) => next(),
+}));
+
 const app = express();
 app.use(express.json());
 
@@ -36,6 +40,8 @@ describe('User Integration Tests', () => {
   });
 
   beforeEach(async () => {
+    await prisma.orderItem.deleteMany({});
+    await prisma.order.deleteMany({});
     await prisma.user.deleteMany({});
   });
 
