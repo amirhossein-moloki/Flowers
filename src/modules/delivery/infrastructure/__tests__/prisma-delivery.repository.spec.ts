@@ -6,7 +6,6 @@ import { DeliveryMapper } from '../delivery.mapper';
 
 jest.mock('../../../../infrastructure/database/prisma/prisma-client');
 
-import { VehicleType as DomainVehicleType } from '../../../../core/domain/enums';
 
 describe('PrismaDeliveryRepository', () => {
   let repository: PrismaDeliveryRepository;
@@ -15,7 +14,7 @@ describe('PrismaDeliveryRepository', () => {
     order_id: 'order-uuid',
     courier_id: 'courier-uuid',
     status_id: 'status-uuid',
-    vehicle_type: DomainVehicleType.CAR,
+    vehicle_type: VehicleType.CAR,
     assigned_at: new Date(),
     pickup_at: new Date(),
     dropoff_at: new Date(),

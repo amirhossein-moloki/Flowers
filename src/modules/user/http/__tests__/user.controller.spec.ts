@@ -6,6 +6,7 @@ import { UpdateUserUseCase } from '../../application/use-cases/update-user.useca
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.usecase';
 import { ListUsersUseCase } from '../../application/use-cases/list-users.usecase';
 import { success, failure } from '@/core/utils/result';
+import { HttpError } from '@/core/http/http-error';
 import { User } from '../../domain/user.entity';
 import { UserRole } from '@prisma/client';
 import { UserDto } from '../../application/dtos/user.dto';
@@ -96,12 +97,14 @@ describe('UserController', () => {
         password: 'password123',
       };
 
-      mockCreateUserUseCase.execute.mockResolvedValue(failure(new Error('Creation failed')));
+      mockCreateUserUseCase.execute.mockResolvedValue(
+        failure(HttpError.badRequest('Creation failed')),
+      );
 
       const response = await request(app).post('/users').send(userInput);
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Creation failed');
+      expect(response.body.message).toBe('Creation failed');
     });
   });
 
@@ -124,11 +127,14 @@ describe('UserController', () => {
     });
 
     it('should return 404 if user not found', async () => {
-      mockGetUserUseCase.execute.mockResolvedValue(failure(new Error('Not found')));
+      mockGetUserUseCase.execute.mockResolvedValue(
+        failure(HttpError.notFound('Not found')),
+      );
 
       const response = await request(app).get('/users/non-existent-id');
 
       expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Not found');
     });
   });
 

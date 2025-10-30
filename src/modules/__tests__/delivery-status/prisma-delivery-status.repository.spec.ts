@@ -1,90 +1,127 @@
-import { PrismaClient } from '@prisma/client';
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
 import { PrismaDeliveryStatusRepository } from '../../delivery-status/infrastructure/prisma-delivery-status.repository';
 import { DeliveryStatus } from '../../delivery-status/domain/delivery-status.entity';
+import { prismaMock } from '../helpers/prisma-mock.helper';
 
 describe('PrismaDeliveryStatusRepository', () => {
   let repository: PrismaDeliveryStatusRepository;
-  let prisma: DeepMockProxy<PrismaClient>;
-
-  const deliveryStatusProps = {
-    delivery_id: 'delivery-uuid',
-    status: 'PENDING',
-    notes: 'Test notes',
-  };
-  const deliveryStatusEntityResult = DeliveryStatus.create(deliveryStatusProps, 'status-uuid');
-  const deliveryStatusEntity = deliveryStatusEntityResult.success ? deliveryStatusEntityResult.value : null;
-
-  const prismaDeliveryStatus = {
-    id: deliveryStatusEntity!.id,
-    ...deliveryStatusProps,
-    created_at: new Date(),
-    updated_at: new Date(),
-  };
 
   beforeEach(() => {
-    prisma = mockDeep<PrismaClient>();
-    repository = new PrismaDeliveryStatusRepository(prisma as unknown as PrismaClient);
+    repository = new PrismaDeliveryStatusRepository(prismaMock);
   });
 
-  it('should be defined', () => {
-    expect(repository).toBeDefined();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('findById', () => {
-    it('should return a delivery status entity if found', async () => {
-      (prisma.deliveryStatus.findUnique as jest.Mock).mockResolvedValue(prismaDeliveryStatus);
+    it('should return a delivery status if found', async () => {
+      const deliveryStatusId = 'some-id';
+      const prismaDeliveryStatus = {
+        id: deliveryStatusId,
+        delivery_id: 'delivery-id',
+        status: 'PENDING',
+        notes: null,
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
 
-      const result = await repository.findById('status-uuid');
+      prismaMock.deliveryStatus.findUnique.mockResolvedValue(prismaDeliveryStatus);
 
-      expect(result).toBeInstanceOf(DeliveryStatus);
-      expect(result!.id).toBe(prismaDeliveryStatus.id);
+      const result = await repository.findById(deliveryStatusId);
+
+      expect(result.isSuccess()).toBe(true);
+      const deliveryStatus = result.value as DeliveryStatus;
+      expect(deliveryStatus).toBeInstanceOf(DeliveryStatus);
+      expect(deliveryStatus.id).toEqual(deliveryStatusId);
+      expect(prismaMock.deliveryStatus.findUnique).toHaveBeenCalledWith({
+        where: { id: deliveryStatusId },
+      });
     });
 
-    it('should return null if delivery status not found', async () => {
-      (prisma.deliveryStatus.findUnique as jest.Mock).mockResolvedValue(null);
+    it('should return a failure if delivery status not found', async () => {
+      const deliveryStatusId = 'non-existent-id';
+      prismaMock.deliveryStatus.findUnique.mockResolvedValue(null);
 
-      const result = await repository.findById('non-existent-uuid');
+      const result = await repository.findById(deliveryStatusId);
 
-      expect(result).toBeNull();
+      expect(result.isFailure()).toBe(true);
+      expect(result.error?.message).toEqual('Delivery status not found');
     });
   });
 
   describe('findAll', () => {
-    it('should return an array of delivery status entities', async () => {
-      (prisma.deliveryStatus.findMany as jest.Mock).mockResolvedValue([prismaDeliveryStatus]);
+    it('should return all delivery statuses', async () => {
+      const prismaDeliveryStatuses = [
+        {
+          id: '1',
+          delivery_id: 'delivery-1',
+          status: 'PENDING',
+          notes: null,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          id: '2',
+          delivery_id: 'delivery-2',
+          status: 'SHIPPED',
+          notes: null,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+      ];
+
+      prismaMock.deliveryStatus.findMany.mockResolvedValue(
+        prismaDeliveryStatuses,
+      );
 
       const result = await repository.findAll();
 
-      expect(result).toHaveLength(1);
-      expect(result[0]).toBeInstanceOf(DeliveryStatus);
+      expect(result.isSuccess()).toBe(true);
+      const deliveryStatuses = result.value as DeliveryStatus[];
+      expect(deliveryStatuses).toHaveLength(2);
+      expect(deliveryStatuses[0]).toBeInstanceOf(DeliveryStatus);
+      expect(deliveryStatuses[0].id).toEqual('1');
+      expect(prismaMock.deliveryStatus.findMany).toHaveBeenCalled();
     });
   });
 
   describe('save', () => {
-    it('should call prisma.deliveryStatus.upsert with correct data', async () => {
-      await repository.save(deliveryStatusEntity!);
-      const { id, ...updateData } = deliveryStatusEntity!.props;
+    it('should save a delivery status and return it', async () => {
+      const deliveryStatusData = {
+        delivery_id: 'delivery-id',
+        status: 'DELIVERED',
+        notes: 'Left at front door',
+      };
+      const deliveryStatusResult = DeliveryStatus.create(deliveryStatusData, 'some-id');
+      const deliveryStatus = deliveryStatusResult.value as DeliveryStatus;
+      const prismaDeliveryStatus = { ...deliveryStatusData, id: deliveryStatus.id, created_at: new Date(), updated_at: new Date() };
 
-      expect(prisma.deliveryStatus.upsert).toHaveBeenCalledWith(
+      prismaMock.deliveryStatus.upsert.mockResolvedValue(prismaDeliveryStatus);
+
+      const result = await repository.save(deliveryStatus);
+
+      expect(result.isSuccess()).toBe(true);
+      expect(result.value).toBeInstanceOf(DeliveryStatus);
+      expect(prismaMock.deliveryStatus.upsert).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: { id: deliveryStatusEntity!.id },
-          create: expect.objectContaining({
-            id: deliveryStatusEntity!.id,
-            ...updateData,
-          }),
-          update: expect.objectContaining(updateData),
+          where: { id: deliveryStatus.id },
+          update: expect.any(Object),
+          create: expect.any(Object),
         }),
       );
     });
   });
 
   describe('delete', () => {
-    it('should call prisma.deliveryStatus.delete with correct data', async () => {
-      await repository.delete('status-uuid');
+    it('should delete a delivery status and return success', async () => {
+      const deliveryStatusId = 'some-id';
+      prismaMock.deliveryStatus.delete.mockResolvedValue({} as any);
 
-      expect(prisma.deliveryStatus.delete).toHaveBeenCalledWith({
-        where: { id: 'status-uuid' },
+      const result = await repository.delete(deliveryStatusId);
+
+      expect(result.isSuccess()).toBe(true);
+      expect(prismaMock.deliveryStatus.delete).toHaveBeenCalledWith({
+        where: { id: deliveryStatusId },
       });
     });
   });

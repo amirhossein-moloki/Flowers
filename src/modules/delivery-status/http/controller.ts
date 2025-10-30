@@ -15,6 +15,9 @@ export class DeliveryStatusController {
     const result = await this.getDeliveryStatusUseCase.execute(id);
 
     if (result.success) {
+      if (!result.value) {
+        return res.status(404).json({ error: 'Delivery status not found' });
+      }
       return res.status(200).json(DeliveryStatusPresenter.toJSON(result.value));
     } else {
       return res.status(404).json({ error: result.error.message });
@@ -25,6 +28,9 @@ export class DeliveryStatusController {
     const result = await this.listDeliveryStatusesUseCase.execute();
 
     if (result.success) {
+      if (!result.value) {
+        return res.status(404).json({ error: 'Delivery statuses not found' });
+      }
       const deliveryStatusesJSON = result.value.map(DeliveryStatusPresenter.toJSON);
       return res.status(200).json(deliveryStatusesJSON);
     } else {

@@ -2,7 +2,7 @@ import { IProductImageRepository } from '../../domain/product-image.repository.i
 import { ProductImage, ProductImageProps } from '../../domain/product-image.entity';
 import { CreateProductImageDto } from '../dtos/create-product-image.dto';
 import { Result, success, failure } from '@/core/utils/result';
-import { HttpError } from '@/core/errors/http-error';
+import { HttpError } from '@/core/http/http-error';
 import { ProductImageDto } from '../dtos/product-image.dto';
 import { ProductImageMapper } from '../../infrastructure/product-image.mapper';
 
@@ -26,9 +26,13 @@ export class CreateProductImageUseCase {
 
     const productImage = productImageResult.value;
 
-    await this.productImageRepository.save(productImage);
+    const createResult = await this.productImageRepository.create(productImage);
 
-    const productImageDto = ProductImageMapper.toDto(productImage);
+    if (!createResult.success) {
+      return createResult;
+    }
+
+    const productImageDto = ProductImageMapper.toDto(createResult.value);
     return success(productImageDto);
   }
 }

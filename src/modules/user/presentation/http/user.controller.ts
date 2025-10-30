@@ -6,6 +6,7 @@ import { UpdateUserUseCase } from '../../application/use-cases/update-user.useca
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.usecase';
 import { ListUsersUseCase } from '../../application/use-cases/list-users.usecase';
 import { validate } from '@/core/middlewares/validate.middleware';
+import { isAuthenticated } from '@/core/middlewares/auth.middleware';
 import { CreateUserSchema } from '../../application/dtos/create-user.dto';
 import { UpdateUserSchema } from '../../application/dtos/update-user.dto';
 
@@ -34,14 +35,15 @@ export class UserController extends Controller {
       validate(CreateUserSchema),
       this.createUser.bind(this),
     );
-    this.router.get('/:id', this.getUser.bind(this));
+    this.router.get('/:id', isAuthenticated, this.getUser.bind(this));
     this.router.put(
       '/:id',
+      isAuthenticated,
       validate(UpdateUserSchema),
       this.updateUser.bind(this),
     );
-    this.router.delete('/:id', this.deleteUser.bind(this));
-    this.router.get('/', this.listUsers.bind(this));
+    this.router.delete('/:id', isAuthenticated, this.deleteUser.bind(this));
+    this.router.get('/', isAuthenticated, this.listUsers.bind(this));
   }
 
   private async createUser(req: Request, res: Response, next: NextFunction) {

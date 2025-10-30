@@ -28,8 +28,8 @@ describe('DriverLocation API', () => {
     await prisma.delivery.deleteMany({});
     await prisma.orderItem.deleteMany({});
     await prisma.order.deleteMany({});
-    await prisma.order.deleteMany({});
     await prisma.user.deleteMany({});
+    await prisma.courier.deleteMany({});
   });
 
   describe('POST /api/v1/driver-locations', () => {

@@ -10,12 +10,20 @@ export class FindAllProductImageUseCase {
   async execute(
     productId: string,
   ): Promise<Result<ProductImageDto[], HttpError>> {
-    const productImages = await this.productImageRepository.findAllByProductId(
+    const result = await this.productImageRepository.findAllByProductId(
       productId,
     );
-    const productImagesDto = productImages.map(productImage =>
-      ProductImageMapper.toDto(productImage),
-    );
-    return success(productImagesDto);
+
+    if (result.success) {
+      if (!result.value) {
+        return success([]);
+      }
+      const productImagesDto = result.value.map(productImage =>
+        ProductImageMapper.toDto(productImage),
+      );
+      return success(productImagesDto);
+    } else {
+      return result;
+    }
   }
 }
