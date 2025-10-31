@@ -28,7 +28,7 @@ export class CourierMapper {
       raw.id,
     );
 
-    if (!courierResult.success) {
+    if (courierResult.isFailure()) {
       throw new Error(`Failed to map raw data to Courier entity: ${courierResult.error.message}`);
     }
     return courierResult.value;

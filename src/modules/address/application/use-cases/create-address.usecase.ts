@@ -20,7 +20,7 @@ export class CreateAddressUseCase {
     });
 
     if (!addressResult.success) {
-      return failure(HttpError.internalServerError(addressResult.error.message));
+      return failure(HttpError.internalServerError(addressResult.error));
     }
 
     const address = addressResult.value;

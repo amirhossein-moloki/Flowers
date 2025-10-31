@@ -17,24 +17,24 @@ export class CreatePromotionUseCase {
       is_active: request.is_active ?? true,
     });
 
-    if (!promotionOrError.success) {
+    if (promotionOrError.isFailure()) {
       return failure(promotionOrError.error);
     }
 
     const promotion = promotionOrError.value;
     const existingPromotionResult = await this.promotionRepository.findByCode(promotion.props.code);
 
-    if (existingPromotionResult.success) {
+    if (existingPromotionResult.isSuccess()) {
       return failure(new Error('Promotion code already exists'));
     }
 
-    if (!(existingPromotionResult.error instanceof NotFoundError)) {
+    if (existingPromotionResult.isFailure() && !(existingPromotionResult.error instanceof NotFoundError)) {
       return failure(existingPromotionResult.error);
     }
 
     const saveResult = await this.promotionRepository.save(promotion);
 
-    if (!saveResult.success) {
+    if (saveResult.isFailure()) {
       return failure(saveResult.error);
     }
 

@@ -17,7 +17,7 @@ export class CreateDeliveryUseCase {
     });
 
     if (!deliveryResult.success) {
-      return failure(HttpError.internalServerError(deliveryResult.error.message));
+      return failure(HttpError.internalServerError(deliveryResult.error));
     }
 
     const delivery = deliveryResult.value;

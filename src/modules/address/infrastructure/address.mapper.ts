@@ -17,7 +17,7 @@ export class AddressMapper {
       raw.id,
     );
 
-    if (!addressResult.success) {
+    if (addressResult.isFailure()) {
       throw new Error(`Failed to map raw data to Address entity: ${addressResult.error.message}`);
     }
     return addressResult.value;

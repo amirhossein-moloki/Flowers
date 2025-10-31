@@ -14,7 +14,11 @@ export class PrismaPromotionRepository implements IPromotionRepository {
       if (!promotion) {
         return failure(new NotFoundError('Promotion not found'));
       }
-      return PromotionMapper.toDomain(promotion);
+      const result = PromotionMapper.toDomain(promotion);
+      if (result.isFailure()) {
+        return failure(result.error);
+      }
+      return success(result.value);
     } catch (error) {
       return failure(error as Error);
     }
@@ -26,7 +30,11 @@ export class PrismaPromotionRepository implements IPromotionRepository {
       if (!promotion) {
         return failure(new NotFoundError('Promotion not found'));
       }
-      return PromotionMapper.toDomain(promotion);
+      const result = PromotionMapper.toDomain(promotion);
+      if (result.isFailure()) {
+        return failure(result.error);
+      }
+      return success(result.value);
     } catch (error) {
       return failure(error as Error);
     }
@@ -36,14 +44,11 @@ export class PrismaPromotionRepository implements IPromotionRepository {
     try {
       const promotions = await this.prisma.promotion.findMany();
       const results = promotions.map(PromotionMapper.toDomain);
-      const errors = results.filter((r): r is Result<Promotion, Error> & { success: false } => !r.success);
-
-      if (errors.length > 0) {
-        return failure(new Error('Failed to map one or more promotions'));
+      const combined = Result.combine(results);
+      if (combined.isFailure()) {
+        return failure(combined.error);
       }
-
-      const successes = results as (Result<Promotion, Error> & { success: true })[];
-      return success(successes.map(r => r.value));
+      return success(combined.value);
     } catch (error) {
       return failure(error as Error);
     }
@@ -53,7 +58,11 @@ export class PrismaPromotionRepository implements IPromotionRepository {
     try {
       const data = PromotionMapper.toPersistence(promotion);
       const createdPromotion = await this.prisma.promotion.create({ data });
-      return PromotionMapper.toDomain(createdPromotion);
+      const result = PromotionMapper.toDomain(createdPromotion);
+      if (result.isFailure()) {
+        return failure(result.error);
+      }
+      return success(result.value);
     } catch (error) {
       return failure(error as Error);
     }

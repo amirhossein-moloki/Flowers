@@ -20,7 +20,7 @@ export class DeliveryMapper {
       raw.id,
     );
 
-    if (!deliveryResult.success) {
+    if (deliveryResult.isFailure()) {
       throw new Error(`Failed to map raw data to Delivery entity: ${deliveryResult.error.message}`);
     }
     return deliveryResult.value;
