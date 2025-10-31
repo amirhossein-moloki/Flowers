@@ -20,7 +20,7 @@ export class ShippingRateController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.createShippingRateUseCase.execute(req.body);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(201).json(ShippingRatePresenter.toHTTP(result.value));
       } else {
         next(result.error);
@@ -33,7 +33,7 @@ export class ShippingRateController {
   async calculate(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.calculateShippingRateUseCase.execute(req.body);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json({ rate: result.value });
       } else {
         next(result.error);
@@ -45,8 +45,11 @@ export class ShippingRateController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.updateShippingRateUseCase.execute(req.params.id, req.body);
-      if (result.success) {
+      const result = await this.updateShippingRateUseCase.execute(
+        req.params.id,
+        req.body,
+      );
+      if (result.isSuccess()) {
         res.status(200).json(ShippingRatePresenter.toHTTP(result.value));
       } else {
         next(result.error);
@@ -58,8 +61,10 @@ export class ShippingRateController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.deleteShippingRateUseCase.execute(req.params.id);
-      if (result.success) {
+      const result = await this.deleteShippingRateUseCase.execute(
+        req.params.id,
+      );
+      if (result.isSuccess()) {
         res.status(204).send();
       } else {
         next(result.error);
@@ -72,7 +77,7 @@ export class ShippingRateController {
   async findById(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.getShippingRateUseCase.execute(req.params.id);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(ShippingRatePresenter.toHTTP(result.value));
       } else {
         next(result.error);
@@ -85,7 +90,7 @@ export class ShippingRateController {
   async findAll(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.listShippingRatesUseCase.execute();
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(result.value.map(ShippingRatePresenter.toHTTP));
       } else {
         next(result.error);

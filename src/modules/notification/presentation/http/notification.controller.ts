@@ -15,30 +15,33 @@ export class NotificationController {
   async create(req: Request, res: Response) {
     const result = await this.createNotification.execute(req.body);
 
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(201).json(result.value);
     } else {
-      res.status(400).json({ error: result.error.message });
+      res.status(400).json({ error: result.error?.message });
     }
   }
 
   async find(req: Request, res: Response) {
     const result = await this.getNotification.execute(req.params.id);
 
-    if (result.success) {
+    if (result.isSuccess()) {
       if (!result.value) {
         return res.status(404).json({ error: 'Notification not found' });
       }
       res.status(200).json(result.value);
     } else {
-      res.status(404).json({ error: result.error.message });
+      res.status(404).json({ error: result.error?.message });
     }
   }
 
   async update(req: Request, res: Response) {
-    const result = await this.updateNotification.execute(req.params.id, req.body);
+    const result = await this.updateNotification.execute(
+      req.params.id,
+      req.body,
+    );
 
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(200).json(result.value);
     } else {
       res.status(result.error.statusCode).json({ error: result.error.message });
@@ -48,10 +51,10 @@ export class NotificationController {
   async delete(req: Request, res: Response) {
     const result = await this.deleteNotification.execute(req.params.id);
 
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(204).send();
     } else {
-      res.status(404).json({ error: result.error.message });
+      res.status(404).json({ error: result.error?.message });
     }
   }
 }

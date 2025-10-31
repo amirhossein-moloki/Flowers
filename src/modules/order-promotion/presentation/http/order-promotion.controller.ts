@@ -27,7 +27,7 @@ export class OrderPromotionController {
     try {
       const result = await this.createOrderPromotionUseCase.execute(req.body);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(201).json(OrderPromotionPresenter.toDTO(result.value));
       } else {
         this.handleError(res, result.error);
@@ -43,7 +43,7 @@ export class OrderPromotionController {
       const { id } = req.params;
       const result = await this.getOrderPromotionUseCase.execute({ id });
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(OrderPromotionPresenter.toDTO(result.value));
       } else {
         this.handleError(res, result.error);
@@ -62,7 +62,7 @@ export class OrderPromotionController {
         ...req.body,
       });
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(OrderPromotionPresenter.toDTO(result.value));
       } else {
         this.handleError(res, result.error);
@@ -78,7 +78,7 @@ export class OrderPromotionController {
       const { id } = req.params;
       const result = await this.deleteOrderPromotionUseCase.execute({ id });
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(204).send();
       } else {
         this.handleError(res, result.error);

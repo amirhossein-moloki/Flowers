@@ -16,12 +16,17 @@ export class UpdateShippingRateUseCase {
     const updatedProps = { ...existingShippingRate.props, ...dto };
     const updatedShippingRateResult = existingShippingRate.update(updatedProps);
 
-    if (!updatedShippingRateResult.success) {
-      return failure(HttpError.internalServerError(updatedShippingRateResult.error.message));
+    if (updatedShippingRateResult.isFailure()) {
+      return failure(HttpError.internalServerError(updatedShippingRateResult.error?.message));
     }
 
-    await this.shippingRateRepository.update(updatedShippingRateResult.value);
+    const updatedShippingRate = updatedShippingRateResult.value;
+    if (!updatedShippingRate) {
+      return failure(HttpError.internalServerError('Failed to update shipping rate'));
+    }
 
-    return success(updatedShippingRateResult.value);
+    await this.shippingRateRepository.update(updatedShippingRate);
+
+    return success(updatedShippingRate);
   }
 }

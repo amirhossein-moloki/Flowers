@@ -33,7 +33,11 @@ export class OrderController extends Controller {
     this.router.post('/', validate(CreateOrderSchema), this.create.bind(this));
     this.router.get('/:id', this.findById.bind(this));
     this.router.get('/', this.findAll.bind(this));
-    this.router.put('/:id', validate(UpdateOrderSchema), this.update.bind(this));
+    this.router.put(
+      '/:id',
+      validate(UpdateOrderSchema),
+      this.update.bind(this),
+    );
     this.router.delete('/:id', this.delete.bind(this));
     this.router.post('/:id/confirm', this.confirm.bind(this));
     this.router.post('/:id/cancel', this.cancel.bind(this));
@@ -42,7 +46,7 @@ export class OrderController extends Controller {
   private async create(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.createOrderUseCase.execute(req.body);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(201).json(OrderPresenter.toJSON(result.value));
       } else {
         next(result.error);
@@ -55,7 +59,7 @@ export class OrderController extends Controller {
   private async findById(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.getOrderUseCase.execute(req.params.id);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(OrderPresenter.toJSON(result.value));
       } else {
         next(result.error);
@@ -73,7 +77,7 @@ export class OrderController extends Controller {
         parseInt(page as string, 10) || 1,
         parseInt(pageSize as string, 10) || 10,
       );
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(result.value.map(OrderPresenter.toJSON));
       } else {
         next(result.error);
@@ -85,8 +89,11 @@ export class OrderController extends Controller {
 
   private async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.updateOrderUseCase.execute(req.params.id, req.body);
-      if (result.success) {
+      const result = await this.updateOrderUseCase.execute(
+        req.params.id,
+        req.body,
+      );
+      if (result.isSuccess()) {
         res.status(200).json(OrderPresenter.toJSON(result.value));
       } else {
         next(result.error);
@@ -99,7 +106,7 @@ export class OrderController extends Controller {
   private async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.deleteOrderUseCase.execute(req.params.id);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(204).send();
       } else {
         next(result.error);
@@ -112,7 +119,7 @@ export class OrderController extends Controller {
   private async confirm(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.confirmOrderUseCase.execute(req.params.id);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(OrderPresenter.toJSON(result.value));
       } else {
         next(result.error);
@@ -125,7 +132,7 @@ export class OrderController extends Controller {
   private async cancel(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.cancelOrderUseCase.execute(req.params.id);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(OrderPresenter.toJSON(result.value));
       } else {
         next(result.error);

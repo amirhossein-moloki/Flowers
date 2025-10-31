@@ -24,10 +24,14 @@ export class CreateUserUseCase {
     const userProps: IUserProps = { ...dto };
     const userResult = User.create(userProps);
 
-    if (!userResult.success) {
-      return failure(HttpError.internalServerError(userResult.error.message));
+    if (userResult.isFailure()) {
+      return failure(HttpError.internalServerError(userResult.error?.message));
     }
     const user = userResult.value;
+
+    if (!user) {
+      return failure(HttpError.internalServerError('Failed to create user'));
+    }
 
     // 3. Persist the user
     // Note: In a real app, password hashing would happen here before saving

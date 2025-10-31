@@ -21,7 +21,7 @@ export class AutomationLogController extends Controller {
   private async findAll(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.findAllAutomationLogsUseCase.execute();
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(result.value.map(AutomationLogPresenter.toJSON));
       } else {
         next(result.error);

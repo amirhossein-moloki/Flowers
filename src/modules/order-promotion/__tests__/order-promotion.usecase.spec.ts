@@ -12,7 +12,9 @@ describe('OrderPromotion UseCase Tests', () => {
 
   beforeAll(async () => {
     const orderPromotionRepository = new PrismaOrderPromotionRepository(prisma);
-    createOrderPromotionUseCase = new CreateOrderPromotionUseCase(orderPromotionRepository);
+    createOrderPromotionUseCase = new CreateOrderPromotionUseCase(
+      orderPromotionRepository,
+    );
 
     user = await prisma.user.create({
       data: {
@@ -59,8 +61,8 @@ describe('OrderPromotion UseCase Tests', () => {
       discount_applied: 10,
     });
 
-    if (result.success) {
-      expect(result.success).toBe(true);
+    if (result.isSuccess()) {
+      expect(result.isSuccess()).toBe(true);
       expect(result.value).toBeDefined();
     }
   });

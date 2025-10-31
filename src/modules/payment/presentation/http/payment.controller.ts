@@ -20,14 +20,22 @@ export class PaymentController extends Controller {
   }
 
   private initializeRoutes() {
-    this.router.post('/', validate(CreatePaymentSchema), this.create.bind(this));
-    this.router.post('/verify', validate(VerifyPaymentSchema), this.verify.bind(this));
+    this.router.post(
+      '/',
+      validate(CreatePaymentSchema),
+      this.create.bind(this),
+    );
+    this.router.post(
+      '/verify',
+      validate(VerifyPaymentSchema),
+      this.verify.bind(this),
+    );
   }
 
   private async create(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.createPaymentUseCase.execute(req.body);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(201).json(PaymentPresenter.toJSON(result.value));
       } else {
         next(result.error);
@@ -40,7 +48,7 @@ export class PaymentController extends Controller {
   private async verify(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.verifyPaymentUseCase.execute(req.body);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(PaymentPresenter.toJSON(result.value));
       } else {
         next(result.error);

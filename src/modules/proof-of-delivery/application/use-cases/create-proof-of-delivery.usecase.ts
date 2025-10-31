@@ -9,10 +9,16 @@ export class CreateProofOfDeliveryUseCase {
     data: CreateProofOfDeliveryDTO
   ): Promise<Result<ProofOfDelivery, Error>> {
     const proofOfDelivery = ProofOfDelivery.create(data);
-    if (proofOfDelivery.success === false) {
+    if (proofOfDelivery.isFailure()) {
       return proofOfDelivery;
     }
-    return this.repository.create(proofOfDelivery.value);
+
+    const proofOfDeliveryEntity = proofOfDelivery.value;
+    if (!proofOfDeliveryEntity) {
+      return Result.failure(new Error('Failed to create proof of delivery'));
+    }
+
+    return this.repository.create(proofOfDeliveryEntity);
   }
 }
 

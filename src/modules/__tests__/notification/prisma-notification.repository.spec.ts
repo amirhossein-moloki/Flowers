@@ -8,7 +8,9 @@ describe('PrismaNotificationRepository', () => {
   let repository: PrismaNotificationRepository;
 
   beforeEach(() => {
-    repository = new PrismaNotificationRepository(prismaMock as unknown as PrismaClient);
+    repository = new PrismaNotificationRepository(
+      prismaMock as unknown as PrismaClient,
+    );
   });
 
   const notificationProps = {
@@ -16,8 +18,11 @@ describe('PrismaNotificationRepository', () => {
     message: 'This is a test notification.',
     recipient: 'test@example.com',
   };
-  const notificationResult = Notification.create(notificationProps, 'notif-id-1');
-  if (!notificationResult.success) {
+  const notificationResult = Notification.create(
+    notificationProps,
+    'notif-id-1',
+  );
+  if (notificationResult.isFailure()) {
     throw new Error('Test setup failed: could not create notification entity');
   }
   const notificationEntity = notificationResult.value;
@@ -34,12 +39,14 @@ describe('PrismaNotificationRepository', () => {
 
     const result = await repository.findById('notif-id-1');
 
-    expect(result.success).toBe(true);
-    if (result.success) {
+    expect(result.isSuccess()).toBe(true);
+    if (result.isSuccess()) {
       expect(result.value).toBeInstanceOf(Notification);
       expect(result.value?.id).toBe('notif-id-1');
     }
-    expect(prismaMock.notification.findUnique).toHaveBeenCalledWith({ where: { id: 'notif-id-1' } });
+    expect(prismaMock.notification.findUnique).toHaveBeenCalledWith({
+      where: { id: 'notif-id-1' },
+    });
   });
 
   test('findAll should return an array of notification entities', async () => {
@@ -47,8 +54,8 @@ describe('PrismaNotificationRepository', () => {
 
     const result = await repository.findAll();
 
-    expect(result.success).toBe(true);
-    if (result.success) {
+    expect(result.isSuccess()).toBe(true);
+    if (result.isSuccess()) {
       expect(result.value).toHaveLength(1);
       expect(result.value[0]).toBeInstanceOf(Notification);
     }

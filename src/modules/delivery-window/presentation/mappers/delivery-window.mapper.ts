@@ -2,9 +2,7 @@ import { DeliveryWindow as DeliveryWindowEntity } from '../../domain/delivery-wi
 import { DeliveryWindow as DeliveryWindowModel } from '@prisma/client';
 
 export class DeliveryWindowMapper {
-  static toDomain(
-    persistence: DeliveryWindowModel,
-  ): DeliveryWindowEntity {
+  static toDomain(persistence: DeliveryWindowModel): DeliveryWindowEntity {
     const { id, ...props } = persistence;
     const result = DeliveryWindowEntity.create(
       {
@@ -18,7 +16,7 @@ export class DeliveryWindowMapper {
       id,
     );
 
-    if (result.success === false) {
+    if (result.isFailure()) {
       throw new Error(result.error.message);
     }
 

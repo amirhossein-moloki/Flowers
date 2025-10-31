@@ -1,7 +1,13 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { CreateDeliveryDTO, createDeliverySchema } from './dto/create-delivery.schema';
-import { UpdateDeliveryDTO, updateDeliverySchema } from './dto/update-delivery.schema';
+import {
+  CreateDeliveryDTO,
+  createDeliverySchema,
+} from './dto/create-delivery.schema';
+import {
+  UpdateDeliveryDTO,
+  updateDeliverySchema,
+} from './dto/update-delivery.schema';
 import { DeliveryPresenter } from './presenters/delivery.presenter';
 import { CreateDeliveryUseCase } from '../application/use-cases/create-delivery.usecase';
 import { GetDeliveryUseCase } from '../application/use-cases/get-delivery.usecase';
@@ -23,10 +29,12 @@ export class DeliveryController {
       const deliveryDTO = createDeliverySchema.parse(req.body);
       const result = await this.createDeliveryUseCase.execute(deliveryDTO);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         return res.status(201).json(DeliveryPresenter.toJSON(result.value));
       } else {
-        return res.status(result.error.statusCode).json({ error: result.error.message });
+        return res
+          .status(result.error.statusCode)
+          .json({ error: result.error.message });
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -40,21 +48,25 @@ export class DeliveryController {
     const { id } = req.params;
     const result = await this.getDeliveryUseCase.execute(id);
 
-    if (result.success) {
+    if (result.isSuccess()) {
       return res.status(200).json(DeliveryPresenter.toJSON(result.value));
     } else {
-      return res.status(result.error.statusCode).json({ error: result.error.message });
+      return res
+        .status(result.error.statusCode)
+        .json({ error: result.error.message });
     }
   }
 
   async list(req: Request, res: Response) {
     const result = await this.listDeliveriesUseCase.execute();
 
-    if (result.success) {
+    if (result.isSuccess()) {
       const deliveriesJSON = result.value.map(DeliveryPresenter.toJSON);
       return res.status(200).json(deliveriesJSON);
     } else {
-      return res.status(result.error.statusCode).json({ error: result.error.message });
+      return res
+        .status(result.error.statusCode)
+        .json({ error: result.error.message });
     }
   }
 
@@ -64,10 +76,12 @@ export class DeliveryController {
       const deliveryDTO = updateDeliverySchema.parse(req.body);
       const result = await this.updateDeliveryUseCase.execute(id, deliveryDTO);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         return res.status(200).json(DeliveryPresenter.toJSON(result.value));
       } else {
-        return res.status(result.error.statusCode).json({ error: result.error.message });
+        return res
+          .status(result.error.statusCode)
+          .json({ error: result.error.message });
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -81,10 +95,12 @@ export class DeliveryController {
     const { id } = req.params;
     const result = await this.deleteDeliveryUseCase.execute(id);
 
-    if (result.success) {
+    if (result.isSuccess()) {
       return res.status(204).send();
     } else {
-      return res.status(result.error.statusCode).json({ error: result.error.message });
+      return res
+        .status(result.error.statusCode)
+        .json({ error: result.error.message });
     }
   }
 }

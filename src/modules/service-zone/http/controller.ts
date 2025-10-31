@@ -15,7 +15,7 @@ export class ServiceZoneController {
     const { id } = req.params;
     const result = await this.getServiceZoneUseCase.execute(id);
 
-    if (!result.success) {
+    if (!result.isSuccess()) {
       return res.status(404).json({ error: 'Service zone not found' });
     }
 
@@ -25,9 +25,11 @@ export class ServiceZoneController {
   async findAll(req: Request, res: Response): Promise<Response> {
     const result = await this.listServiceZonesUseCase.execute();
 
-    if (!result.success) {
+    if (!result.isSuccess()) {
       // It's better to handle the error case explicitly
-      return res.status(500).json({ error: 'Failed to retrieve service zones' });
+      return res
+        .status(500)
+        .json({ error: 'Failed to retrieve service zones' });
     }
 
     return res.status(200).json(result.value.map(ServiceZonePresenter.toJSON));

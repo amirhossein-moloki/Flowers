@@ -13,8 +13,11 @@ describe('PrismaProductImageRepository', () => {
     product_id: 'a7e5a2a2-2b6b-4b2b-8a8a-8a8a8a8a8a8a',
     url: 'http://example.com/image.png',
   };
-  const productImageResult = ProductImage.create(productImageProps, 'image-id-1');
-  if (!productImageResult.success) {
+  const productImageResult = ProductImage.create(
+    productImageProps,
+    'image-id-1',
+  );
+  if (productImageResult.isFailure()) {
     throw new Error('Test setup failed: could not create product image entity');
   }
   const productImageEntity = productImageResult.value;
@@ -32,7 +35,7 @@ describe('PrismaProductImageRepository', () => {
 
     const result = await repository.create(productImageEntity);
 
-    expect(result.success).toBe(true);
+    expect(result.isSuccess()).toBe(true);
     expect(prismaMock.productImage.create).toHaveBeenCalledWith({
       data: {
         ...prismaProductImage,
@@ -47,8 +50,8 @@ describe('PrismaProductImageRepository', () => {
 
     const foundProductImage = await repository.findById('image-id-1');
 
-    expect(foundProductImage.success).toBe(true);
-    if (foundProductImage.success) {
+    expect(foundProductImage.isSuccess()).toBe(true);
+    if (foundProductImage.isSuccess()) {
       expect(foundProductImage.value).toBeInstanceOf(ProductImage);
       expect(foundProductImage.value.id).toBe('image-id-1');
     }
@@ -59,8 +62,8 @@ describe('PrismaProductImageRepository', () => {
 
     const productImages = await repository.findAll();
 
-    expect(productImages.success).toBe(true);
-    if (productImages.success) {
+    expect(productImages.isSuccess()).toBe(true);
+    if (productImages.isSuccess()) {
       expect(productImages.value).toHaveLength(1);
       expect(productImages.value[0].id).toBe('image-id-1');
     }
@@ -71,7 +74,7 @@ describe('PrismaProductImageRepository', () => {
 
     const result = await repository.update(productImageEntity);
 
-    expect(result.success).toBe(true);
+    expect(result.isSuccess()).toBe(true);
     expect(prismaMock.productImage.update).toHaveBeenCalledWith({
       where: { id: productImageEntity.id },
       data: {

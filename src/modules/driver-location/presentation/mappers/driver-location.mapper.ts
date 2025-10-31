@@ -30,7 +30,7 @@ export class DriverLocationMapper {
       prismaDriverLocation.id,
     );
 
-    if (result.success) {
+    if (result.isSuccess()) {
       return result.value;
     } else {
       throw result.error;

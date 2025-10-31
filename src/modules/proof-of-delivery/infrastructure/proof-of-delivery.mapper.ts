@@ -18,10 +18,14 @@ export class ProofOfDeliveryMapper {
       prismaProofOfDelivery.id,
     );
 
-    if (!proofOfDeliveryResult.success) {
+    if (proofOfDeliveryResult.isFailure()) {
       throw new Error('Could not map PrismaProofOfDelivery to domain');
     }
-    return proofOfDeliveryResult.value;
+    const proofOfDelivery = proofOfDeliveryResult.value;
+    if (!proofOfDelivery) {
+      throw new Error('Could not map PrismaProofOfDelivery to domain');
+    }
+    return proofOfDelivery;
   }
 
   static toPersistence(

@@ -18,14 +18,17 @@ export class CreateVendorOutletUseCase {
       is_active: input.is_active,
     });
 
-    if (!outletResult.success) {
-      return failure(outletResult.error);
+    if (outletResult.isFailure()) {
+      return failure(outletResult.error as VendorOutletCreationError);
+    }
+
+    const outlet = outletResult.value;
+    if (!outlet) {
+      return failure(new VendorOutletCreationError('Failed to create outlet'));
     }
 
     try {
-      const savedOutlet = await this.vendorOutletRepository.save(
-        outletResult.value,
-      );
+      const savedOutlet = await this.vendorOutletRepository.save(outlet);
       return success(savedOutlet);
     } catch (error: any) {
       return failure(new VendorOutletCreationError(error.message));

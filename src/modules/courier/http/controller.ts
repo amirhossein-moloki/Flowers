@@ -23,10 +23,10 @@ export class CourierController {
       const courierDTO = createCourierSchema.parse(req.body);
       const result = await this.createCourierUseCase.execute(courierDTO);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         return res.status(201).json(CourierPresenter.toJSON(result.value));
       } else {
-        return res.status(400).json({ error: result.error.message });
+        return res.status(400).json({ error: result.error?.message });
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -40,25 +40,25 @@ export class CourierController {
     const { id } = req.params;
     const result = await this.getCourierUseCase.execute(id);
 
-    if (result.success) {
+    if (result.isSuccess()) {
       if (result.value) {
         return res.status(200).json(CourierPresenter.toJSON(result.value));
       } else {
         return res.status(404).json({ error: 'Courier not found' });
       }
     } else {
-      return res.status(404).json({ error: result.error.message });
+      return res.status(404).json({ error: result.error?.message });
     }
   }
 
   async list(req: Request, res: Response) {
     const result = await this.listCouriersUseCase.execute();
 
-    if (result.success) {
-        const couriersJSON = result.value.map(CourierPresenter.toJSON);
-        return res.status(200).json(couriersJSON);
+    if (result.isSuccess()) {
+      const couriersJSON = result.value.map(CourierPresenter.toJSON);
+      return res.status(200).json(couriersJSON);
     } else {
-        return res.status(500).json({ error: result.error.message });
+      return res.status(500).json({ error: result.error?.message });
     }
   }
 
@@ -68,10 +68,10 @@ export class CourierController {
       const courierDTO = updateCourierSchema.parse(req.body);
       const result = await this.updateCourierUseCase.execute(id, courierDTO);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         return res.status(200).json(CourierPresenter.toJSON(result.value));
       } else {
-        return res.status(400).json({ error: result.error.message });
+        return res.status(400).json({ error: result.error?.message });
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -85,10 +85,10 @@ export class CourierController {
     const { id } = req.params;
     const result = await this.deleteCourierUseCase.execute(id);
 
-    if (result.success) {
+    if (result.isSuccess()) {
       return res.status(204).send();
     } else {
-      return res.status(400).json({ error: result.error.message });
+      return res.status(400).json({ error: result.error?.message });
     }
   }
 }
