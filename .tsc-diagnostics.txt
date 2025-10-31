@@ -1,0 +1,948 @@
+src/core/events/in-memory-event-bus.ts(27,73): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(obj: string, msg?: undefined): void', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type 'undefined'.
+  Overload 2 of 3, '(obj: string, msg?: undefined, ...args: unknown[]): void', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type 'undefined'.
+src/core/http/validators.ts(17,25): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/core/middlewares/auth.middleware.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/core/utils/result.ts(13,5): error TS2322: Type 'Result<undefined, E>' is not assignable to type 'Result<T, E>'.
+  Type 'undefined' is not assignable to type 'T'.
+    'T' could be instantiated with an arbitrary type which could be unrelated to 'undefined'.
+src/core/utils/result.ts(44,5): error TS2322: Type 'Result<T, E>' is not assignable to type 'Result<U, E>'.
+  Type 'T' is not assignable to type 'U'.
+    'U' could be instantiated with an arbitrary type which could be unrelated to 'T'.
+src/infrastructure/cache/redis.ts(1,30): error TS2307: Cannot find module 'redis' or its corresponding type declarations.
+src/infrastructure/cache/redis.ts(10,26): error TS7006: Parameter 'err' implicitly has an 'any' type.
+src/infrastructure/database/prisma/prisma-client.ts(13,22): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/infrastructure/di/index.ts(38,26): error TS2305: Module '"@/modules/user/presentation/http"' has no exported member 'UserRoutes'.
+src/infrastructure/di/index.ts(107,38): error TS2307: Cannot find module '@/modules/promotion/domain/promotion.repository.interface' or its corresponding type declarations.
+src/infrastructure/di/index.ts(247,65): error TS2345: Argument of type 'PrismaDeliveryStatusRepository' is not assignable to parameter of type 'IDeliveryStatusRepository'.
+  The types returned by 'findById(...)' are incompatible between these types.
+    Type 'Promise<Result<DeliveryStatus | null, HttpError>>' is not assignable to type 'Promise<DeliveryStatus | null>'.
+      Type 'Result<DeliveryStatus | null, HttpError>' is missing the following properties from type 'DeliveryStatus': delivery_id, status, notes, id, and 2 more.
+src/infrastructure/di/index.ts(248,71): error TS2345: Argument of type 'PrismaDeliveryStatusRepository' is not assignable to parameter of type 'IDeliveryStatusRepository'.
+  The types returned by 'findById(...)' are incompatible between these types.
+    Type 'Promise<Result<DeliveryStatus | null, HttpError>>' is not assignable to type 'Promise<DeliveryStatus | null>'.
+      Type 'Result<DeliveryStatus | null, HttpError>' is missing the following properties from type 'DeliveryStatus': delivery_id, status, notes, id, and 2 more.
+src/infrastructure/di/index.ts(258,67): error TS2345: Argument of type 'PrismaNotificationRepository' is not assignable to parameter of type 'INotificationRepository'.
+  The types returned by 'findById(...)' are incompatible between these types.
+    Type 'Promise<Result<Notification | null, HttpError>>' is not assignable to type 'Promise<Notification | null>'.
+      Type 'Result<Notification | null, HttpError>' is missing the following properties from type 'Notification': title, message, recipient, createdAt, and 3 more.
+src/infrastructure/di/index.ts(259,61): error TS2345: Argument of type 'PrismaNotificationRepository' is not assignable to parameter of type 'INotificationRepository'.
+  The types returned by 'findById(...)' are incompatible between these types.
+    Type 'Promise<Result<Notification | null, HttpError>>' is not assignable to type 'Promise<Notification | null>'.
+      Type 'Result<Notification | null, HttpError>' is missing the following properties from type 'Notification': title, message, recipient, createdAt, and 3 more.
+src/infrastructure/di/index.ts(260,67): error TS2345: Argument of type 'PrismaNotificationRepository' is not assignable to parameter of type 'INotificationRepository'.
+  The types returned by 'findById(...)' are incompatible between these types.
+    Type 'Promise<Result<Notification | null, HttpError>>' is not assignable to type 'Promise<Notification | null>'.
+      Type 'Result<Notification | null, HttpError>' is missing the following properties from type 'Notification': title, message, recipient, createdAt, and 3 more.
+src/infrastructure/di/index.ts(261,67): error TS2345: Argument of type 'PrismaNotificationRepository' is not assignable to parameter of type 'INotificationRepository'.
+  The types returned by 'findById(...)' are incompatible between these types.
+    Type 'Promise<Result<Notification | null, HttpError>>' is not assignable to type 'Promise<Notification | null>'.
+      Type 'Result<Notification | null, HttpError>' is missing the following properties from type 'Notification': title, message, recipient, createdAt, and 3 more.
+src/infrastructure/di/index.ts(358,5): error TS1117: An object literal cannot have multiple properties with the same name.
+src/infrastructure/di/index.ts(359,5): error TS1117: An object literal cannot have multiple properties with the same name.
+src/infrastructure/di/index.ts(360,5): error TS1117: An object literal cannot have multiple properties with the same name.
+src/infrastructure/di/index.ts(361,5): error TS1117: An object literal cannot have multiple properties with the same name.
+src/infrastructure/di/index.ts(362,5): error TS1117: An object literal cannot have multiple properties with the same name.
+src/infrastructure/di/index.ts(363,5): error TS1117: An object literal cannot have multiple properties with the same name.
+src/infrastructure/di/index.ts(364,5): error TS1117: An object literal cannot have multiple properties with the same name.
+src/infrastructure/di/index.ts(405,5): error TS2322: Type 'PrismaDeliveryStatusRepository' is not assignable to type 'IDeliveryStatusRepository'.
+  The types returned by 'findById(...)' are incompatible between these types.
+    Type 'Promise<Result<DeliveryStatus | null, HttpError>>' is not assignable to type 'Promise<DeliveryStatus | null>'.
+      Type 'Result<DeliveryStatus | null, HttpError>' is missing the following properties from type 'DeliveryStatus': delivery_id, status, notes, id, and 2 more.
+src/infrastructure/http/middlewares/security.ts(3,18): error TS7016: Could not find a declaration file for module 'cors'. '/app/node_modules/cors/lib/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/cors` if it exists or add a new declaration (.d.ts) file containing `declare module 'cors';`
+src/infrastructure/http/middlewares/zod-validation.middleware.ts(5,14): error TS2724: '"/app/node_modules/zod/v4/classic/external"' has no exported member named 'AnyZodObject'. Did you mean 'ZodObject'?
+src/main.ts(11,21): error TS2554: Expected 1 arguments, but got 2.
+src/modules/__tests__/address/prisma-address.repository.spec.ts(28,9): error TS18048: 'addressEntity' is possibly 'undefined'.
+src/modules/__tests__/address/prisma-address.repository.spec.ts(53,27): error TS2345: Argument of type 'Address | undefined' is not assignable to parameter of type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/__tests__/address/prisma-address.repository.spec.ts(56,20): error TS18048: 'addressEntity' is possibly 'undefined'.
+src/modules/__tests__/address/prisma-address.repository.spec.ts(57,43): error TS2345: Argument of type 'Address | undefined' is not assignable to parameter of type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/__tests__/address/prisma-address.repository.spec.ts(58,43): error TS2345: Argument of type 'Address | undefined' is not assignable to parameter of type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/__tests__/automation-log/prisma-automation-log.repository.spec.ts(27,9): error TS18048: 'automationLogEntity' is possibly 'undefined'.
+src/modules/__tests__/automation-log/prisma-automation-log.repository.spec.ts(62,27): error TS2345: Argument of type 'AutomationLog | undefined' is not assignable to parameter of type 'AutomationLog'.
+  Type 'undefined' is not assignable to type 'AutomationLog'.
+src/modules/__tests__/automation-log/prisma-automation-log.repository.spec.ts(65,20): error TS18048: 'automationLogEntity' is possibly 'undefined'.
+src/modules/__tests__/automation-log/prisma-automation-log.repository.spec.ts(66,49): error TS2345: Argument of type 'AutomationLog | undefined' is not assignable to parameter of type 'AutomationLog'.
+  Type 'undefined' is not assignable to type 'AutomationLog'.
+src/modules/__tests__/automation-log/prisma-automation-log.repository.spec.ts(67,49): error TS2345: Argument of type 'AutomationLog | undefined' is not assignable to parameter of type 'AutomationLog'.
+  Type 'undefined' is not assignable to type 'AutomationLog'.
+src/modules/__tests__/courier/prisma-courier.repository.spec.ts(27,9): error TS18048: 'courierEntity' is possibly 'undefined'.
+src/modules/__tests__/courier/prisma-courier.repository.spec.ts(54,27): error TS2345: Argument of type 'Courier | undefined' is not assignable to parameter of type 'Courier'.
+  Type 'undefined' is not assignable to type 'Courier'.
+src/modules/__tests__/courier/prisma-courier.repository.spec.ts(57,20): error TS18048: 'courierEntity' is possibly 'undefined'.
+src/modules/__tests__/courier/prisma-courier.repository.spec.ts(58,43): error TS2345: Argument of type 'Courier | undefined' is not assignable to parameter of type 'Courier'.
+  Type 'undefined' is not assignable to type 'Courier'.
+src/modules/__tests__/courier/prisma-courier.repository.spec.ts(59,43): error TS2345: Argument of type 'Courier | undefined' is not assignable to parameter of type 'Courier'.
+  Type 'undefined' is not assignable to type 'Courier'.
+src/modules/__tests__/customer-address/prisma-customer-address.repository.spec.ts(26,9): error TS18048: 'customerAddressEntity' is possibly 'undefined'.
+src/modules/__tests__/customer-address/prisma-customer-address.repository.spec.ts(61,27): error TS2345: Argument of type 'CustomerAddress | undefined' is not assignable to parameter of type 'CustomerAddress'.
+  Type 'undefined' is not assignable to type 'CustomerAddress'.
+src/modules/__tests__/customer-address/prisma-customer-address.repository.spec.ts(64,20): error TS18048: 'customerAddressEntity' is possibly 'undefined'.
+src/modules/__tests__/customer-address/prisma-customer-address.repository.spec.ts(65,51): error TS2345: Argument of type 'CustomerAddress | undefined' is not assignable to parameter of type 'CustomerAddress'.
+  Type 'undefined' is not assignable to type 'CustomerAddress'.
+src/modules/__tests__/customer-address/prisma-customer-address.repository.spec.ts(66,51): error TS2345: Argument of type 'CustomerAddress | undefined' is not assignable to parameter of type 'CustomerAddress'.
+  Type 'undefined' is not assignable to type 'CustomerAddress'.
+src/modules/__tests__/delivery-window/prisma-delivery-window.repository.spec.ts(70,15): error TS2339: Property 'id' does not exist on type 'DeliveryWindowProps'.
+src/modules/__tests__/helpers/prisma-mock.helper.ts(1,24): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationChannel'.
+src/modules/__tests__/helpers/prisma-mock.helper.ts(1,45): error TS2305: Module '"@prisma/client"' has no exported member 'NotificationStatus'.
+src/modules/__tests__/helpers/prisma-mock.helper.ts(1,65): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/__tests__/notification/prisma-notification.repository.spec.ts(31,9): error TS18048: 'notificationEntity' is possibly 'undefined'.
+src/modules/__tests__/notification/prisma-notification.repository.spec.ts(67,27): error TS2345: Argument of type 'Notification | undefined' is not assignable to parameter of type 'Notification'.
+  Type 'undefined' is not assignable to type 'Notification'.
+src/modules/__tests__/notification/prisma-notification.repository.spec.ts(70,20): error TS18048: 'notificationEntity' is possibly 'undefined'.
+src/modules/__tests__/notification/prisma-notification.repository.spec.ts(71,48): error TS2345: Argument of type 'Notification | undefined' is not assignable to parameter of type 'Notification'.
+  Type 'undefined' is not assignable to type 'Notification'.
+src/modules/__tests__/notification/prisma-notification.repository.spec.ts(72,48): error TS2345: Argument of type 'Notification | undefined' is not assignable to parameter of type 'Notification'.
+  Type 'undefined' is not assignable to type 'Notification'.
+src/modules/__tests__/order-promotion/prisma-order-promotion.repository.spec.ts(26,9): error TS18048: 'orderPromotionEntity' is possibly 'undefined'.
+src/modules/__tests__/order-promotion/prisma-order-promotion.repository.spec.ts(53,27): error TS2345: Argument of type 'OrderPromotion | undefined' is not assignable to parameter of type 'OrderPromotion'.
+  Type 'undefined' is not assignable to type 'OrderPromotion'.
+src/modules/__tests__/order-promotion/prisma-order-promotion.repository.spec.ts(56,20): error TS18048: 'orderPromotionEntity' is possibly 'undefined'.
+src/modules/__tests__/order-promotion/prisma-order-promotion.repository.spec.ts(57,50): error TS2345: Argument of type 'OrderPromotion | undefined' is not assignable to parameter of type 'OrderPromotion'.
+  Type 'undefined' is not assignable to type 'OrderPromotion'.
+src/modules/__tests__/order-promotion/prisma-order-promotion.repository.spec.ts(58,50): error TS2345: Argument of type 'OrderPromotion | undefined' is not assignable to parameter of type 'OrderPromotion'.
+  Type 'undefined' is not assignable to type 'OrderPromotion'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(24,13): error TS2322: Type 'OrderItem | undefined' is not assignable to type 'OrderItem'.
+  Type 'undefined' is not assignable to type 'OrderItem'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(32,9): error TS18048: 'orderEntity' is possibly 'undefined'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(33,13): error TS18048: 'orderEntity' is possibly 'undefined'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(34,13): error TS18048: 'orderEntity' is possibly 'undefined'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(35,12): error TS18048: 'orderEntity' is possibly 'undefined'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(40,13): error TS18048: 'orderItem' is possibly 'undefined'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(41,18): error TS18048: 'orderItem' is possibly 'undefined'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(42,20): error TS18048: 'orderItem' is possibly 'undefined'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(43,19): error TS18048: 'orderItem' is possibly 'undefined'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(44,16): error TS18048: 'orderItem' is possibly 'undefined'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(83,64): error TS2345: Argument of type 'Order | undefined' is not assignable to parameter of type 'Order'.
+  Type 'undefined' is not assignable to type 'Order'.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(86,55): error TS7006: Parameter 'callback' implicitly has an 'any' type.
+src/modules/__tests__/order/prisma-order.repository.spec.ts(101,27): error TS2345: Argument of type 'Order | undefined' is not assignable to parameter of type 'Order'.
+  Type 'undefined' is not assignable to type 'Order'.
+src/modules/__tests__/payment/prisma-payment.repository.spec.ts(5,10): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentMethod'.
+src/modules/__tests__/payment/prisma-payment.repository.spec.ts(5,25): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/__tests__/payment/prisma-payment.repository.spec.ts(30,9): error TS18048: 'paymentEntity' is possibly 'undefined'.
+src/modules/__tests__/payment/prisma-payment.repository.spec.ts(57,63): error TS2345: Argument of type 'Payment | undefined' is not assignable to parameter of type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/__tests__/payment/prisma-payment.repository.spec.ts(58,27): error TS2345: Argument of type 'Payment | undefined' is not assignable to parameter of type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/__tests__/payment/prisma-payment.repository.spec.ts(61,20): error TS18048: 'paymentEntity' is possibly 'undefined'.
+src/modules/__tests__/payment/prisma-payment.repository.spec.ts(62,43): error TS2345: Argument of type 'Payment | undefined' is not assignable to parameter of type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/__tests__/product-image/prisma-product-image.repository.spec.ts(26,9): error TS18048: 'productImageEntity' is possibly 'undefined'.
+src/modules/__tests__/product-image/prisma-product-image.repository.spec.ts(36,44): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/__tests__/product-image/prisma-product-image.repository.spec.ts(56,14): error TS18047: 'foundProductImage.value' is possibly 'null'.
+src/modules/__tests__/product-image/prisma-product-image.repository.spec.ts(75,44): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/__tests__/product-image/prisma-product-image.repository.spec.ts(79,20): error TS18048: 'productImageEntity' is possibly 'undefined'.
+src/modules/__tests__/promotion/prisma-promotion.repository.spec.ts(2,24): error TS2305: Module '"@prisma/client"' has no exported member 'DiscountType'.
+src/modules/__tests__/promotion/prisma-promotion.repository.spec.ts(42,44): error TS2345: Argument of type '{ code: string; description: string; discount_type: any; discount_value: number; start_date: Date; end_date: Date; max_uses: number; uses_count: number; is_active: boolean; }' is not assignable to parameter of type 'IPromotionProps'.
+  Property 'name' is missing in type '{ code: string; description: string; discount_type: any; discount_value: number; start_date: Date; end_date: Date; max_uses: number; uses_count: number; is_active: boolean; }' but required in type 'IPromotionProps'.
+src/modules/__tests__/promotion/prisma-promotion.repository.spec.ts(49,9): error TS18048: 'promotionEntity' is possibly 'undefined'.
+src/modules/__tests__/promotion/prisma-promotion.repository.spec.ts(80,27): error TS2345: Argument of type 'Promotion | undefined' is not assignable to parameter of type 'Promotion'.
+  Type 'undefined' is not assignable to type 'Promotion'.
+src/modules/__tests__/promotion/prisma-promotion.repository.spec.ts(83,43): error TS2345: Argument of type 'Promotion | undefined' is not assignable to parameter of type 'Promotion'.
+  Type 'undefined' is not assignable to type 'Promotion'.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(18,7): error TS7034: Variable 'mockMapper' implicitly has type 'any' in some locations where its type cannot be determined.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(34,68): error TS2561: Object literal may only specify known properties, but 'geojson' does not exist in type 'ServiceZoneProps'. Did you mean to write 'geo_json'?
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(37,7): error TS7005: Variable 'mockMapper' implicitly has an 'any' type.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(43,14): error TS7005: Variable 'mockMapper' implicitly has an 'any' type.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(63,99): error TS2561: Object literal may only specify known properties, but 'geojson' does not exist in type 'ServiceZoneProps'. Did you mean to write 'geo_json'?
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(66,7): error TS7005: Variable 'mockMapper' implicitly has an 'any' type.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(66,46): error TS7006: Parameter 'sz' implicitly has an 'any' type.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(66,83): error TS18048: 'dsz' is possibly 'undefined'.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(72,14): error TS7005: Variable 'mockMapper' implicitly has an 'any' type.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(78,62): error TS2561: Object literal may only specify known properties, but 'geojson' does not exist in type 'ServiceZoneProps'. Did you mean to write 'geo_json'?
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(81,7): error TS7005: Variable 'mockMapper' implicitly has an 'any' type.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(83,29): error TS2345: Argument of type 'ServiceZone | undefined' is not assignable to parameter of type 'ServiceZone'.
+  Type 'undefined' is not assignable to type 'ServiceZone'.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(85,14): error TS7005: Variable 'mockMapper' implicitly has an 'any' type.
+src/modules/__tests__/service-zone/prisma-service-zone.repository.spec.ts(87,22): error TS18048: 'serviceZone' is possibly 'undefined'.
+src/modules/__tests__/shipping-rate/prisma-shipping-rate.repository.spec.ts(1,24): error TS2305: Module '"@prisma/client"' has no exported member 'ShippingRate'.
+src/modules/__tests__/user/prisma-user.repository.spec.ts(5,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/__tests__/user/prisma-user.repository.spec.ts(28,9): error TS18048: 'userEntity' is possibly 'undefined'.
+src/modules/__tests__/user/prisma-user.repository.spec.ts(55,27): error TS2345: Argument of type 'User | undefined' is not assignable to parameter of type 'User'.
+  Type 'undefined' is not assignable to type 'User'.
+src/modules/__tests__/user/prisma-user.repository.spec.ts(58,20): error TS18048: 'userEntity' is possibly 'undefined'.
+src/modules/__tests__/user/prisma-user.repository.spec.ts(59,40): error TS2345: Argument of type 'User | undefined' is not assignable to parameter of type 'User'.
+  Type 'undefined' is not assignable to type 'User'.
+src/modules/__tests__/user/prisma-user.repository.spec.ts(60,40): error TS2345: Argument of type 'User | undefined' is not assignable to parameter of type 'User'.
+  Type 'undefined' is not assignable to type 'User'.
+src/modules/__tests__/vendor-outlet/prisma-vendor-outlet.repository.spec.ts(5,24): error TS2305: Module '"@prisma/client"' has no exported member 'VendorOutlet'.
+src/modules/__tests__/vendor/prisma-vendor.repository.spec.ts(29,9): error TS18048: 'vendorEntity' is possibly 'undefined'.
+src/modules/__tests__/vendor/prisma-vendor.repository.spec.ts(75,56): error TS2345: Argument of type 'Vendor | undefined' is not assignable to parameter of type 'Vendor'.
+  Type 'undefined' is not assignable to type 'Vendor'.
+src/modules/__tests__/vendor/prisma-vendor.repository.spec.ts(78,27): error TS2345: Argument of type 'Vendor | undefined' is not assignable to parameter of type 'Vendor'.
+  Type 'undefined' is not assignable to type 'Vendor'.
+src/modules/__tests__/vendor/prisma-vendor.repository.spec.ts(81,20): error TS18048: 'vendorEntity' is possibly 'undefined'.
+src/modules/address/application/use-cases/create-address.usecase.ts(23,52): error TS2345: Argument of type 'AddressCreationError | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'AddressCreationError' is not assignable to type 'string'.
+src/modules/address/application/use-cases/create-address.usecase.ts(28,39): error TS2345: Argument of type 'Address | undefined' is not assignable to parameter of type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/address/application/use-cases/create-address.usecase.ts(30,44): error TS2345: Argument of type 'Address | undefined' is not assignable to parameter of type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/address/application/use-cases/list-addresses.usecase.ts(1,25): error TS2307: Cannot find module '@/core/application/use-case' or its corresponding type declarations.
+src/modules/address/application/use-cases/update-address.usecase.ts(23,45): error TS18048: 'updatedAddressResult.error' is possibly 'undefined'.
+src/modules/address/application/use-cases/update-address.usecase.ts(28,39): error TS2345: Argument of type 'Address | undefined' is not assignable to parameter of type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/address/application/use-cases/update-address.usecase.ts(30,44): error TS2345: Argument of type 'Address | undefined' is not assignable to parameter of type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/address/domain/address.repository.ts(1,29): error TS2307: Cannot find module '../../../../core/domain/repository' or its corresponding type declarations.
+src/modules/address/http/__tests__/address.controller.spec.ts(18,9): error TS2322: Type 'Mock<Promise<Result<Address | undefined, Error>>, [dto: CreateAddressDto], any>' is not assignable to type '(dto: CreateAddressDto) => Promise<Result<AddressDto, HttpError>>'.
+  Type 'Promise<Result<Address | undefined, Error>>' is not assignable to type 'Promise<Result<AddressDto, HttpError>>'.
+    Type 'Result<Address | undefined, Error>' is not assignable to type 'Result<AddressDto, HttpError>'.
+      Type 'Address | undefined' is not assignable to type 'AddressDto'.
+        Type 'undefined' is not assignable to type 'AddressDto'.
+src/modules/address/http/__tests__/address.controller.spec.ts(26,9): error TS2322: Type 'Mock<Promise<Result<Address | undefined, Error>>, [id: string], any>' is not assignable to type '(id: string) => Promise<Result<AddressDto, HttpError>>'.
+  Type 'Promise<Result<Address | undefined, Error>>' is not assignable to type 'Promise<Result<AddressDto, HttpError>>'.
+    Type 'Result<Address | undefined, Error>' is not assignable to type 'Result<AddressDto, HttpError>'.
+      Type 'Address | undefined' is not assignable to type 'AddressDto'.
+        Type 'undefined' is not assignable to type 'AddressDto'.
+src/modules/address/http/__tests__/address.controller.spec.ts(38,9): error TS2322: Type 'Mock<Promise<Result<(Address | undefined)[], Error>>, [], any>' is not assignable to type '() => Promise<Result<Address[], Error>>'.
+  Type 'Promise<Result<(Address | undefined)[], Error>>' is not assignable to type 'Promise<Result<Address[], Error>>'.
+    Type 'Result<(Address | undefined)[], Error>' is not assignable to type 'Result<Address[], Error>'.
+      Type '(Address | undefined)[]' is not assignable to type 'Address[]'.
+        Type 'Address | undefined' is not assignable to type 'Address'.
+          Type 'undefined' is not assignable to type 'Address'.
+src/modules/address/http/__tests__/address.controller.spec.ts(50,9): error TS2322: Type 'Mock<Promise<Result<Address | undefined, Error>>, [dto: UpdateAddressDto & { id: string; }], any>' is not assignable to type '(dto: UpdateAddressDto & { id: string; }) => Promise<Result<AddressDto, HttpError>>'.
+  Type 'Promise<Result<Address | undefined, Error>>' is not assignable to type 'Promise<Result<AddressDto, HttpError>>'.
+    Type 'Result<Address | undefined, Error>' is not assignable to type 'Result<AddressDto, HttpError>'.
+      Type 'Address | undefined' is not assignable to type 'AddressDto'.
+        Type 'undefined' is not assignable to type 'AddressDto'.
+src/modules/address/http/__tests__/address.controller.spec.ts(62,9): error TS2322: Type 'Mock<Promise<Result<undefined, Error>>, [], any>' is not assignable to type '(id: string) => Promise<Result<void, HttpError>>'.
+  Type 'Promise<Result<undefined, Error>>' is not assignable to type 'Promise<Result<void, HttpError>>'.
+    Type 'Result<undefined, Error>' is not assignable to type 'Result<void, HttpError>'.
+      Type 'Error' is missing the following properties from type 'HttpError': statusCode, isOperational
+src/modules/address/http/__tests__/address.integration.spec.ts(24,29): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/address/http/__tests__/address.integration.spec.ts(24,34): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/address/http/__tests__/address.integration.spec.ts(24,39): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/address/http/controller.ts(20,62): error TS2345: Argument of type '{ street: string; city: string; state: string; zipCode: string; country: string; isResidential?: boolean | null | undefined; }' is not assignable to parameter of type 'CreateAddressDto'.
+  Types of property 'isResidential' are incompatible.
+    Type 'boolean | null | undefined' is not assignable to type 'boolean | undefined'.
+      Type 'null' is not assignable to type 'boolean | undefined'.
+src/modules/address/http/controller.ts(63,75): error TS2345: Argument of type '{ street?: string | undefined; city?: string | undefined; state?: string | undefined; zipCode?: string | undefined; country?: string | undefined; isResidential?: boolean | null | undefined; id: string; }' is not assignable to parameter of type 'UpdateAddressDto & { id: string; }'.
+  Type '{ street?: string | undefined; city?: string | undefined; state?: string | undefined; zipCode?: string | undefined; country?: string | undefined; isResidential?: boolean | null | undefined; id: string; }' is not assignable to type 'UpdateAddressDto'.
+    Types of property 'isResidential' are incompatible.
+      Type 'boolean | null | undefined' is not assignable to type 'boolean | undefined'.
+        Type 'null' is not assignable to type 'boolean | undefined'.
+src/modules/address/infrastructure/address.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'Address'.
+src/modules/address/infrastructure/address.mapper.ts(23,5): error TS2322: Type 'Address | undefined' is not assignable to type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/automation-log/application/dtos/automation-log.dto.ts(2,3): error TS2564: Property 'id' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/automation-log.dto.ts(3,3): error TS2564: Property 'order_id' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/automation-log.dto.ts(4,3): error TS2564: Property 'action' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/automation-log.dto.ts(5,3): error TS2564: Property 'status' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/automation-log.dto.ts(6,3): error TS2564: Property 'message' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/automation-log.dto.ts(7,3): error TS2564: Property 'executed_at' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/create-automation-log.dto.ts(5,3): error TS2564: Property 'order_id' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/create-automation-log.dto.ts(8,3): error TS2564: Property 'action' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/create-automation-log.dto.ts(11,3): error TS2564: Property 'status' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/create-automation-log.dto.ts(14,3): error TS2564: Property 'message' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/dtos/create-automation-log.dto.ts(17,3): error TS2564: Property 'executed_at' has no initializer and is not definitely assigned in the constructor.
+src/modules/automation-log/application/use-cases/create-automation-log.usecase.ts(5,42): error TS2307: Cannot find module '../../../../../core/utils/result' or its corresponding type declarations.
+src/modules/automation-log/application/use-cases/create-automation-log.usecase.ts(6,27): error TS2307: Cannot find module '../../../../../core/errors/http-error' or its corresponding type declarations.
+src/modules/automation-log/application/use-cases/create-automation-log.usecase.ts(16,52): error TS18048: 'automationLogResult.error' is possibly 'undefined'.
+src/modules/automation-log/application/use-cases/create-automation-log.usecase.ts(21,45): error TS2345: Argument of type 'AutomationLog | undefined' is not assignable to parameter of type 'AutomationLog'.
+  Type 'undefined' is not assignable to type 'AutomationLog'.
+src/modules/automation-log/application/use-cases/create-automation-log.usecase.ts(23,56): error TS2345: Argument of type 'AutomationLog | undefined' is not assignable to parameter of type 'AutomationLog'.
+  Type 'undefined' is not assignable to type 'AutomationLog'.
+src/modules/automation-log/application/use-cases/delete-automation-log.usecase.ts(2,42): error TS2307: Cannot find module '../../../../../core/utils/result' or its corresponding type declarations.
+src/modules/automation-log/application/use-cases/delete-automation-log.usecase.ts(3,27): error TS2307: Cannot find module '../../../../../core/errors/http-error' or its corresponding type declarations.
+src/modules/automation-log/application/use-cases/get-automation-log.usecase.ts(3,42): error TS2307: Cannot find module '../../../../../core/utils/result' or its corresponding type declarations.
+src/modules/automation-log/application/use-cases/get-automation-log.usecase.ts(4,27): error TS2307: Cannot find module '../../../../../core/errors/http-error' or its corresponding type declarations.
+src/modules/automation-log/application/use-cases/update-automation-log.usecase.ts(4,42): error TS2307: Cannot find module '../../../../../core/utils/result' or its corresponding type declarations.
+src/modules/automation-log/application/use-cases/update-automation-log.usecase.ts(5,27): error TS2307: Cannot find module '../../../../../core/errors/http-error' or its corresponding type declarations.
+src/modules/automation-log/application/use-cases/update-automation-log.usecase.ts(23,54): error TS18048: 'updatedAutomationLogResult.error' is possibly 'undefined'.
+src/modules/automation-log/application/use-cases/update-automation-log.usecase.ts(28,45): error TS2345: Argument of type 'AutomationLog | undefined' is not assignable to parameter of type 'AutomationLog'.
+  Type 'undefined' is not assignable to type 'AutomationLog'.
+src/modules/automation-log/application/use-cases/update-automation-log.usecase.ts(30,56): error TS2345: Argument of type 'AutomationLog | undefined' is not assignable to parameter of type 'AutomationLog'.
+  Type 'undefined' is not assignable to type 'AutomationLog'.
+src/modules/automation-log/infrastructure/automation-log.mapper.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'AutomationLog'.
+src/modules/automation-log/infrastructure/automation-log.mapper.ts(16,7): error TS2322: Type 'AutomationLog | undefined' is not assignable to type 'AutomationLog'.
+  Type 'undefined' is not assignable to type 'AutomationLog'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.controller.spec.ts(44,66): error TS2345: Argument of type 'Result<(AutomationLog | undefined)[], HttpError>' is not assignable to parameter of type 'Result<AutomationLogDto[], HttpError>'.
+  Type '(AutomationLog | undefined)[]' is not assignable to type 'AutomationLogDto[]'.
+    Type 'AutomationLog | undefined' is not assignable to type 'AutomationLogDto'.
+      Type 'undefined' is not assignable to type 'AutomationLogDto'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'Order'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,17): error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,23): error TS2305: Module '"@prisma/client"' has no exported member 'AutomationLog'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,38): error TS2305: Module '"@prisma/client"' has no exported member 'Vendor'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,46): error TS2305: Module '"@prisma/client"' has no exported member 'Product'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,55): error TS2305: Module '"@prisma/client"' has no exported member 'Address'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,64): error TS2305: Module '"@prisma/client"' has no exported member 'CustomerAddress'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,81): error TS2305: Module '"@prisma/client"' has no exported member 'ServiceZone'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,94): error TS2305: Module '"@prisma/client"' has no exported member 'VendorOutlet'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(4,108): error TS2305: Module '"@prisma/client"' has no exported member 'OrderItem'.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(35,15): error TS7031: Binding element 'min' implicitly has an 'any' type.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(35,20): error TS7031: Binding element 'max' implicitly has an 'any' type.
+src/modules/automation-log/presentation/http/__tests__/automation-log.integration.spec.ts(53,11): error TS2554: Expected 1-3 arguments, but got 0.
+src/modules/courier/application/use-cases/create-courier.usecase.ts(16,52): error TS2345: Argument of type 'CourierCreationError | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'CourierCreationError' is not assignable to type 'string'.
+src/modules/courier/application/use-cases/create-courier.usecase.ts(21,39): error TS2345: Argument of type 'Courier | undefined' is not assignable to parameter of type 'Courier'.
+  Type 'undefined' is not assignable to type 'Courier'.
+src/modules/courier/application/use-cases/create-courier.usecase.ts(23,44): error TS2345: Argument of type 'Courier | undefined' is not assignable to parameter of type 'Courier'.
+  Type 'undefined' is not assignable to type 'Courier'.
+src/modules/courier/application/use-cases/update-courier.usecase.ts(23,54): error TS18048: 'updatedCourierResult.error' is possibly 'undefined'.
+src/modules/courier/application/use-cases/update-courier.usecase.ts(28,39): error TS2345: Argument of type 'Courier | undefined' is not assignable to parameter of type 'Courier'.
+  Type 'undefined' is not assignable to type 'Courier'.
+src/modules/courier/application/use-cases/update-courier.usecase.ts(30,44): error TS2345: Argument of type 'Courier | undefined' is not assignable to parameter of type 'Courier'.
+  Type 'undefined' is not assignable to type 'Courier'.
+src/modules/courier/http/__tests__/courier.integration.spec.ts(7,21): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/courier/http/__tests__/courier.integration.spec.ts(7,26): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/courier/http/__tests__/courier.integration.spec.ts(7,31): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/courier/http/__tests__/courier.integration.spec.ts(8,13): error TS7006: Parameter 'roles' implicitly has an 'any' type.
+src/modules/courier/http/__tests__/courier.integration.spec.ts(8,24): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/courier/http/__tests__/courier.integration.spec.ts(8,29): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/courier/http/__tests__/courier.integration.spec.ts(8,34): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/courier/http/controller.ts(24,62): error TS2345: Argument of type '{ name: string; phone: string; email: string; vehicle?: string | null | undefined; isAvailable?: boolean | undefined; }' is not assignable to parameter of type 'CreateCourierDto'.
+  Types of property 'vehicle' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/modules/courier/http/controller.ts(69,66): error TS2345: Argument of type '{ name?: string | undefined; phone?: string | undefined; email?: string | undefined; vehicle?: string | null | undefined; isAvailable?: boolean | undefined; }' is not assignable to parameter of type 'UpdateCourierDto'.
+  Types of property 'vehicle' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/modules/courier/http/routes.ts(9,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/courier/infrastructure/courier.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'Courier'.
+src/modules/courier/infrastructure/courier.mapper.ts(12,7): error TS2322: Type 'string | null | undefined' is not assignable to type 'string | null'.
+  Type 'undefined' is not assignable to type 'string | null'.
+src/modules/courier/infrastructure/courier.mapper.ts(13,7): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/modules/courier/infrastructure/courier.mapper.ts(34,5): error TS2322: Type 'Courier | undefined' is not assignable to type 'Courier'.
+  Type 'undefined' is not assignable to type 'Courier'.
+src/modules/customer-address/application/use-cases/create-customer-address.usecase.ts(16,43): error TS18048: 'customerAddressResult.error' is possibly 'undefined'.
+src/modules/customer-address/application/use-cases/create-customer-address.usecase.ts(21,47): error TS2345: Argument of type 'CustomerAddress | undefined' is not assignable to parameter of type 'CustomerAddress'.
+  Type 'undefined' is not assignable to type 'CustomerAddress'.
+src/modules/customer-address/application/use-cases/create-customer-address.usecase.ts(23,78): error TS18048: 'customerAddress' is possibly 'undefined'.
+src/modules/customer-address/application/use-cases/create-customer-address.usecase.ts(25,60): error TS2345: Argument of type 'CustomerAddress | null' is not assignable to parameter of type 'CustomerAddress'.
+  Type 'null' is not assignable to type 'CustomerAddress'.
+src/modules/customer-address/application/use-cases/list-customer-addresses.usecase.ts(12,9): error TS2416: Property 'execute' in type 'ListCustomerAddressesUseCase' is not assignable to the same property in base type 'UseCase<string, CustomerAddressDto[]>'.
+  Type '(userId: string) => Promise<Result<CustomerAddressDto[], HttpError>>' is not assignable to type '(request?: string | undefined) => CustomerAddressDto[] | Promise<CustomerAddressDto[]>'.
+    Type 'Promise<Result<CustomerAddressDto[], HttpError>>' is not assignable to type 'CustomerAddressDto[] | Promise<CustomerAddressDto[]>'.
+      Type 'Promise<Result<CustomerAddressDto[], HttpError>>' is not assignable to type 'Promise<CustomerAddressDto[]>'.
+        Type 'Result<CustomerAddressDto[], HttpError>' is missing the following properties from type 'CustomerAddressDto[]': length, pop, push, concat, and 29 more.
+src/modules/customer-address/application/use-cases/update-customer-address.usecase.ts(23,45): error TS18048: 'updatedCustomerAddressResult.error' is possibly 'undefined'.
+src/modules/customer-address/application/use-cases/update-customer-address.usecase.ts(28,47): error TS2345: Argument of type 'CustomerAddress | undefined' is not assignable to parameter of type 'CustomerAddress'.
+  Type 'undefined' is not assignable to type 'CustomerAddress'.
+src/modules/customer-address/application/use-cases/update-customer-address.usecase.ts(30,78): error TS18048: 'updatedCustomerAddress' is possibly 'undefined'.
+src/modules/customer-address/application/use-cases/update-customer-address.usecase.ts(32,60): error TS2345: Argument of type 'CustomerAddress | null' is not assignable to parameter of type 'CustomerAddress'.
+  Type 'null' is not assignable to type 'CustomerAddress'.
+src/modules/customer-address/domain/customer-address.entity.ts(27,5): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/modules/customer-address/domain/customer-address.entity.ts(35,5): error TS2322: Type 'Address | undefined' is not assignable to type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/customer-address/http/__tests__/customer-address.integration.spec.ts(3,24): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/customer-address/http/__tests__/customer-address.integration.spec.ts(58,7): error TS2353: Object literal may only specify known properties, and 'is_active' does not exist in type 'IUserProps'.
+src/modules/customer-address/http/__tests__/customer-address.integration.spec.ts(65,5): error TS2322: Type 'User | undefined' is not assignable to type 'User'.
+  Type 'undefined' is not assignable to type 'User'.
+src/modules/customer-address/http/__tests__/customer-address.integration.spec.ts(81,5): error TS2322: Type 'Address | undefined' is not assignable to type 'Address'.
+  Type 'undefined' is not assignable to type 'Address'.
+src/modules/customer-address/http/__tests__/customer-address.integration.spec.ts(95,5): error TS2322: Type 'CustomerAddress | undefined' is not assignable to type 'CustomerAddress'.
+  Type 'undefined' is not assignable to type 'CustomerAddress'.
+src/modules/customer-address/http/controller.ts(32,19): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/customer-address/http/controller.ts(33,26): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/customer-address/http/controller.ts(64,11): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/modules/customer-address/http/controller.ts(74,17): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/customer-address/http/controller.ts(75,24): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/customer-address/http/controller.ts(95,19): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/customer-address/http/controller.ts(96,26): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/customer-address/http/controller.ts(115,17): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/customer-address/http/controller.ts(116,24): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/customer-address/infrastructure/customer-address.mapper.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'CustomerAddress'.
+src/modules/customer-address/infrastructure/customer-address.mapper.ts(2,52): error TS2305: Module '"@prisma/client"' has no exported member 'Address'.
+src/modules/customer-address/infrastructure/customer-address.mapper.ts(17,7): error TS2322: Type 'CustomerAddress | undefined' is not assignable to type 'CustomerAddress'.
+  Type 'undefined' is not assignable to type 'CustomerAddress'.
+src/modules/delivery-status/application/dtos/create-delivery-status.dto.ts(5,3): error TS2564: Property 'delivery_id' has no initializer and is not definitely assigned in the constructor.
+src/modules/delivery-status/application/dtos/create-delivery-status.dto.ts(8,3): error TS2564: Property 'status' has no initializer and is not definitely assigned in the constructor.
+src/modules/delivery-status/application/use-cases/create-delivery-status.usecase.ts(20,52): error TS18048: 'deliveryStatusResult.error' is possibly 'undefined'.
+src/modules/delivery-status/application/use-cases/create-delivery-status.usecase.ts(25,46): error TS2345: Argument of type 'DeliveryStatus | undefined' is not assignable to parameter of type 'DeliveryStatus'.
+  Type 'undefined' is not assignable to type 'DeliveryStatus'.
+src/modules/delivery-status/application/use-cases/get-delivery-status.usecase.ts(11,5): error TS2322: Type 'DeliveryStatus | null' is not assignable to type 'Result<DeliveryStatus | null, HttpError>'.
+  Type 'null' is not assignable to type 'Result<DeliveryStatus | null, HttpError>'.
+src/modules/delivery-status/application/use-cases/list-delivery-statuses.usecase.ts(11,5): error TS2739: Type 'DeliveryStatus[]' is missing the following properties from type 'Result<DeliveryStatus[], HttpError>': success, isSuccess, isFailure
+src/modules/delivery-status/application/use-cases/update-delivery-status.usecase.ts(23,54): error TS2345: Argument of type 'Error | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'Error' is not assignable to type 'string'.
+src/modules/delivery-status/application/use-cases/update-delivery-status.usecase.ts(28,46): error TS2345: Argument of type 'DeliveryStatus | undefined' is not assignable to parameter of type 'DeliveryStatus'.
+  Type 'undefined' is not assignable to type 'DeliveryStatus'.
+src/modules/delivery-status/application/use-cases/update-delivery-status.usecase.ts(30,58): error TS2345: Argument of type 'DeliveryStatus | undefined' is not assignable to parameter of type 'DeliveryStatus'.
+  Type 'undefined' is not assignable to type 'DeliveryStatus'.
+src/modules/delivery-status/http/__tests__/delivery-status.integration.spec.ts(4,24): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery-status/http/__tests__/delivery-status.integration.spec.ts(7,21): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/delivery-status/http/__tests__/delivery-status.integration.spec.ts(7,26): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/delivery-status/http/__tests__/delivery-status.integration.spec.ts(7,31): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/delivery-status/http/__tests__/delivery-status.integration.spec.ts(8,13): error TS7006: Parameter 'roles' implicitly has an 'any' type.
+src/modules/delivery-status/http/__tests__/delivery-status.integration.spec.ts(8,24): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/delivery-status/http/__tests__/delivery-status.integration.spec.ts(8,29): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/delivery-status/http/__tests__/delivery-status.integration.spec.ts(8,34): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/delivery-status/infrastructure/delivery-status.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'DeliveryStatus'.
+src/modules/delivery-status/infrastructure/prisma-delivery-status.repository.ts(11,9): error TS2416: Property 'findById' in type 'PrismaDeliveryStatusRepository' is not assignable to the same property in base type 'IDeliveryStatusRepository'.
+  Type '(id: string) => Promise<Result<DeliveryStatus | null, HttpError>>' is not assignable to type '(id: string) => Promise<DeliveryStatus | null>'.
+    Type 'Promise<Result<DeliveryStatus | null, HttpError>>' is not assignable to type 'Promise<DeliveryStatus | null>'.
+      Type 'Result<DeliveryStatus | null, HttpError>' is missing the following properties from type 'DeliveryStatus': delivery_id, status, notes, id, and 2 more.
+src/modules/delivery-status/infrastructure/prisma-delivery-status.repository.ts(28,9): error TS2416: Property 'findAll' in type 'PrismaDeliveryStatusRepository' is not assignable to the same property in base type 'IDeliveryStatusRepository'.
+  Type '() => Promise<Result<DeliveryStatus[], HttpError>>' is not assignable to type '() => Promise<DeliveryStatus[]>'.
+    Type 'Promise<Result<DeliveryStatus[], HttpError>>' is not assignable to type 'Promise<DeliveryStatus[]>'.
+      Type 'Result<DeliveryStatus[], HttpError>' is missing the following properties from type 'DeliveryStatus[]': length, pop, push, concat, and 29 more.
+src/modules/delivery-status/infrastructure/prisma-delivery-status.repository.ts(38,9): error TS2416: Property 'save' in type 'PrismaDeliveryStatusRepository' is not assignable to the same property in base type 'IDeliveryStatusRepository'.
+  Type '(deliveryStatus: DeliveryStatus) => Promise<Result<DeliveryStatus, HttpError>>' is not assignable to type '(deliveryStatus: DeliveryStatus) => Promise<void>'.
+    Type 'Promise<Result<DeliveryStatus, HttpError>>' is not assignable to type 'Promise<void>'.
+      Type 'Result<DeliveryStatus, HttpError>' is not assignable to type 'void'.
+src/modules/delivery-status/infrastructure/prisma-delivery-status.repository.ts(55,9): error TS2416: Property 'delete' in type 'PrismaDeliveryStatusRepository' is not assignable to the same property in base type 'IDeliveryStatusRepository'.
+  Type '(id: string) => Promise<Result<null, HttpError>>' is not assignable to type '(id: string) => Promise<void>'.
+    Type 'Promise<Result<null, HttpError>>' is not assignable to type 'Promise<void>'.
+      Type 'Result<null, HttpError>' is not assignable to type 'void'.
+src/modules/delivery-status/presentation/http/presenters/delivery-status.presenter.ts(10,34): error TS2339: Property 'created_at' does not exist on type 'DeliveryStatus'.
+src/modules/delivery-window/application/use-cases/create-delivery-window.usecase.ts(21,52): error TS18048: 'deliveryWindowResult.error' is possibly 'undefined'.
+src/modules/delivery-window/application/use-cases/create-delivery-window.usecase.ts(26,46): error TS2345: Argument of type 'DeliveryWindow | undefined' is not assignable to parameter of type 'DeliveryWindow'.
+  Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/application/use-cases/create-delivery-window.usecase.ts(28,5): error TS2322: Type 'Result<DeliveryWindow | undefined, HttpError>' is not assignable to type 'Result<DeliveryWindow, HttpError>'.
+  Type 'DeliveryWindow | undefined' is not assignable to type 'DeliveryWindow'.
+    Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/application/use-cases/update-delivery-window.usecase.ts(21,52): error TS18048: 'updatedDeliveryWindowResult.error' is possibly 'undefined'.
+src/modules/delivery-window/application/use-cases/update-delivery-window.usecase.ts(26,48): error TS2345: Argument of type 'DeliveryWindow | undefined' is not assignable to parameter of type 'DeliveryWindow'.
+  Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/application/use-cases/update-delivery-window.usecase.ts(28,5): error TS2322: Type 'Result<DeliveryWindow | undefined, HttpError>' is not assignable to type 'Result<DeliveryWindow, HttpError>'.
+  Type 'DeliveryWindow | undefined' is not assignable to type 'DeliveryWindow'.
+    Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(25,5): error TS2353: Object literal may only specify known properties, and 'id' does not exist in type 'DeliveryWindowProps'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(39,64): error TS2345: Argument of type 'DeliveryWindow | undefined' is not assignable to parameter of type 'DeliveryWindow'.
+  Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(74,53): error TS2345: Argument of type 'Result<DeliveryWindow | undefined, HttpError>' is not assignable to parameter of type 'Result<DeliveryWindow, HttpError>'.
+  Type 'DeliveryWindow | undefined' is not assignable to type 'DeliveryWindow'.
+    Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(109,53): error TS2345: Argument of type 'Result<(DeliveryWindow | undefined)[], Error>' is not assignable to parameter of type 'Result<DeliveryWindow[], Error>'.
+  Type '(DeliveryWindow | undefined)[]' is not assignable to type 'DeliveryWindow[]'.
+    Type 'DeliveryWindow | undefined' is not assignable to type 'DeliveryWindow'.
+      Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(119,54): error TS2345: Argument of type 'Result<DeliveryWindow | undefined, HttpError>' is not assignable to parameter of type 'Result<DeliveryWindow, HttpError>'.
+  Type 'DeliveryWindow | undefined' is not assignable to type 'DeliveryWindow'.
+    Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(120,68): error TS18048: 'mockDeliveryWindow' is possibly 'undefined'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(123,37): error TS18048: 'mockDeliveryWindow' is possibly 'undefined'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(135,64): error TS18048: 'mockDeliveryWindow' is possibly 'undefined'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(135,116): error TS18048: 'mockDeliveryWindow' is possibly 'undefined'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(140,53): error TS2345: Argument of type 'Result<DeliveryWindow | undefined, HttpError>' is not assignable to parameter of type 'Result<DeliveryWindow, HttpError>'.
+  Type 'DeliveryWindow | undefined' is not assignable to type 'DeliveryWindow'.
+    Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(142,35): error TS18048: 'mockDeliveryWindow' is possibly 'undefined'.
+src/modules/delivery-window/http/__tests__/delivery-window.controller.spec.ts(162,71): error TS18048: 'mockDeliveryWindow' is possibly 'undefined'.
+src/modules/delivery-window/http/__tests__/delivery-window.integration.spec.ts(3,24): error TS2305: Module '"@prisma/client"' has no exported member 'ServiceZone'.
+src/modules/delivery-window/http/controller.ts(28,64): error TS2345: Argument of type 'DeliveryWindow | undefined' is not assignable to parameter of type 'DeliveryWindow'.
+  Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/http/controller.ts(40,48): error TS2345: Argument of type 'DeliveryWindow[] | undefined' is not assignable to parameter of type 'DeliveryWindow[]'.
+  Type 'undefined' is not assignable to type 'DeliveryWindow[]'.
+src/modules/delivery-window/http/controller.ts(51,64): error TS2345: Argument of type 'DeliveryWindow | undefined' is not assignable to parameter of type 'DeliveryWindow'.
+  Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/http/controller.ts(63,64): error TS2345: Argument of type 'DeliveryWindow | undefined' is not assignable to parameter of type 'DeliveryWindow'.
+  Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/infrastructure/delivery-window.mapper.ts(3,10): error TS2305: Module '"@prisma/client"' has no exported member 'DeliveryWindow'.
+src/modules/delivery-window/infrastructure/delivery-window.mapper.ts(29,7): error TS2322: Type 'DeliveryWindow | undefined' is not assignable to type 'DeliveryWindow'.
+  Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery-window/presentation/mappers/delivery-window.mapper.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'DeliveryWindow'.
+src/modules/delivery-window/presentation/mappers/delivery-window.mapper.ts(23,5): error TS2322: Type 'DeliveryWindow | undefined' is not assignable to type 'DeliveryWindow'.
+  Type 'undefined' is not assignable to type 'DeliveryWindow'.
+src/modules/delivery/application/dtos/create-delivery.dto.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/application/dtos/delivery.dto.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/application/dtos/update-delivery.dto.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/application/use-cases/create-delivery.usecase.ts(20,52): error TS2345: Argument of type 'Error | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'Error' is not assignable to type 'string'.
+src/modules/delivery/application/use-cases/create-delivery.usecase.ts(25,40): error TS2345: Argument of type 'Delivery | undefined' is not assignable to parameter of type 'Delivery'.
+  Type 'undefined' is not assignable to type 'Delivery'.
+src/modules/delivery/application/use-cases/create-delivery.usecase.ts(27,44): error TS2345: Argument of type 'Delivery | undefined' is not assignable to parameter of type 'Delivery'.
+  Type 'undefined' is not assignable to type 'Delivery'.
+src/modules/delivery/application/use-cases/update-delivery.usecase.ts(24,39): error TS18048: 'updatedDeliveryResult.error' is possibly 'undefined'.
+src/modules/delivery/application/use-cases/update-delivery.usecase.ts(30,40): error TS2345: Argument of type 'Delivery | undefined' is not assignable to parameter of type 'Delivery'.
+  Type 'undefined' is not assignable to type 'Delivery'.
+src/modules/delivery/application/use-cases/update-delivery.usecase.ts(32,49): error TS2345: Argument of type 'Delivery | undefined' is not assignable to parameter of type 'Delivery'.
+  Type 'undefined' is not assignable to type 'Delivery'.
+src/modules/delivery/domain/delivery.entity.ts(3,10): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/http/__tests__/delivery.controller.spec.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/http/__tests__/delivery.integration.spec.ts(2,24): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/delivery/http/__tests__/delivery.integration.spec.ts(2,34): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/http/controller.ts(36,19): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/controller.ts(37,26): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/controller.ts(55,17): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/controller.ts(56,24): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/controller.ts(68,17): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/controller.ts(69,24): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/controller.ts(83,19): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/controller.ts(84,26): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/controller.ts(102,17): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/controller.ts(103,24): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/delivery/http/dto/create-delivery.schema.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/http/dto/update-delivery.schema.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/infrastructure/__tests__/delivery/prisma-delivery.repository.spec.ts(5,10): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/infrastructure/__tests__/delivery/prisma-delivery.repository.spec.ts(6,10): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/infrastructure/__tests__/delivery/prisma-delivery.repository.spec.ts(35,9): error TS18048: 'deliveryEntity' is possibly 'undefined'.
+src/modules/delivery/infrastructure/__tests__/delivery/prisma-delivery.repository.spec.ts(66,27): error TS2345: Argument of type 'Delivery | undefined' is not assignable to parameter of type 'Delivery'.
+  Type 'undefined' is not assignable to type 'Delivery'.
+src/modules/delivery/infrastructure/__tests__/delivery/prisma-delivery.repository.spec.ts(67,58): error TS2345: Argument of type 'Delivery | undefined' is not assignable to parameter of type 'Delivery'.
+  Type 'undefined' is not assignable to type 'Delivery'.
+src/modules/delivery/infrastructure/__tests__/delivery/prisma-delivery.repository.spec.ts(71,20): error TS18048: 'deliveryEntity' is possibly 'undefined'.
+src/modules/delivery/infrastructure/__tests__/prisma-delivery.repository.spec.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'Delivery'.
+src/modules/delivery/infrastructure/__tests__/prisma-delivery.repository.spec.ts(4,38): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/infrastructure/delivery.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'Delivery'.
+src/modules/delivery/infrastructure/delivery.mapper.ts(1,38): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/delivery/infrastructure/delivery.mapper.ts(26,5): error TS2322: Type 'Delivery | undefined' is not assignable to type 'Delivery'.
+  Type 'undefined' is not assignable to type 'Delivery'.
+src/modules/driver-location/http/__tests__/driver-location.controller.spec.ts(45,55): error TS2339: Property 'value' does not exist on type 'Result<DriverLocation, Error>'.
+  Property 'value' does not exist on type '{ success: false; error: Error; }'.
+src/modules/driver-location/http/__tests__/driver-location.controller.spec.ts(104,49): error TS2339: Property 'value' does not exist on type 'Result<DriverLocation, Error>'.
+  Property 'value' does not exist on type '{ success: false; error: Error; }'.
+src/modules/driver-location/http/__tests__/driver-location.integration.spec.ts(3,24): error TS2305: Module '"@prisma/client"' has no exported member 'VehicleType'.
+src/modules/driver-location/http/__tests__/driver-location.integration.spec.ts(7,21): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/driver-location/http/__tests__/driver-location.integration.spec.ts(7,26): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/driver-location/http/__tests__/driver-location.integration.spec.ts(7,31): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/driver-location/http/__tests__/driver-location.integration.spec.ts(8,13): error TS7006: Parameter 'roles' implicitly has an 'any' type.
+src/modules/driver-location/http/__tests__/driver-location.integration.spec.ts(8,24): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/driver-location/http/__tests__/driver-location.integration.spec.ts(8,29): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/driver-location/http/__tests__/driver-location.integration.spec.ts(8,34): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/driver-location/http/controller.ts(25,18): error TS2551: Property 'isSuccess' does not exist on type 'Result<DriverLocationDto, HttpError>'. Did you mean 'success'?
+  Property 'isSuccess' does not exist on type '{ success: true; value: DriverLocationDto; }'.
+src/modules/driver-location/http/controller.ts(26,53): error TS2339: Property 'value' does not exist on type 'Result<DriverLocationDto, HttpError>'.
+  Property 'value' does not exist on type '{ success: false; error: HttpError; }'.
+src/modules/driver-location/http/controller.ts(28,21): error TS2339: Property 'error' does not exist on type 'Result<DriverLocationDto, HttpError>'.
+  Property 'error' does not exist on type '{ success: true; value: DriverLocationDto; }'.
+src/modules/driver-location/http/controller.ts(39,18): error TS2551: Property 'isSuccess' does not exist on type 'Result<DriverLocationDto | null, HttpError>'. Did you mean 'success'?
+  Property 'isSuccess' does not exist on type '{ success: false; error: HttpError; }'.
+src/modules/driver-location/http/controller.ts(40,20): error TS2339: Property 'value' does not exist on type 'Result<DriverLocationDto | null, HttpError>'.
+  Property 'value' does not exist on type '{ success: false; error: HttpError; }'.
+src/modules/driver-location/http/controller.ts(41,50): error TS2339: Property 'value' does not exist on type 'Result<DriverLocationDto | null, HttpError>'.
+  Property 'value' does not exist on type '{ success: false; error: HttpError; }'.
+src/modules/driver-location/http/controller.ts(46,21): error TS2339: Property 'error' does not exist on type 'Result<DriverLocationDto | null, HttpError>'.
+  Property 'error' does not exist on type '{ success: true; value: DriverLocationDto | null; }'.
+src/modules/driver-location/http/controller.ts(60,18): error TS2551: Property 'isSuccess' does not exist on type 'Result<DriverLocationDto, HttpError>'. Did you mean 'success'?
+  Property 'isSuccess' does not exist on type '{ success: true; value: DriverLocationDto; }'.
+src/modules/driver-location/http/controller.ts(61,48): error TS2339: Property 'value' does not exist on type 'Result<DriverLocationDto, HttpError>'.
+  Property 'value' does not exist on type '{ success: false; error: HttpError; }'.
+src/modules/driver-location/http/controller.ts(63,21): error TS2339: Property 'error' does not exist on type 'Result<DriverLocationDto, HttpError>'.
+  Property 'error' does not exist on type '{ success: true; value: DriverLocationDto; }'.
+src/modules/driver-location/http/controller.ts(74,18): error TS2551: Property 'isSuccess' does not exist on type 'Result<void, HttpError>'. Did you mean 'success'?
+  Property 'isSuccess' does not exist on type '{ success: false; error: HttpError; }'.
+src/modules/driver-location/http/controller.ts(77,21): error TS2339: Property 'error' does not exist on type 'Result<void, HttpError>'.
+  Property 'error' does not exist on type '{ success: true; value: void; }'.
+src/modules/driver-location/infrastructure/driver-location.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'DriverLocation'.
+src/modules/driver-location/presentation/mappers/driver-location.mapper.ts(3,10): error TS2305: Module '"@prisma/client"' has no exported member 'DriverLocation'.
+src/modules/driver-location/presentation/mappers/driver-location.mapper.ts(33,16): error TS2551: Property 'isSuccess' does not exist on type 'Result<DriverLocation, Error>'. Did you mean 'success'?
+  Property 'isSuccess' does not exist on type '{ success: true; value: DriverLocation; }'.
+src/modules/driver-location/presentation/mappers/driver-location.mapper.ts(34,21): error TS2339: Property 'value' does not exist on type 'Result<DriverLocation, Error>'.
+  Property 'value' does not exist on type '{ success: false; error: Error; }'.
+src/modules/driver-location/presentation/mappers/driver-location.mapper.ts(36,20): error TS2339: Property 'error' does not exist on type 'Result<DriverLocation, Error>'.
+  Property 'error' does not exist on type '{ success: true; value: DriverLocation; }'.
+src/modules/notification/application/use-cases/create-notification.usecase.ts(20,52): error TS18048: 'notificationResult.error' is possibly 'undefined'.
+src/modules/notification/application/use-cases/create-notification.usecase.ts(25,44): error TS2345: Argument of type 'Notification | undefined' is not assignable to parameter of type 'Notification'.
+  Type 'undefined' is not assignable to type 'Notification'.
+src/modules/notification/application/use-cases/create-notification.usecase.ts(27,54): error TS2345: Argument of type 'Notification | undefined' is not assignable to parameter of type 'Notification'.
+  Type 'undefined' is not assignable to type 'Notification'.
+src/modules/notification/application/use-cases/delete-notification.usecase.ts(13,9): error TS18047: 'result' is possibly 'null'.
+src/modules/notification/application/use-cases/delete-notification.usecase.ts(13,16): error TS2339: Property 'isSuccess' does not exist on type 'Notification'.
+src/modules/notification/application/use-cases/delete-notification.usecase.ts(14,12): error TS18047: 'result' is possibly 'null'.
+src/modules/notification/application/use-cases/delete-notification.usecase.ts(14,19): error TS2339: Property 'value' does not exist on type 'Notification'.
+src/modules/notification/application/use-cases/delete-notification.usecase.ts(22,7): error TS2322: Type 'Notification | null' is not assignable to type 'Result<null, HttpError>'.
+  Type 'null' is not assignable to type 'Result<null, HttpError>'.
+src/modules/notification/application/use-cases/get-notification.usecase.ts(17,9): error TS18047: 'result' is possibly 'null'.
+src/modules/notification/application/use-cases/get-notification.usecase.ts(17,16): error TS2339: Property 'isSuccess' does not exist on type 'Notification'.
+src/modules/notification/application/use-cases/get-notification.usecase.ts(18,12): error TS18047: 'result' is possibly 'null'.
+src/modules/notification/application/use-cases/get-notification.usecase.ts(18,19): error TS2339: Property 'value' does not exist on type 'Notification'.
+src/modules/notification/application/use-cases/get-notification.usecase.ts(21,56): error TS18047: 'result' is possibly 'null'.
+src/modules/notification/application/use-cases/get-notification.usecase.ts(21,63): error TS2339: Property 'value' does not exist on type 'Notification'.
+src/modules/notification/application/use-cases/get-notification.usecase.ts(24,7): error TS2322: Type 'Notification | null' is not assignable to type 'Result<NotificationDto | null, HttpError>'.
+  Type 'null' is not assignable to type 'Result<NotificationDto | null, HttpError>'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(20,9): error TS18047: 'result' is possibly 'null'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(20,16): error TS2339: Property 'isSuccess' does not exist on type 'Notification'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(21,12): error TS18047: 'result' is possibly 'null'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(21,19): error TS2339: Property 'value' does not exist on type 'Notification'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(25,45): error TS18047: 'result' is possibly 'null'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(25,52): error TS2339: Property 'value' does not exist on type 'Notification'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(28,9): error TS18047: 'result' is possibly 'null'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(28,16): error TS2339: Property 'value' does not exist on type 'Notification'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(41,46): error TS2345: Argument of type 'Notification | undefined' is not assignable to parameter of type 'Notification'.
+  Type 'undefined' is not assignable to type 'Notification'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(43,56): error TS2345: Argument of type 'Notification | undefined' is not assignable to parameter of type 'Notification'.
+  Type 'undefined' is not assignable to type 'Notification'.
+src/modules/notification/application/use-cases/update-notification.usecase.ts(46,7): error TS2322: Type 'Notification | null' is not assignable to type 'Result<NotificationDto, HttpError>'.
+  Type 'null' is not assignable to type 'Result<NotificationDto, HttpError>'.
+src/modules/notification/infrastructure/notification.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'Notification'.
+src/modules/notification/infrastructure/notification.mapper.ts(28,7): error TS2322: Type 'Notification | undefined' is not assignable to type 'Notification'.
+  Type 'undefined' is not assignable to type 'Notification'.
+src/modules/notification/infrastructure/prisma-notification.repository.ts(11,9): error TS2416: Property 'findById' in type 'PrismaNotificationRepository' is not assignable to the same property in base type 'INotificationRepository'.
+  Type '(id: string) => Promise<Result<Notification | null, HttpError>>' is not assignable to type '(id: string) => Promise<Notification | null>'.
+    Type 'Promise<Result<Notification | null, HttpError>>' is not assignable to type 'Promise<Notification | null>'.
+      Type 'Result<Notification | null, HttpError>' is missing the following properties from type 'Notification': title, message, recipient, createdAt, and 3 more.
+src/modules/notification/infrastructure/prisma-notification.repository.ts(22,9): error TS2416: Property 'findAll' in type 'PrismaNotificationRepository' is not assignable to the same property in base type 'INotificationRepository'.
+  Type '() => Promise<Result<Notification[], HttpError>>' is not assignable to type '() => Promise<Notification[]>'.
+    Type 'Promise<Result<Notification[], HttpError>>' is not assignable to type 'Promise<Notification[]>'.
+      Type 'Result<Notification[], HttpError>' is missing the following properties from type 'Notification[]': length, pop, push, concat, and 29 more.
+src/modules/notification/infrastructure/prisma-notification.repository.ts(31,9): error TS2416: Property 'save' in type 'PrismaNotificationRepository' is not assignable to the same property in base type 'INotificationRepository'.
+  Type '(notification: Notification) => Promise<Result<Notification, HttpError>>' is not assignable to type '(notification: Notification) => Promise<Notification>'.
+    Type 'Promise<Result<Notification, HttpError>>' is not assignable to type 'Promise<Notification>'.
+      Type 'Result<Notification, HttpError>' is missing the following properties from type 'Notification': title, message, recipient, createdAt, and 3 more.
+src/modules/notification/infrastructure/prisma-notification.repository.ts(45,9): error TS2416: Property 'delete' in type 'PrismaNotificationRepository' is not assignable to the same property in base type 'INotificationRepository'.
+  Type '(id: string) => Promise<Result<null, HttpError>>' is not assignable to type '(id: string) => Promise<void>'.
+    Type 'Promise<Result<null, HttpError>>' is not assignable to type 'Promise<void>'.
+      Type 'Result<null, HttpError>' is not assignable to type 'void'.
+src/modules/notification/presentation/http/__tests__/notification.controller.spec.ts(46,59): error TS2345: Argument of type '{ success: true; value: any; }' is not assignable to parameter of type 'Result<NotificationDto, HttpError> | Promise<Result<NotificationDto, HttpError>>'.
+  Type '{ success: true; value: any; }' is missing the following properties from type 'Result<NotificationDto, HttpError>': isSuccess, isFailure
+src/modules/notification/presentation/http/__tests__/notification.controller.spec.ts(72,59): error TS2345: Argument of type '{ success: true; value: any; }' is not assignable to parameter of type 'Result<NotificationDto, HttpError> | Promise<Result<NotificationDto, HttpError>>'.
+  Type '{ success: true; value: any; }' is missing the following properties from type 'Result<NotificationDto, HttpError>': isSuccess, isFailure
+src/modules/notification/presentation/http/__tests__/notification.controller.spec.ts(98,56): error TS2345: Argument of type '{ success: true; value: any; }' is not assignable to parameter of type 'Result<NotificationDto | null, HttpError> | Promise<Result<NotificationDto | null, HttpError>>'.
+  Type '{ success: true; value: any; }' is missing the following properties from type 'Result<NotificationDto | null, HttpError>': isSuccess, isFailure
+src/modules/notification/presentation/http/__tests__/notification.controller.spec.ts(122,59): error TS2345: Argument of type '{ success: true; value: any; }' is not assignable to parameter of type 'Result<NotificationDto, HttpError> | Promise<Result<NotificationDto, HttpError>>'.
+  Type '{ success: true; value: any; }' is missing the following properties from type 'Result<NotificationDto, HttpError>': isSuccess, isFailure
+src/modules/notification/presentation/http/__tests__/notification.controller.spec.ts(141,59): error TS2345: Argument of type '{ success: true; value: undefined; }' is not assignable to parameter of type 'Result<null, HttpError> | Promise<Result<null, HttpError>>'.
+  Type '{ success: true; value: undefined; }' is missing the following properties from type 'Result<null, HttpError>': isSuccess, isFailure
+src/modules/notification/presentation/http/__tests__/notification.integration.spec.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+src/modules/notification/presentation/http/__tests__/notification.integration.spec.ts(8,21): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/notification/presentation/http/__tests__/notification.integration.spec.ts(8,26): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/notification/presentation/http/__tests__/notification.integration.spec.ts(8,31): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/notification/presentation/http/__tests__/notification.integration.spec.ts(9,13): error TS7006: Parameter 'roles' implicitly has an 'any' type.
+src/modules/notification/presentation/http/__tests__/notification.integration.spec.ts(9,24): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/notification/presentation/http/__tests__/notification.integration.spec.ts(9,29): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/notification/presentation/http/__tests__/notification.integration.spec.ts(9,34): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/notification/presentation/http/notification.controller.ts(47,18): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/notification/presentation/http/notification.controller.ts(47,57): error TS18048: 'result.error' is possibly 'undefined'.
+src/modules/order-promotion/__tests__/order-promotion.usecase.spec.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'Order'.
+src/modules/order-promotion/__tests__/order-promotion.usecase.spec.ts(4,17): error TS2305: Module '"@prisma/client"' has no exported member 'Promotion'.
+src/modules/order-promotion/__tests__/order-promotion.usecase.spec.ts(4,28): error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+src/modules/order-promotion/application/use-cases/create-order-promotion.usecase.ts(19,52): error TS18048: 'orderPromotionResult.error' is possibly 'undefined'.
+src/modules/order-promotion/application/use-cases/create-order-promotion.usecase.ts(24,63): error TS2345: Argument of type 'OrderPromotion | undefined' is not assignable to parameter of type 'OrderPromotion'.
+  Type 'undefined' is not assignable to type 'OrderPromotion'.
+src/modules/order-promotion/application/use-cases/update-order-promotion.usecase.ts(23,54): error TS18048: 'updatedOrderPromotionResult.error' is possibly 'undefined'.
+src/modules/order-promotion/application/use-cases/update-order-promotion.usecase.ts(28,70): error TS2345: Argument of type 'OrderPromotion | undefined' is not assignable to parameter of type 'OrderPromotion'.
+  Type 'undefined' is not assignable to type 'OrderPromotion'.
+src/modules/order-promotion/infrastructure/order-promotion.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'OrderPromotion'.
+src/modules/order-promotion/infrastructure/order-promotion.mapper.ts(18,75): error TS18048: 'orderPromotionResult.error' is possibly 'undefined'.
+src/modules/order-promotion/infrastructure/order-promotion.mapper.ts(20,5): error TS2322: Type 'OrderPromotion | undefined' is not assignable to type 'OrderPromotion'.
+  Type 'undefined' is not assignable to type 'OrderPromotion'.
+src/modules/order-promotion/presentation/http/__tests__/order-promotion.controller.spec.ts(7,27): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/order-promotion/presentation/http/__tests__/order-promotion.controller.spec.ts(7,32): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/order-promotion/presentation/http/__tests__/order-promotion.controller.spec.ts(7,37): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/order-promotion/presentation/http/__tests__/order-promotion.integration.spec.ts(5,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/order-promotion/presentation/http/order-promotion.routes.ts(7,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/order/application/use-cases/create-order.usecase.ts(24,43): error TS2345: Argument of type 'OrderCreationError | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'OrderCreationError' is not assignable to type 'string'.
+src/modules/order/application/use-cases/create-order.usecase.ts(28,19): error TS18048: 'orderItems' is possibly 'undefined'.
+src/modules/order/application/use-cases/create-order.usecase.ts(34,7): error TS2322: Type 'OrderItem[] | undefined' is not assignable to type 'OrderItem[]'.
+  Type 'undefined' is not assignable to type 'OrderItem[]'.
+src/modules/order/application/use-cases/create-order.usecase.ts(39,52): error TS2345: Argument of type 'OrderCreationError | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'OrderCreationError' is not assignable to type 'string'.
+src/modules/order/application/use-cases/create-order.usecase.ts(43,37): error TS2345: Argument of type 'Order | undefined' is not assignable to parameter of type 'Order'.
+  Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/application/use-cases/create-order.usecase.ts(45,5): error TS2322: Type 'Result<Order | undefined, HttpError>' is not assignable to type 'Result<Order, HttpError>'.
+  Type 'Order | undefined' is not assignable to type 'Order'.
+    Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/application/use-cases/update-order.usecase.ts(28,52): error TS18048: 'updatedOrderResult.error' is possibly 'undefined'.
+src/modules/order/application/use-cases/update-order.usecase.ts(33,37): error TS2345: Argument of type 'Order | undefined' is not assignable to parameter of type 'Order'.
+  Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/application/use-cases/update-order.usecase.ts(35,5): error TS2322: Type 'Result<Order | undefined, HttpError>' is not assignable to type 'Result<Order, HttpError>'.
+  Type 'Order | undefined' is not assignable to type 'Order'.
+    Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/infrastructure/__tests__/prisma-order.repository.spec.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'Order'.
+src/modules/order/infrastructure/__tests__/prisma-order.repository.spec.ts(4,32): error TS2305: Module '"@prisma/client"' has no exported member 'OrderItem'.
+src/modules/order/infrastructure/__tests__/prisma-order.repository.spec.ts(4,62): error TS2305: Module '"@prisma/client"' has no exported member 'Product'.
+src/modules/order/infrastructure/__tests__/prisma-order.repository.spec.ts(5,10): error TS2305: Module '"@prisma/client"' has no exported member 'OrderStatus'.
+src/modules/order/infrastructure/order.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'Order'.
+src/modules/order/infrastructure/order.mapper.ts(1,32): error TS2305: Module '"@prisma/client"' has no exported member 'OrderItem'.
+src/modules/order/infrastructure/order.mapper.ts(1,62): error TS2305: Module '"@prisma/client"' has no exported member 'OrderStatus'.
+src/modules/order/infrastructure/order.mapper.ts(19,53): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/modules/order/infrastructure/order.mapper.ts(37,7): error TS2322: Type 'unknown[] | undefined' is not assignable to type 'OrderItem[]'.
+  Type 'undefined' is not assignable to type 'OrderItem[]'.
+src/modules/order/infrastructure/order.mapper.ts(49,5): error TS2322: Type 'Order | undefined' is not assignable to type 'Order'.
+  Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/infrastructure/prisma-order.repository.ts(31,43): error TS7006: Parameter 'tx' implicitly has an 'any' type.
+src/modules/order/infrastructure/prisma-order.repository.ts(59,43): error TS7006: Parameter 'tx' implicitly has an 'any' type.
+src/modules/order/presentation/http/__tests__/order.controller.spec.ts(79,13): error TS2322: Type 'OrderItem | undefined' is not assignable to type 'OrderItem'.
+  Type 'undefined' is not assignable to type 'OrderItem'.
+src/modules/order/presentation/http/__tests__/order.controller.spec.ts(92,56): error TS2345: Argument of type 'Result<Order | undefined, HttpError>' is not assignable to parameter of type 'Result<Order, HttpError>'.
+  Type 'Order | undefined' is not assignable to type 'Order'.
+    Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/presentation/http/__tests__/order.controller.spec.ts(108,53): error TS2345: Argument of type 'Result<Order | undefined, HttpError>' is not assignable to parameter of type 'Result<Order, HttpError>'.
+  Type 'Order | undefined' is not assignable to type 'Order'.
+    Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/presentation/http/__tests__/order.controller.spec.ts(119,58): error TS2345: Argument of type 'Result<(Order | undefined)[], HttpError>' is not assignable to parameter of type 'Result<Order[], HttpError>'.
+  Type '(Order | undefined)[]' is not assignable to type 'Order[]'.
+    Type 'Order | undefined' is not assignable to type 'Order'.
+      Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/presentation/http/__tests__/order.controller.spec.ts(130,56): error TS2345: Argument of type 'Result<Order | undefined, HttpError>' is not assignable to parameter of type 'Result<Order, HttpError>'.
+  Type 'Order | undefined' is not assignable to type 'Order'.
+    Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/presentation/http/__tests__/order.controller.spec.ts(155,57): error TS2345: Argument of type 'Result<Order | undefined, HttpError>' is not assignable to parameter of type 'Result<Order, HttpError>'.
+  Type 'Order | undefined' is not assignable to type 'Order'.
+    Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/presentation/http/__tests__/order.controller.spec.ts(166,56): error TS2345: Argument of type 'Result<Order | undefined, HttpError>' is not assignable to parameter of type 'Result<Order, HttpError>'.
+  Type 'Order | undefined' is not assignable to type 'Order'.
+    Type 'undefined' is not assignable to type 'Order'.
+src/modules/order/presentation/http/__tests__/order.integration.spec.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+src/modules/order/presentation/http/__tests__/order.integration.spec.ts(4,16): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/order/presentation/http/__tests__/order.integration.spec.ts(4,26): error TS2305: Module '"@prisma/client"' has no exported member 'OrderStatus'.
+src/modules/payment/application/dtos/payment.dto.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentMethod'.
+src/modules/payment/application/dtos/payment.dto.ts(1,25): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/payment/application/dtos/update-payment.dto.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentMethod'.
+src/modules/payment/application/dtos/update-payment.dto.ts(2,25): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/payment/application/use-cases/create-payment.usecase.ts(8,10): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/payment/application/use-cases/create-payment.usecase.ts(8,25): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentMethod'.
+src/modules/payment/application/use-cases/create-payment.usecase.ts(37,52): error TS18048: 'paymentResult.error' is possibly 'undefined'.
+src/modules/payment/application/use-cases/create-payment.usecase.ts(42,39): error TS2345: Argument of type 'Payment | undefined' is not assignable to parameter of type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/payment/application/use-cases/create-payment.usecase.ts(44,44): error TS2345: Argument of type 'Payment | undefined' is not assignable to parameter of type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/payment/application/use-cases/update-payment.usecase.ts(23,52): error TS18048: 'updatedPaymentResult.error' is possibly 'undefined'.
+src/modules/payment/application/use-cases/update-payment.usecase.ts(28,39): error TS2345: Argument of type 'Payment | undefined' is not assignable to parameter of type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/payment/application/use-cases/update-payment.usecase.ts(30,44): error TS2345: Argument of type 'Payment | undefined' is not assignable to parameter of type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/payment/application/use-cases/verify-payment.usecase.ts(7,10): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/payment/domain/payment.entity.ts(3,10): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentMethod'.
+src/modules/payment/domain/payment.entity.ts(3,25): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/payment/infrastructure/__tests__/prisma-payment.repository.spec.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'Payment'.
+src/modules/payment/infrastructure/__tests__/prisma-payment.repository.spec.ts(4,36): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentMethod'.
+src/modules/payment/infrastructure/__tests__/prisma-payment.repository.spec.ts(4,51): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/payment/infrastructure/payment.mapper.ts(2,3): error TS2305: Module '"@prisma/client"' has no exported member 'Payment'.
+src/modules/payment/infrastructure/payment.mapper.ts(3,3): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentMethod'.
+src/modules/payment/infrastructure/payment.mapper.ts(4,3): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/payment/infrastructure/payment.mapper.ts(26,68): error TS18048: 'paymentResult.error' is possibly 'undefined'.
+src/modules/payment/infrastructure/payment.mapper.ts(28,5): error TS2322: Type 'Payment | undefined' is not assignable to type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/payment/presentation/http/__tests__/payment.controller.spec.ts(8,10): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentMethod'.
+src/modules/payment/presentation/http/__tests__/payment.controller.spec.ts(8,25): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/payment/presentation/http/__tests__/payment.controller.spec.ts(60,86): error TS2345: Argument of type 'Payment | undefined' is not assignable to parameter of type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/payment/presentation/http/__tests__/payment.controller.spec.ts(77,86): error TS2345: Argument of type 'Payment | undefined' is not assignable to parameter of type 'Payment'.
+  Type 'undefined' is not assignable to type 'Payment'.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(3,10): error TS2305: Module '"@prisma/client"' has no exported member 'Order'.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(3,17): error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(3,23): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentMethod'.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(3,38): error TS2305: Module '"@prisma/client"' has no exported member 'PaymentStatus'.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(3,53): error TS2305: Module '"@prisma/client"' has no exported member 'OrderStatus'.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(7,21): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(7,26): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(7,31): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(8,13): error TS7006: Parameter 'roles' implicitly has an 'any' type.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(8,24): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(8,29): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/payment/presentation/http/__tests__/payment.integration.spec.ts(8,34): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/product-image/application/use-cases/create-product-image.usecase.ts(3,39): error TS2307: Cannot find module '../dtos/create-product-image.dto' or its corresponding type declarations.
+src/modules/product-image/application/use-cases/create-product-image.usecase.ts(24,52): error TS18048: 'productImageResult.error' is possibly 'undefined'.
+src/modules/product-image/application/use-cases/create-product-image.usecase.ts(29,67): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/product-image/application/use-cases/create-product-image.usecase.ts(32,7): error TS2322: Type 'Result<ProductImage, HttpError>' is not assignable to type 'Result<ProductImageDto, HttpError>'.
+  Type 'ProductImage' is not assignable to type 'ProductImageDto'.
+    Types of property 'sort_order' are incompatible.
+      Type 'number | undefined' is not assignable to type 'number'.
+        Type 'undefined' is not assignable to type 'number'.
+src/modules/product-image/application/use-cases/create-product-image.usecase.ts(35,54): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/product-image/application/use-cases/find-all-product-image.usecase.ts(27,7): error TS2322: Type 'Result<ProductImage[], HttpError>' is not assignable to type 'Result<ProductImageDto[], HttpError>'.
+  Type 'ProductImage[]' is not assignable to type 'ProductImageDto[]'.
+    Type 'ProductImage' is not assignable to type 'ProductImageDto'.
+      Types of property 'sort_order' are incompatible.
+        Type 'number | undefined' is not assignable to type 'number'.
+          Type 'undefined' is not assignable to type 'number'.
+src/modules/product-image/application/use-cases/get-product-image.usecase.ts(24,7): error TS2322: Type 'Result<ProductImage | null, HttpError>' is not assignable to type 'Result<ProductImageDto | null, HttpError>'.
+  Type 'ProductImage | null' is not assignable to type 'ProductImageDto | null'.
+    Type 'ProductImage' is not assignable to type 'ProductImageDto'.
+      Types of property 'sort_order' are incompatible.
+        Type 'number | undefined' is not assignable to type 'number'.
+          Type 'undefined' is not assignable to type 'number'.
+src/modules/product-image/application/use-cases/update-product-image.usecase.ts(6,39): error TS2307: Cannot find module '../dtos/update-product-image.dto' or its corresponding type declarations.
+src/modules/product-image/application/use-cases/update-product-image.usecase.ts(19,7): error TS2322: Type 'Result<ProductImage | null, HttpError>' is not assignable to type 'Result<ProductImageDto, HttpError>'.
+  Type 'ProductImage | null' is not assignable to type 'ProductImageDto'.
+    Type 'null' is not assignable to type 'ProductImageDto'.
+src/modules/product-image/application/use-cases/update-product-image.usecase.ts(39,39): error TS18048: 'updatedImageResult.error' is possibly 'undefined'.
+src/modules/product-image/application/use-cases/update-product-image.usecase.ts(45,7): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/product-image/application/use-cases/update-product-image.usecase.ts(49,7): error TS2322: Type 'Result<ProductImage, HttpError>' is not assignable to type 'Result<ProductImageDto, HttpError>'.
+  Type 'ProductImage' is not assignable to type 'ProductImageDto'.
+    Types of property 'sort_order' are incompatible.
+      Type 'number | undefined' is not assignable to type 'number'.
+        Type 'undefined' is not assignable to type 'number'.
+src/modules/product-image/application/use-cases/update-product-image.usecase.ts(52,54): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/product-image/infrastructure/product-image.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'ProductImage'.
+src/modules/product-image/infrastructure/product-image.mapper.ts(16,7): error TS2322: Type 'ProductImage | undefined' is not assignable to type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/product-image/presentation/http/__tests__/product-image.controller.spec.ts(81,42): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/product-image/presentation/http/__tests__/product-image.controller.spec.ts(89,39): error TS18048: 'productImage' is possibly 'undefined'.
+src/modules/product-image/presentation/http/__tests__/product-image.controller.spec.ts(107,42): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/product-image/presentation/http/__tests__/product-image.controller.spec.ts(111,33): error TS18048: 'productImage' is possibly 'undefined'.
+src/modules/product-image/presentation/http/__tests__/product-image.controller.spec.ts(114,39): error TS18048: 'productImage' is possibly 'undefined'.
+src/modules/product-image/presentation/http/__tests__/product-image.controller.spec.ts(130,98): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/product-image/presentation/http/__tests__/product-image.controller.spec.ts(137,42): error TS18048: 'productImage' is possibly 'undefined'.
+src/modules/product-image/presentation/http/__tests__/product-image.controller.spec.ts(167,42): error TS2345: Argument of type 'ProductImage | undefined' is not assignable to parameter of type 'ProductImage'.
+  Type 'undefined' is not assignable to type 'ProductImage'.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(4,24): error TS2305: Module '"@prisma/client"' has no exported member 'Product'.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(4,33): error TS2305: Module '"@prisma/client"' has no exported member 'Vendor'.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(4,41): error TS2305: Module '"@prisma/client"' has no exported member 'ProductImage'.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(9,21): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(9,26): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(9,31): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(10,13): error TS7006: Parameter 'roles' implicitly has an 'any' type.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(10,24): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(10,29): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(10,34): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(68,9): error TS2353: Object literal may only specify known properties, and 'product_id' does not exist in type '{ body: { product_id: string; url: string; sort_order?: number | undefined; }; }'.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(77,51): error TS2339: Property 'product_id' does not exist on type '{ body: { product_id: string; url: string; sort_order?: number | undefined; }; }'.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(78,44): error TS2339: Property 'url' does not exist on type '{ body: { product_id: string; url: string; sort_order?: number | undefined; }; }'.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(121,17): error TS2353: Object literal may only specify known properties, and 'url' does not exist in type '{ body: { product_id?: string | undefined; url?: string | undefined; sort_order?: number | undefined; }; }'.
+src/modules/product-image/presentation/http/__tests__/product-image.integration.spec.ts(129,54): error TS2339: Property 'url' does not exist on type '{ body: { product_id?: string | undefined; url?: string | undefined; sort_order?: number | undefined; }; }'.
+src/modules/product/application/use-cases/create-product.usecase.ts(24,52): error TS18048: 'productResult.error' is possibly 'undefined'.
+src/modules/product/application/use-cases/create-product.usecase.ts(29,39): error TS2345: Argument of type 'Product | undefined' is not assignable to parameter of type 'Product'.
+  Type 'undefined' is not assignable to type 'Product'.
+src/modules/product/application/use-cases/create-product.usecase.ts(31,44): error TS2345: Argument of type 'Product | undefined' is not assignable to parameter of type 'Product'.
+  Type 'undefined' is not assignable to type 'Product'.
+src/modules/product/application/use-cases/update-product.usecase.ts(23,54): error TS18048: 'updatedProductResult.error' is possibly 'undefined'.
+src/modules/product/application/use-cases/update-product.usecase.ts(28,39): error TS2345: Argument of type 'Product | undefined' is not assignable to parameter of type 'Product'.
+  Type 'undefined' is not assignable to type 'Product'.
+src/modules/product/application/use-cases/update-product.usecase.ts(30,44): error TS2345: Argument of type 'Product | undefined' is not assignable to parameter of type 'Product'.
+  Type 'undefined' is not assignable to type 'Product'.
+src/modules/product/infrastructure/__tests__/product/prisma-product.repository.spec.ts(27,9): error TS18048: 'productEntity' is possibly 'undefined'.
+src/modules/product/infrastructure/__tests__/product/prisma-product.repository.spec.ts(68,27): error TS2345: Argument of type 'Product | undefined' is not assignable to parameter of type 'Product'.
+  Type 'undefined' is not assignable to type 'Product'.
+src/modules/product/infrastructure/__tests__/product/prisma-product.repository.spec.ts(71,20): error TS18048: 'productEntity' is possibly 'undefined'.
+src/modules/product/infrastructure/__tests__/product/prisma-product.repository.spec.ts(72,43): error TS2345: Argument of type 'Product | undefined' is not assignable to parameter of type 'Product'.
+  Type 'undefined' is not assignable to type 'Product'.
+src/modules/product/infrastructure/__tests__/product/prisma-product.repository.spec.ts(73,43): error TS2345: Argument of type 'Product | undefined' is not assignable to parameter of type 'Product'.
+  Type 'undefined' is not assignable to type 'Product'.
+src/modules/product/infrastructure/product.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'Product'.
+src/modules/product/infrastructure/product.mapper.ts(21,76): error TS18048: 'productResult.error' is possibly 'undefined'.
+src/modules/product/infrastructure/product.mapper.ts(24,5): error TS2322: Type 'Product | undefined' is not assignable to type 'Product'.
+  Type 'undefined' is not assignable to type 'Product'.
+src/modules/product/presentation/http/__tests__/product.controller.spec.ts(88,60): error TS18048: 'product' is possibly 'undefined'.
+src/modules/product/presentation/http/__tests__/product.controller.spec.ts(91,50): error TS18048: 'product' is possibly 'undefined'.
+src/modules/product/presentation/http/__tests__/product.controller.spec.ts(104,27): error TS18048: 'product' is possibly 'undefined'.
+src/modules/product/presentation/http/__tests__/product.integration.spec.ts(4,24): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/product/presentation/http/routes.ts(8,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/promotion/application/use-cases/create-promotion.usecase.ts(25,79): error TS18048: 'promotion' is possibly 'undefined'.
+src/modules/promotion/application/use-cases/create-promotion.usecase.ts(35,60): error TS2345: Argument of type 'Promotion | undefined' is not assignable to parameter of type 'Promotion'.
+  Type 'undefined' is not assignable to type 'Promotion'.
+src/modules/promotion/application/use-cases/create-promotion.usecase.ts(41,5): error TS2322: Type 'Result<Promotion | undefined, Error>' is not assignable to type 'Result<Promotion, Error>'.
+  Type 'Promotion | undefined' is not assignable to type 'Promotion'.
+    Type 'undefined' is not assignable to type 'Promotion'.
+src/modules/promotion/application/use-cases/update-promotion.usecase.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'DiscountType'.
+src/modules/promotion/application/use-cases/update-promotion.usecase.ts(31,31): error TS18048: 'promotion' is possibly 'undefined'.
+src/modules/promotion/application/use-cases/update-promotion.usecase.ts(43,68): error TS18048: 'promotion' is possibly 'undefined'.
+src/modules/promotion/application/use-cases/update-promotion.usecase.ts(49,62): error TS2345: Argument of type 'Promotion | undefined' is not assignable to parameter of type 'Promotion'.
+  Type 'undefined' is not assignable to type 'Promotion'.
+src/modules/promotion/application/use-cases/update-promotion.usecase.ts(59,5): error TS2322: Type 'Result<Promotion | undefined, Error>' is not assignable to type 'Result<Promotion, Error>'.
+  Type 'Promotion | undefined' is not assignable to type 'Promotion'.
+    Type 'undefined' is not assignable to type 'Promotion'.
+src/modules/promotion/domain/promotion.entity.ts(3,10): error TS2305: Module '"@prisma/client"' has no exported member 'DiscountType'.
+src/modules/promotion/infrastructure/mappers/promotion.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'Promotion'.
+src/modules/promotion/infrastructure/prisma-promotion.repository.ts(21,7): error TS2322: Type 'Result<Promotion | undefined, Error>' is not assignable to type 'Result<Promotion, Error>'.
+  Type 'Promotion | undefined' is not assignable to type 'Promotion'.
+    Type 'undefined' is not assignable to type 'Promotion'.
+src/modules/promotion/infrastructure/prisma-promotion.repository.ts(37,7): error TS2322: Type 'Result<Promotion | undefined, Error>' is not assignable to type 'Result<Promotion, Error>'.
+  Type 'Promotion | undefined' is not assignable to type 'Promotion'.
+    Type 'undefined' is not assignable to type 'Promotion'.
+src/modules/promotion/infrastructure/prisma-promotion.repository.ts(51,7): error TS2322: Type 'Result<unknown[] | undefined, Error>' is not assignable to type 'Result<Promotion[], Error>'.
+  Type 'unknown[] | undefined' is not assignable to type 'Promotion[]'.
+    Type 'undefined' is not assignable to type 'Promotion[]'.
+src/modules/promotion/infrastructure/prisma-promotion.repository.ts(65,7): error TS2322: Type 'Result<Promotion | undefined, Error>' is not assignable to type 'Result<Promotion, Error>'.
+  Type 'Promotion | undefined' is not assignable to type 'Promotion'.
+    Type 'undefined' is not assignable to type 'Promotion'.
+src/modules/promotion/infrastructure/promotion.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'Promotion'.
+src/modules/promotion/infrastructure/promotion.mapper.ts(1,40): error TS2305: Module '"@prisma/client"' has no exported member 'DiscountType'.
+src/modules/promotion/presentation/http/__tests__/promotion.controller.spec.ts(5,24): error TS2305: Module '"@prisma/client"' has no exported member 'DiscountType'.
+src/modules/promotion/presentation/http/__tests__/promotion.integration.spec.ts(4,10): error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+src/modules/promotion/presentation/http/__tests__/promotion.integration.spec.ts(4,16): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/promotion/presentation/http/__tests__/promotion.integration.spec.ts(4,26): error TS2305: Module '"@prisma/client"' has no exported member 'DiscountType'.
+src/modules/promotion/presentation/http/dto/create-promotion.schema.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'DiscountType'.
+src/modules/promotion/presentation/http/dto/update-promotion.schema.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'DiscountType'.
+src/modules/proof-of-delivery/infrastructure/__tests__/prisma-proof-of-delivery.repository.spec.ts(41,44): error TS2345: Argument of type 'ProofOfDelivery | undefined' is not assignable to parameter of type 'ProofOfDelivery'.
+  Type 'undefined' is not assignable to type 'ProofOfDelivery'.
+src/modules/proof-of-delivery/infrastructure/__tests__/prisma-proof-of-delivery.repository.spec.ts(103,7): error TS2345: Argument of type 'ProofOfDelivery | undefined' is not assignable to parameter of type 'Partial<ProofOfDelivery>'.
+  Type 'undefined' is not assignable to type 'Partial<ProofOfDelivery>'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(32,24): error TS2345: Argument of type 'Error | undefined' is not assignable to parameter of type 'Error'.
+  Type 'undefined' is not assignable to type 'Error'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(34,7): error TS2322: Type 'Result<ProofOfDelivery | undefined, Error>' is not assignable to type 'Result<ProofOfDelivery, Error>'.
+  Type 'ProofOfDelivery | undefined' is not assignable to type 'ProofOfDelivery'.
+    Type 'undefined' is not assignable to type 'ProofOfDelivery'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(36,35): error TS2339: Property 'PrismaClientKnownRequestError' does not exist on type 'typeof Prisma'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(36,68): error TS18046: 'error' is of type 'unknown'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(63,24): error TS2345: Argument of type 'Error | undefined' is not assignable to parameter of type 'Error'.
+  Type 'undefined' is not assignable to type 'Error'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(65,7): error TS2322: Type 'Result<ProofOfDelivery | undefined, Error>' is not assignable to type 'Result<ProofOfDelivery, Error>'.
+  Type 'ProofOfDelivery | undefined' is not assignable to type 'ProofOfDelivery'.
+    Type 'undefined' is not assignable to type 'ProofOfDelivery'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(67,35): error TS2339: Property 'PrismaClientKnownRequestError' does not exist on type 'typeof Prisma'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(67,68): error TS18046: 'error' is of type 'unknown'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(97,24): error TS2345: Argument of type 'Error | undefined' is not assignable to parameter of type 'Error'.
+  Type 'undefined' is not assignable to type 'Error'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(99,7): error TS2322: Type 'Result<ProofOfDelivery | undefined, Error>' is not assignable to type 'Result<ProofOfDelivery, Error>'.
+  Type 'ProofOfDelivery | undefined' is not assignable to type 'ProofOfDelivery'.
+    Type 'undefined' is not assignable to type 'ProofOfDelivery'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(101,35): error TS2339: Property 'PrismaClientKnownRequestError' does not exist on type 'typeof Prisma'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(101,68): error TS18046: 'error' is of type 'unknown'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(113,35): error TS2339: Property 'PrismaClientKnownRequestError' does not exist on type 'typeof Prisma'.
+src/modules/proof-of-delivery/infrastructure/prisma-proof-of-delivery.repository.ts(113,68): error TS18046: 'error' is of type 'unknown'.
+src/modules/proof-of-delivery/infrastructure/proof-of-delivery.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'ProofOfDelivery'.
+src/modules/proof-of-delivery/infrastructure/proof-of-delivery.mapper.ts(33,13): error TS2694: Namespace '"/app/node_modules/.prisma/client/default".Prisma' has no exported member 'ProofOfDeliveryCreateInput'.
+src/modules/proof-of-delivery/presentation/http/__tests__/proof-of-delivery.integration.spec.ts(2,24): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/proof-of-delivery/presentation/http/routes.ts(8,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/service-zone/infrastructure/service-zone.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'ServiceZone'.
+src/modules/service-zone/infrastructure/service-zone.mapper.ts(28,13): error TS2694: Namespace '"/app/node_modules/.prisma/client/default".Prisma' has no exported member 'ServiceZoneCreateInput'.
+src/modules/shipping-rate/infrastructure/shipping-rate.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'ShippingRate'.
+src/modules/shipping-rate/presentation/http/__tests__/shipping-rate.controller.spec.ts(93,25): error TS18048: 'entity' is possibly 'undefined'.
+src/modules/shipping-rate/presentation/http/__tests__/shipping-rate.controller.spec.ts(94,25): error TS18048: 'entity' is possibly 'undefined'.
+src/modules/shipping-rate/presentation/http/__tests__/shipping-rate.controller.spec.ts(131,25): error TS18048: 'entity' is possibly 'undefined'.
+src/modules/shipping-rate/presentation/http/__tests__/shipping-rate.controller.spec.ts(132,25): error TS18048: 'entity' is possibly 'undefined'.
+src/modules/shipping-rate/presentation/http/__tests__/shipping-rate.controller.spec.ts(159,25): error TS18048: 'entity' is possibly 'undefined'.
+src/modules/shipping-rate/presentation/http/__tests__/shipping-rate.controller.spec.ts(160,25): error TS18048: 'entity' is possibly 'undefined'.
+src/modules/shipping-rate/presentation/http/__tests__/shipping-rate.integration.spec.ts(3,24): error TS2305: Module '"@prisma/client"' has no exported member 'ServiceZone'.
+src/modules/shipping-rate/presentation/http/__tests__/shipping-rate.integration.spec.ts(3,37): error TS2305: Module '"@prisma/client"' has no exported member 'ShippingRate'.
+src/modules/shipping-rate/presentation/http/shipping-rate.routes.ts(9,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/user/application/dtos/create-user.dto.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/user/domain/user.entity.ts(3,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/user/http/__tests__/user.controller.spec.ts(11,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/user/http/dto/create-user.schema.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/user/infrastructure/user.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'User'.
+src/modules/user/infrastructure/user.mapper.ts(1,30): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/user/presentation/http/__tests__/user.integration.spec.ts(11,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/user/presentation/http/__tests__/user.integration.spec.ts(14,21): error TS7006: Parameter 'req' implicitly has an 'any' type.
+src/modules/user/presentation/http/__tests__/user.integration.spec.ts(14,26): error TS7006: Parameter 'res' implicitly has an 'any' type.
+src/modules/user/presentation/http/__tests__/user.integration.spec.ts(14,31): error TS7006: Parameter 'next' implicitly has an 'any' type.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(95,39): error TS2345: Argument of type 'Vendor | undefined' is not assignable to parameter of type 'Vendor'.
+  Type 'undefined' is not assignable to type 'Vendor'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(98,19): error TS18048: 'vendor' is possibly 'undefined'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(107,39): error TS2345: Argument of type 'VendorOutlet | undefined' is not assignable to parameter of type 'VendorOutlet'.
+  Type 'undefined' is not assignable to type 'VendorOutlet'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(109,61): error TS18048: 'outlet' is possibly 'undefined'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(111,32): error TS18048: 'outlet' is possibly 'undefined'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(112,39): error TS18048: 'vendor' is possibly 'undefined'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(128,39): error TS2345: Argument of type 'VendorOutlet | undefined' is not assignable to parameter of type 'VendorOutlet'.
+  Type 'undefined' is not assignable to type 'VendorOutlet'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(130,61): error TS18048: 'outlet' is possibly 'undefined'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(150,39): error TS2345: Argument of type 'VendorOutlet | undefined' is not assignable to parameter of type 'VendorOutlet'.
+  Type 'undefined' is not assignable to type 'VendorOutlet'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(152,64): error TS18048: 'outlet' is possibly 'undefined'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(169,39): error TS2345: Argument of type 'Vendor | undefined' is not assignable to parameter of type 'Vendor'.
+  Type 'undefined' is not assignable to type 'Vendor'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(172,19): error TS18048: 'vendor' is possibly 'undefined'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(181,39): error TS2345: Argument of type 'VendorOutlet | undefined' is not assignable to parameter of type 'VendorOutlet'.
+  Type 'undefined' is not assignable to type 'VendorOutlet'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(185,35): error TS18048: 'outlet' is possibly 'undefined'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.controller.spec.ts(186,42): error TS18048: 'vendor' is possibly 'undefined'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.integration.spec.ts(55,7): error TS2353: Object literal may only specify known properties, and 'is_active' does not exist in type 'IUserProps'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.integration.spec.ts(62,5): error TS2322: Type 'User | undefined' is not assignable to type 'User'.
+  Type 'undefined' is not assignable to type 'User'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.integration.spec.ts(78,5): error TS2322: Type 'Vendor | undefined' is not assignable to type 'Vendor'.
+  Type 'undefined' is not assignable to type 'Vendor'.
+src/modules/vendor-outlet/http/__tests__/vendor-outlet.integration.spec.ts(94,5): error TS2322: Type 'VendorOutlet | undefined' is not assignable to type 'VendorOutlet'.
+  Type 'undefined' is not assignable to type 'VendorOutlet'.
+src/modules/vendor-outlet/http/routes.ts(10,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/vendor-outlet/infrastructure/vendor-outlet.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'VendorOutlet'.
+src/modules/vendor/http/__tests__/vendor.integration.spec.ts(54,9): error TS2353: Object literal may only specify known properties, and 'is_active' does not exist in type 'IUserProps'.
+src/modules/vendor/http/__tests__/vendor.integration.spec.ts(61,7): error TS2322: Type 'User | undefined' is not assignable to type 'User'.
+  Type 'undefined' is not assignable to type 'User'.
+src/modules/vendor/http/__tests__/vendor.integration.spec.ts(77,67): error TS18048: 'vendorResult.value' is possibly 'undefined'.
+src/modules/vendor/http/routes.ts(9,10): error TS2305: Module '"@prisma/client"' has no exported member 'UserRole'.
+src/modules/vendor/infrastructure/vendor.mapper.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'Vendor'.
