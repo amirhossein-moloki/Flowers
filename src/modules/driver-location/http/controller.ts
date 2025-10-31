@@ -22,7 +22,7 @@ export class DriverLocationController {
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await this.createDriverLocationUseCase.execute(req.body);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(StatusCodes.CREATED).json(result.value);
       } else {
         next(result.error);
@@ -36,7 +36,7 @@ export class DriverLocationController {
     try {
       const { id } = req.params;
       const result = await this.getDriverLocationUseCase.execute(id);
-      if (result.success) {
+      if (result.isSuccess()) {
         if (result.value) {
           res.status(StatusCodes.OK).json(result.value);
         } else {
@@ -53,8 +53,11 @@ export class DriverLocationController {
   update = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const result = await this.updateDriverLocationUseCase.execute(id, req.body);
-      if (result.success) {
+      const result = await this.updateDriverLocationUseCase.execute(
+        id,
+        req.body,
+      );
+      if (result.isSuccess()) {
         res.status(StatusCodes.OK).json(result.value);
       } else {
         next(result.error);
@@ -68,7 +71,7 @@ export class DriverLocationController {
     try {
       const { id } = req.params;
       const result = await this.deleteDriverLocationUseCase.execute(id);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(StatusCodes.NO_CONTENT).send();
       } else {
         next(result.error);

@@ -17,11 +17,16 @@ export class VendorOutletMapper {
       prismaVendorOutlet.id,
     );
 
-    if (!vendorOutletResult.success) {
+    if (vendorOutletResult.isFailure()) {
       throw new Error(String(vendorOutletResult.error));
     }
 
-    return vendorOutletResult.value;
+    const vendorOutlet = vendorOutletResult.value;
+    if (!vendorOutlet) {
+      throw new Error('Failed to map raw data to VendorOutlet entity');
+    }
+
+    return vendorOutlet;
   }
 
   static toPersistence(vendorOutlet: VendorOutlet) {

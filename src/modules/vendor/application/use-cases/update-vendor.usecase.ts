@@ -15,11 +15,14 @@ export class UpdateVendorUseCase {
     const updatedProps = { ...vendor.props, ...data };
     const updatedVendorResult = Vendor.create(updatedProps, vendor.id);
 
-    if (!updatedVendorResult.success) {
-      return failure(HttpError.internalServerError(updatedVendorResult.error.message));
+    if (updatedVendorResult.isFailure()) {
+      return failure(HttpError.internalServerError(updatedVendorResult.error?.message));
     }
 
     const updatedVendor = updatedVendorResult.value;
+    if (!updatedVendor) {
+      return failure(HttpError.internalServerError('Failed to update vendor'));
+    }
 
     await this.vendorRepository.save(updatedVendor);
 

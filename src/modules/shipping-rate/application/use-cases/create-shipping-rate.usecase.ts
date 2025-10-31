@@ -11,10 +11,13 @@ export class CreateShippingRateUseCase {
     const shippingRateProps: IShippingRateProps = { ...dto, is_active: dto.is_active ?? true };
     const shippingRateResult = ShippingRate.create(shippingRateProps, dto.id);
 
-    if (!shippingRateResult.success) {
-      return failure(HttpError.internalServerError(shippingRateResult.error.message));
+    if (shippingRateResult.isFailure()) {
+      return failure(HttpError.internalServerError(shippingRateResult.error?.message));
     }
     const shippingRate = shippingRateResult.value;
+    if (!shippingRate) {
+      return failure(HttpError.internalServerError('Failed to create shipping rate'));
+    }
 
     await this.shippingRateRepository.save(shippingRate);
 

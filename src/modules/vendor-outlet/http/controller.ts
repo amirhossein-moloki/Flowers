@@ -20,24 +20,20 @@ export class VendorOutletController {
   }
 
   async create(req: Request, res: Response): Promise<Response> {
-    const result = await this.createVendorOutletUseCase.execute(
-      req.body,
-    );
+    const result = await this.createVendorOutletUseCase.execute(req.body);
 
-    if (!result.success) {
-      return res.status(400).json({ error: result.error.message });
+    if (!result.isSuccess()) {
+      return res.status(400).json({ error: result.error?.message });
     }
 
-    return res
-      .status(201)
-      .json(VendorOutletPresenter.toJSON(result.value));
+    return res.status(201).json(VendorOutletPresenter.toJSON(result.value));
   }
 
   async findById(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const result = await this.getVendorOutletUseCase.execute(id);
 
-    if (!result.success) {
+    if (!result.isSuccess()) {
       return res.status(404).json({ error: 'Vendor outlet not found' });
     }
 
@@ -46,12 +42,9 @@ export class VendorOutletController {
 
   async update(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    const result = await this.updateVendorOutletUseCase.execute(
-      id,
-      req.body,
-    );
+    const result = await this.updateVendorOutletUseCase.execute(id, req.body);
 
-    if (!result.success) {
+    if (!result.isSuccess()) {
       return res.status(404).json({ error: 'Vendor outlet not found' });
     }
 
@@ -62,7 +55,7 @@ export class VendorOutletController {
     const { id } = req.params;
     const result = await this.deleteVendorOutletUseCase.execute(id);
 
-    if (!result.success) {
+    if (!result.isSuccess()) {
       return res.status(404).json({ error: 'Vendor outlet not found' });
     }
 
@@ -72,12 +65,10 @@ export class VendorOutletController {
   async findAll(req: Request, res: Response): Promise<Response> {
     const result = await this.listVendorOutletsUseCase.execute();
 
-    if (!result.success) {
-      return res.status(400).json({ error: result.error.message });
+    if (!result.isSuccess()) {
+      return res.status(400).json({ error: result.error?.message });
     }
 
-    return res
-      .status(200)
-      .json(result.value.map(VendorOutletPresenter.toJSON));
+    return res.status(200).json(result.value.map(VendorOutletPresenter.toJSON));
   }
 }

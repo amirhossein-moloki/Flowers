@@ -18,10 +18,14 @@ export class VendorMapper {
       raw.id,
     );
 
-    if (!vendorResult.success) {
-      throw new Error(`Failed to map raw data to Vendor entity: ${vendorResult.error.message}`);
+    if (vendorResult.isFailure()) {
+      throw new Error(`Failed to map raw data to Vendor entity: ${vendorResult.error?.message}`);
     }
-    return vendorResult.value;
+    const vendor = vendorResult.value;
+    if (!vendor) {
+      throw new Error('Failed to map raw data to Vendor entity');
+    }
+    return vendor;
   }
 
   public static toPersistence(vendor: Vendor) {

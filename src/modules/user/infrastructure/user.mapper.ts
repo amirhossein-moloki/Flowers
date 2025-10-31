@@ -35,10 +35,14 @@ export class UserMapper {
     );
 
     // This should ideally not fail if DB data is valid
-    if (!userResult.success) {
-      throw new Error(`Failed to map raw data to User entity: ${userResult.error.message}`);
+    if (userResult.isFailure()) {
+      throw new Error(`Failed to map raw data to User entity: ${userResult.error?.message}`);
     }
-    return userResult.value;
+    const user = userResult.value;
+    if (!user) {
+      throw new Error('Failed to map raw data to User entity');
+    }
+    return user;
   }
 
   /**

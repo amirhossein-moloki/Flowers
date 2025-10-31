@@ -1,4 +1,7 @@
-import { Courier, CourierCreationError } from '@/modules/courier/domain/courier.entity';
+import {
+  Courier,
+  CourierCreationError,
+} from '@/modules/courier/domain/courier.entity';
 
 describe('Courier Entity', () => {
   const validProps = {
@@ -9,8 +12,8 @@ describe('Courier Entity', () => {
 
   it('should create a courier successfully with valid props', () => {
     const result = Courier.create(validProps);
-    expect(result.success).toBe(true);
-    if (result.success) {
+    expect(result.isSuccess()).toBe(true);
+    if (result.isSuccess()) {
       const courier = result.value;
       expect(courier).toBeInstanceOf(Courier);
       expect(courier.name).toBe(validProps.name);
@@ -20,18 +23,20 @@ describe('Courier Entity', () => {
   it('should fail to create a courier if name is missing', () => {
     const props = { ...validProps, name: '' };
     const result = Courier.create(props);
-    expect(result.success).toBe(false);
-    if (!result.success) {
+    expect(result.isFailure()).toBe(true);
+    if (result.isFailure()) {
       expect(result.error).toBeInstanceOf(CourierCreationError);
-      expect(result.error.message).toBe('Courier name, phone, and email cannot be empty.');
+      expect(result.error.message).toBe(
+        'Courier name, phone, and email cannot be empty.',
+      );
     }
   });
 
   it('should fail to create a courier with an invalid email', () => {
     const props = { ...validProps, email: 'invalid-email' };
     const result = Courier.create(props);
-    expect(result.success).toBe(false);
-    if (!result.success) {
+    expect(result.isFailure()).toBe(true);
+    if (result.isFailure()) {
       expect(result.error).toBeInstanceOf(CourierCreationError);
       expect(result.error.message).toBe('Invalid email format.');
     }
@@ -40,7 +45,7 @@ describe('Courier Entity', () => {
   it('should assign an id if one is provided', () => {
     const id = 'custom-courier-id';
     const result = Courier.create(validProps, id);
-    if (result.success) {
+    if (result.isSuccess()) {
       const courier = result.value;
       expect(courier.id).toBe(id);
     }
@@ -48,7 +53,7 @@ describe('Courier Entity', () => {
 
   it('should default isAvailable to true if not provided', () => {
     const result = Courier.create(validProps);
-    if (result.success) {
+    if (result.isSuccess()) {
       expect(result.value.isAvailable).toBe(true);
     }
   });

@@ -29,7 +29,7 @@ export class ProductController {
     try {
       const result = await this.createProductUseCase.execute(req.body);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(201).json(ProductPresenter.toJSON(result.value));
       } else {
         next(result.error);
@@ -48,8 +48,10 @@ export class ProductController {
         vendorId: vendorId as string | undefined,
       });
 
-      if (result.success) {
-        res.status(200).json(result.value.map(p => ProductPresenter.toJSON(p)));
+      if (result.isSuccess()) {
+        res
+          .status(200)
+          .json(result.value.map((p) => ProductPresenter.toJSON(p)));
       } else {
         next(result.error);
       }
@@ -58,12 +60,16 @@ export class ProductController {
     }
   }
 
-  async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async getById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
     try {
       const { id } = req.params;
       const result = await this.getProductUseCase.execute(id);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         if (result.value) {
           res.status(200).json(ProductPresenter.toJSON(result.value));
         } else {
@@ -82,7 +88,7 @@ export class ProductController {
       const { id } = req.params;
       const result = await this.updateProductUseCase.execute(id, req.body);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(ProductPresenter.toJSON(result.value));
       } else {
         next(result.error);
@@ -97,7 +103,7 @@ export class ProductController {
       const { id } = req.params;
       const result = await this.deleteProductUseCase.execute(id);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(204).send();
       } else {
         next(result.error);

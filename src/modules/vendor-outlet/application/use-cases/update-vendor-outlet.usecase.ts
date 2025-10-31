@@ -26,13 +26,16 @@ export class UpdateVendorOutletUseCase {
         id,
       );
 
-      if (!updatedOutlet.success) {
-        return failure(updatedOutlet.error);
+      if (updatedOutlet.isFailure()) {
+        return failure(updatedOutlet.error as Error);
       }
 
-      const savedOutlet = await this.vendorOutletRepository.save(
-        updatedOutlet.value,
-      );
+      const outletToSave = updatedOutlet.value;
+      if (!outletToSave) {
+        return failure(new Error('Failed to update outlet'));
+      }
+
+      const savedOutlet = await this.vendorOutletRepository.save(outletToSave);
       return success(savedOutlet);
     } catch (error: any) {
       return failure(new Error(error.message));

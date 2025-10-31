@@ -22,10 +22,14 @@ export class CreateVendorUseCase {
     const vendorProps: IVendorProps = { ...dto };
     const vendorResult = Vendor.create(vendorProps);
 
-    if (!vendorResult.success) {
-      return failure(HttpError.internalServerError(vendorResult.error.message));
+    if (vendorResult.isFailure()) {
+      return failure(HttpError.internalServerError(vendorResult.error?.message));
     }
     const vendor = vendorResult.value;
+
+    if (!vendor) {
+      return failure(HttpError.internalServerError('Failed to create vendor'));
+    }
 
     await this.vendorRepository.save(vendor);
 

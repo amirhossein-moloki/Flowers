@@ -19,10 +19,14 @@ export class ShippingRateMapper {
       raw.id,
     );
 
-    if (!shippingRateResult.success) {
-      throw new Error(`Failed to map raw data to ShippingRate entity: ${shippingRateResult.error.message}`);
+    if (shippingRateResult.isFailure()) {
+      throw new Error(`Failed to map raw data to ShippingRate entity: ${shippingRateResult.error?.message}`);
     }
-    return shippingRateResult.value;
+    const shippingRate = shippingRateResult.value;
+    if (!shippingRate) {
+      throw new Error('Failed to map raw data to ShippingRate entity');
+    }
+    return shippingRate;
   }
 
   public static toPersistence(shippingRate: ShippingRate) {

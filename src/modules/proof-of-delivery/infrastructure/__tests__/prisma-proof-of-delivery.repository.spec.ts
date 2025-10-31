@@ -20,7 +20,7 @@ describe('PrismaProofOfDeliveryRepository', () => {
       notes: 'Delivered to front door.',
     });
 
-    if (!proofOfDeliveryResult.success) {
+    if (proofOfDeliveryResult.isFailure()) {
       throw new Error('Failed to create test entity');
     }
     const proofOfDeliveryEntity = proofOfDeliveryResult.value;
@@ -40,8 +40,8 @@ describe('PrismaProofOfDeliveryRepository', () => {
 
     const result = await repository.create(proofOfDeliveryEntity);
 
-    expect(result.success).toBe(true);
-    if (result.success) {
+    expect(result.isSuccess()).toBe(true);
+    if (result.isSuccess()) {
       expect(result.value).toBeInstanceOf(ProofOfDelivery);
       expect(result.value.id).toBe('some-id');
     }
@@ -59,12 +59,14 @@ describe('PrismaProofOfDeliveryRepository', () => {
       created_at: new Date(),
       updated_at: new Date(),
     };
-    prismaMock.proofOfDelivery.findUnique.mockResolvedValue(prismaProofOfDelivery);
+    prismaMock.proofOfDelivery.findUnique.mockResolvedValue(
+      prismaProofOfDelivery,
+    );
 
     const result = await repository.findById(proofOfDeliveryId);
 
-    expect(result.success).toBe(true);
-    if (result.success) {
+    expect(result.isSuccess()).toBe(true);
+    if (result.isSuccess()) {
       expect(result.value).toBeInstanceOf(ProofOfDelivery);
       expect(result.value.id).toBe(proofOfDeliveryId);
     }
@@ -77,7 +79,7 @@ describe('PrismaProofOfDeliveryRepository', () => {
       notes: 'Updated notes.',
     });
 
-    if (!updatedProofOfDeliveryResult.success) {
+    if (updatedProofOfDeliveryResult.isFailure()) {
       throw new Error('Failed to create test entity');
     }
     const updatedProofOfDeliveryEntity = updatedProofOfDeliveryResult.value;
@@ -92,12 +94,17 @@ describe('PrismaProofOfDeliveryRepository', () => {
       created_at: new Date(),
       updated_at: new Date(),
     };
-    prismaMock.proofOfDelivery.update.mockResolvedValue(updatedPrismaProofOfDelivery);
+    prismaMock.proofOfDelivery.update.mockResolvedValue(
+      updatedPrismaProofOfDelivery,
+    );
 
-    const result = await repository.update(proofOfDeliveryId, updatedProofOfDeliveryEntity);
+    const result = await repository.update(
+      proofOfDeliveryId,
+      updatedProofOfDeliveryEntity,
+    );
 
-    expect(result.success).toBe(true);
-    if (result.success) {
+    expect(result.isSuccess()).toBe(true);
+    if (result.isSuccess()) {
       expect(result.value).toBeInstanceOf(ProofOfDelivery);
       expect(result.value.props.notes).toBe('Updated notes.');
     }
@@ -109,7 +116,9 @@ describe('PrismaProofOfDeliveryRepository', () => {
 
     const result = await repository.delete(proofOfDeliveryId);
 
-    expect(result.success).toBe(true);
-    expect(prismaMock.proofOfDelivery.delete).toHaveBeenCalledWith({ where: { id: proofOfDeliveryId } });
+    expect(result.isSuccess()).toBe(true);
+    expect(prismaMock.proofOfDelivery.delete).toHaveBeenCalledWith({
+      where: { id: proofOfDeliveryId },
+    });
   });
 });

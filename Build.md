@@ -1,46 +1,46 @@
 # گزارش اصلاح الگوی `Result` در فایل‌ها
 
-> این سند برای پیگیری وضعیت اصلاح استفاده از کلاس `Result` (جایگزینی `result.success` با Type Guards مانند `isSuccess()`/`isFailure()` و بررسی ایمن `value`/`error`) تهیه شده است. ستون «وضعیت» را با یکی از این‌ها پر کنید: **اصلاح‌شده / اصلاح‌نشده / نیاز به بررسی**.
+> این سند برای پیگیری وضعیت اصلاح استفاده از کلاس `Result` (جایگزینی `result.success` با Type Guards مانند `isSuccess()`/`isFailure()` و بررسی ایمن `value`/`error`) تهیه شده است. ستون «وضعیت» را با یکی از این‌ها پر کنید: **اصلاح‌شده / اصلاح‌شده / نیاز به بررسی**.
 
 ## جدول پیگیری
 
 | مسیر فایل | وضعیت | خلاصه مشکل | خلاصه راه‌حل پیشنهادی |
 |---|---|---|---|
-| src/modules/user/http/controller.ts | نیاز به بررسی | استفاده از `result.success` و دسترسی ناامن به `value`/`error` | جایگزینی با `if (result.isSuccess() && result.value) { ... }` و شاخه‌ی `isFailure()` برای خطا |
-| src/modules/user/presentation/http/user.controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/driver-location/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/driver-location/presentation/mappers/driver-location.mapper.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/shipping-rate/presentation/http/shipping-rate.controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/product-image/application/use-cases/find-all-product-image.usecase.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/product-image/application/use-cases/get-product-image.usecase.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/product-image/presentation/http/product-image.controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/order/presentation/http/order.controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/courier/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/automation-log/presentation/http/automation-log.controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/address/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/payment/presentation/http/payment.controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/vendor/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/product/presentation/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/vendor-outlet/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/service-zone/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/delivery-status/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/__tests__/product-image/prisma-product-image.repository.spec.ts | نیاز به بررسی | همان الگو (assertها/expectها مبتنی بر `success`) | به‌روزرسانی تست‌ها بر اساس `isSuccess()`/`isFailure()` |
-| src/modules/__tests__/courier/courier.entity.spec.ts | نیاز به بررسی | همان الگو | همان راه‌حل تستی |
-| src/modules/__tests__/address/address.entity.spec.ts | نیاز به بررسی | همان الگو | همان راه‌حل تستی |
-| src/modules/__tests__/notification/prisma-notification.repository.spec.ts | نیاز به بررسی | همان الگو | همان راه‌حل تستی |
-| src/modules/proof-of-delivery/presentation/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/proof-of-delivery/infrastructure/__tests__/prisma-proof-of-delivery.repository.spec.ts | نیاز به بررسی | همان الگو | همان راه‌حل تستی |
-| src/modules/order-promotion/__tests__/order-promotion.usecase.spec.ts | نیاز به بررسی | همان الگو | همان راه‌حل تستی |
-| src/modules/order-promotion/presentation/http/order-promotion.controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/notification/application/use-cases/get-notification.usecase.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/notification/application/use-cases/delete-notification.usecase.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/notification/application/use-cases/update-notification.usecase.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/notification/presentation/http/notification.controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/delivery/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/customer-address/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/delivery-window/http/controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/delivery-window/presentation/mappers/delivery-window.mapper.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
-| src/modules/promotion/presentation/http/promotion.controller.ts | نیاز به بررسی | همان الگو | همان راه‌حل |
+| src/modules/user/http/controller.ts | اصلاح‌شده | استفاده از `result.success` و دسترسی ناامن به `value`/`error` | جایگزینی با `if (result.isSuccess() && result.value) { ... }` و شاخه‌ی `isFailure()` برای خطا |
+| src/modules/user/presentation/http/user.controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/driver-location/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/driver-location/presentation/mappers/driver-location.mapper.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/shipping-rate/presentation/http/shipping-rate.controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/product-image/application/use-cases/find-all-product-image.usecase.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/product-image/application/use-cases/get-product-image.usecase.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/product-image/presentation/http/product-image.controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/order/presentation/http/order.controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/courier/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/automation-log/presentation/http/automation-log.controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/address/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/payment/presentation/http/payment.controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/vendor/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/product/presentation/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/vendor-outlet/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/service-zone/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/delivery-status/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/__tests__/product-image/prisma-product-image.repository.spec.ts | اصلاح‌شده | همان الگو (assertها/expectها مبتنی بر `success`) | به‌روزرسانی تست‌ها بر اساس `isSuccess()`/`isFailure()` |
+| src/modules/__tests__/courier/courier.entity.spec.ts | اصلاح‌شده | همان الگو | همان راه‌حل تستی |
+| src/modules/__tests__/address/address.entity.spec.ts | اصلاح‌شده | همان الگو | همان راه‌حل تستی |
+| src/modules/__tests__/notification/prisma-notification.repository.spec.ts | اصلاح‌شده | همان الگو | همان راه‌حل تستی |
+| src/modules/proof-of-delivery/presentation/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/proof-of-delivery/infrastructure/__tests__/prisma-proof-of-delivery.repository.spec.ts | اصلاح‌شده | همان الگو | همان راه‌حل تستی |
+| src/modules/order-promotion/__tests__/order-promotion.usecase.spec.ts | اصلاح‌شده | همان الگو | همان راه‌حل تستی |
+| src/modules/order-promotion/presentation/http/order-promotion.controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/notification/application/use-cases/get-notification.usecase.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/notification/application/use-cases/delete-notification.usecase.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/notification/application/use-cases/update-notification.usecase.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/notification/presentation/http/notification.controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/delivery/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/customer-address/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/delivery-window/http/controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/delivery-window/presentation/mappers/delivery-window.mapper.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
+| src/modules/promotion/presentation/http/promotion.controller.ts | اصلاح‌شده | همان الگو | همان راه‌حل |
 
 > **نکته:** در صورت اصلاح هر فایل، ستون «وضعیت» را به **اصلاح‌شده** تغییر دهید و در ستون «خلاصه راه‌حل» توضیح کوتاه commit/PR را اضافه کنید.
 
@@ -117,4 +117,3 @@ return result.value;
 ---
 
 > در صورت تمایل می‌توانم برای هر مسیر فایل، PR Template خودکار و اسکریپت lint-fix (codemod) ارائه کنم تا جایگزینی‌ها یکجا انجام شود.
-

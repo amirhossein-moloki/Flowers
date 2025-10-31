@@ -30,19 +30,19 @@ export class UserController {
 
   create = async (req: Request, res: Response) => {
     const result = await this.createUserUseCase.execute(req.body);
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(201).json(result.value);
     } else {
-      res.status(400).json({ error: result.error.message });
+      res.status(400).json({ error: result.error?.message });
     }
   };
 
   findAll = async (req: Request, res: Response) => {
     const result = await this.listUsersUseCase.execute();
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(200).json(result.value);
     } else {
-      res.status(400).json({ error: result.error.message });
+      res.status(400).json({ error: result.error?.message });
     }
   };
 
@@ -50,7 +50,7 @@ export class UserController {
     // @ts-ignore
     const { id } = req.user;
     const result = await this.getUserUseCase.execute(id);
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(200).json(result.value);
     } else {
       res.status(404).json({ error: 'User not found' });
@@ -60,7 +60,7 @@ export class UserController {
   findById = async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await this.getUserUseCase.execute(id);
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(200).json(result.value);
     } else {
       res.status(404).json({ error: 'User not found' });
@@ -70,20 +70,20 @@ export class UserController {
   update = async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await this.updateUserUseCase.execute(id, req.body);
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(200).json(result.value);
     } else {
-      res.status(400).json({ error: result.error.message });
+      res.status(400).json({ error: result.error?.message });
     }
   };
 
   delete = async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await this.deleteUserUseCase.execute(id);
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(204).send();
     } else {
-      res.status(400).json({ error: result.error.message });
+      res.status(400).json({ error: result.error?.message });
     }
   };
 }

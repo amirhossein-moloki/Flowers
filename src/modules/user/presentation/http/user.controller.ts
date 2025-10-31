@@ -48,8 +48,10 @@ export class UserController extends Controller {
 
   private async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.dependencies.createUserUseCase.execute(req.body);
-      if (result.success) {
+      const result = await this.dependencies.createUserUseCase.execute(
+        req.body,
+      );
+      if (result.isSuccess()) {
         res.status(201).json(result.value);
       } else {
         next(result.error);
@@ -67,7 +69,7 @@ export class UserController extends Controller {
         id = req.user.id;
       }
       const result = await this.dependencies.getUserUseCase.execute(id);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(result.value);
       } else {
         next(result.error);
@@ -84,7 +86,7 @@ export class UserController extends Controller {
         id,
         req.body,
       );
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(result.value);
       } else {
         next(result.error);
@@ -98,7 +100,7 @@ export class UserController extends Controller {
     try {
       const { id } = req.params;
       const result = await this.dependencies.deleteUserUseCase.execute(id);
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(204).send();
       } else {
         next(result.error);
@@ -111,7 +113,7 @@ export class UserController extends Controller {
   private async listUsers(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.dependencies.listUsersUseCase.execute();
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(result.value);
       } else {
         next(result.error);

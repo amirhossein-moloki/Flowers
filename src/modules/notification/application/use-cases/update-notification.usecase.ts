@@ -7,21 +7,33 @@ import { NotificationMapper } from '../../infrastructure/notification.mapper';
 import { Notification } from '../../domain/notification.entity';
 
 export class UpdateNotificationUseCase {
-  constructor(private readonly notificationRepository: INotificationRepository) {}
+  constructor(
+    private readonly notificationRepository: INotificationRepository,
+  ) {}
 
-  async execute(id: string, dto: UpdateNotificationDto): Promise<Result<NotificationDto, HttpError>> {
+  async execute(
+    id: string,
+    dto: UpdateNotificationDto,
+  ): Promise<Result<NotificationDto, HttpError>> {
     const result = await this.notificationRepository.findById(id);
 
-    if (result.success) {
+    if (result.isSuccess()) {
       if (!result.value) {
         return failure(HttpError.notFound('Notification not found.'));
       }
 
       const updatedNotificationProps = { ...result.value.props, ...dto };
-      const updatedNotificationResult = Notification.create(updatedNotificationProps, result.value.id);
+      const updatedNotificationResult = Notification.create(
+        updatedNotificationProps,
+        result.value.id,
+      );
 
-      if(!updatedNotificationResult.success){
-          return failure(HttpError.internalServerError(updatedNotificationResult.error.message));
+      if (updatedNotificationResult.isFailure()) {
+        return failure(
+          HttpError.internalServerError(
+            updatedNotificationResult.error.message,
+          ),
+        );
       }
 
       const updatedNotification = updatedNotificationResult.value;

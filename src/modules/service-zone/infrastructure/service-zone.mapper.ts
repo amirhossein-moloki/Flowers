@@ -13,10 +13,14 @@ export class ServiceZoneMapper {
       },
       prismaServiceZone.id,
     );
-    if (!serviceZoneResult.success) {
+    if (serviceZoneResult.isFailure()) {
       throw new Error('Could not map PrismaServiceZone to domain');
     }
-    return serviceZoneResult.value;
+    const serviceZone = serviceZoneResult.value;
+    if (!serviceZone) {
+      throw new Error('Could not map PrismaServiceZone to domain');
+    }
+    return serviceZone;
   }
 
   static toPersistence(

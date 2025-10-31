@@ -29,7 +29,7 @@ export class PromotionController {
   async create(req: Request, res: Response) {
     const result = await this.createPromotionUseCase.execute(req.body);
 
-    if (result.success) {
+    if (result.isSuccess()) {
       res.status(201).json(PromotionPresenter.toJSON(result.value));
     } else {
       this.handleError(res, result.error);
@@ -41,7 +41,7 @@ export class PromotionController {
       const { id } = req.params;
       const result = await this.getPromotionUseCase.execute({ id });
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(PromotionPresenter.toJSON(result.value));
       } else {
         this.handleError(res, result.error);
@@ -55,7 +55,7 @@ export class PromotionController {
     try {
       const result = await this.getAllPromotionsUseCase.execute();
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(result.value.map(PromotionPresenter.toJSON));
       } else {
         this.handleError(res, result.error);
@@ -73,7 +73,7 @@ export class PromotionController {
         ...req.body,
       });
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(PromotionPresenter.toJSON(result.value));
       } else {
         this.handleError(res, result.error);
@@ -88,7 +88,7 @@ export class PromotionController {
       const { id } = req.params;
       const result = await this.deletePromotionUseCase.execute({ id });
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(204).send();
       } else {
         this.handleError(res, result.error);

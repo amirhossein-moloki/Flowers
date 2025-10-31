@@ -20,7 +20,7 @@ export class ProductImageController {
     try {
       const result = await this.createProductImageUseCase.execute(req.body);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(201).json(result.value);
       } else {
         next(result.error);
@@ -35,7 +35,7 @@ export class ProductImageController {
       const { id } = req.params;
       const result = await this.deleteProductImageUseCase.execute(id);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(204).send();
       } else {
         next(result.error);
@@ -45,12 +45,16 @@ export class ProductImageController {
     }
   }
 
-  async findById(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async findById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
     try {
       const { id } = req.params;
       const result = await this.getProductImageUseCase.execute(id);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         if (result.value) {
           res.status(200).json(result.value);
         } else {
@@ -64,11 +68,17 @@ export class ProductImageController {
     }
   }
 
-  async findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async findAll(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
     try {
-      const result = await this.findAllProductImageUseCase.execute(req.query.productId as string);
+      const result = await this.findAllProductImageUseCase.execute(
+        req.query.productId as string,
+      );
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(result.value);
       } else {
         next(result.error);
@@ -83,7 +93,7 @@ export class ProductImageController {
       const { id } = req.params;
       const result = await this.updateProductImageUseCase.execute(id, req.body);
 
-      if (result.success) {
+      if (result.isSuccess()) {
         res.status(200).json(result.value);
       } else {
         next(result.error);

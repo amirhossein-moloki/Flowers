@@ -17,10 +17,12 @@ export class VendorController {
   ) {}
 
   async create(req: Request, res: Response): Promise<Response> {
-    const result = await this.createVendorUseCase.execute(req.body as CreateVendorInput);
+    const result = await this.createVendorUseCase.execute(
+      req.body as CreateVendorInput,
+    );
 
-    if (!result.success) {
-      return res.status(400).json({ error: result.error.message });
+    if (!result.isSuccess()) {
+      return res.status(400).json({ error: result.error?.message });
     }
 
     return res.status(201).json(result.value);
@@ -30,7 +32,7 @@ export class VendorController {
     const { id } = req.params;
     const result = await this.getVendorUseCase.execute(id);
 
-    if (!result.success) {
+    if (!result.isSuccess()) {
       return res.status(404).json({ error: 'Vendor not found' });
     }
 
@@ -41,7 +43,7 @@ export class VendorController {
     const { id } = req.params;
     const result = await this.updateVendorUseCase.execute(id, req.body);
 
-    if (!result.success) {
+    if (!result.isSuccess()) {
       return res.status(404).json({ error: 'Vendor not found' });
     }
 
@@ -52,7 +54,7 @@ export class VendorController {
     const { id } = req.params;
     const result = await this.deleteVendorUseCase.execute(id);
 
-    if (!result.success) {
+    if (!result.isSuccess()) {
       return res.status(404).json({ error: 'Vendor not found' });
     }
 
@@ -62,7 +64,7 @@ export class VendorController {
   async findAll(req: Request, res: Response): Promise<Response> {
     const result = await this.listVendorsUseCase.execute();
 
-    if (!result.success) {
+    if (!result.isSuccess()) {
       return res.status(500).json({ error: 'Failed to list vendors' });
     }
     return res.status(200).json(result.value.map(VendorPresenter.toJSON));
