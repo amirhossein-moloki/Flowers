@@ -11,7 +11,7 @@ export class DeletePromotionUseCase {
   async execute(request: DeletePromotionRequest): Promise<Result<void, Error>> {
     const findResult = await this.promotionRepository.findById(request.id);
 
-    if (!findResult.success) {
+    if (findResult.isFailure()) {
       return failure(findResult.error);
     }
 

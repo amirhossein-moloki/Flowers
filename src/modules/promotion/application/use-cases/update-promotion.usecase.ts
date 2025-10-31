@@ -22,7 +22,7 @@ export class UpdatePromotionUseCase {
   async execute(request: UpdatePromotionRequest): Promise<Result<Promotion, Error>> {
     const promotionOrError = await this.promotionRepository.findById(request.id);
 
-    if (!promotionOrError.success) {
+    if (promotionOrError.isFailure()) {
       return failure(promotionOrError.error);
     }
 
@@ -42,16 +42,20 @@ export class UpdatePromotionUseCase {
 
     const updatedPromotionOrError = Promotion.create(updatedProps, promotion.id);
 
-    if (!updatedPromotionOrError.success) {
+    if (updatedPromotionOrError.isFailure()) {
       return failure(updatedPromotionOrError.error);
     }
 
     const saveResult = await this.promotionRepository.update(updatedPromotionOrError.value);
 
-    if (!saveResult.success) {
+    if (saveResult.isFailure()) {
       return failure(saveResult.error);
     }
 
-    return success(updatedPromotionOrError.value);
+    const findUpdatedResult = await this.promotionRepository.findById(request.id);
+    if (findUpdatedResult.isFailure()) {
+      return failure(findUpdatedResult.error);
+    }
+    return success(findUpdatedResult.value);
   }
 }

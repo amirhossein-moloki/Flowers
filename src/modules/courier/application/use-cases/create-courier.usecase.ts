@@ -13,7 +13,7 @@ export class CreateCourierUseCase {
     const courierResult = Courier.create(dto);
 
     if (!courierResult.success) {
-      return failure(HttpError.internalServerError(courierResult.error.message));
+      return failure(HttpError.internalServerError(courierResult.error));
     }
 
     const courier = courierResult.value;

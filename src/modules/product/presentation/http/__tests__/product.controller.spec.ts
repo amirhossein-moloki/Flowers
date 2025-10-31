@@ -44,7 +44,7 @@ describe('Product Routes', () => {
         stock: 10,
         vendorId: 'some-vendor-id',
       });
-      if (!productResult.success) throw new Error('Failed to create test product');
+      if (!productResult.success) throw productResult.error;
       const product = productResult.value;
 
       (mockDependencies.createProductUseCase.execute as jest.Mock).mockResolvedValue(success(product));
@@ -63,7 +63,8 @@ describe('Product Routes', () => {
     it('should return 200 and a list of products', async () => {
       const product1Result = Product.create({ name: 'Product 1', description: 'Desc 1', price: 10, stock: 5, vendorId: 'v1' });
       const product2Result = Product.create({ name: 'Product 2', description: 'Desc 2', price: 20, stock: 10, vendorId: 'v2' });
-      if (!product1Result.success || !product2Result.success) throw new Error('Failed to create test products');
+      if (product1Result.isFailure()) throw product1Result.error;
+      if (product2Result.isFailure()) throw product2Result.error;
 
       const products = [product1Result.value, product2Result.value];
 
@@ -79,7 +80,7 @@ describe('Product Routes', () => {
   describe('GET /products/:id', () => {
     it('should return 200 and the product', async () => {
       const productResult = Product.create({ name: 'Test Product', description: 'Test Desc', price: 100, stock: 10, vendorId: 'v1' });
-      if (!productResult.success) throw new Error('Failed to create test product');
+      if (productResult.isFailure()) throw productResult.error;
       const product = productResult.value;
 
       (mockDependencies.getProductUseCase.execute as jest.Mock).mockResolvedValue(success(product));
@@ -94,7 +95,7 @@ describe('Product Routes', () => {
   describe('PUT /products/:id', () => {
     it('should return 200 and the updated product', async () => {
       const productResult = Product.create({ name: 'Updated Product', description: 'New Desc', price: 150, stock: 15, vendorId: 'v1' });
-      if (!productResult.success) throw new Error('Failed to create test product');
+      if (productResult.isFailure()) throw productResult.error;
       const product = productResult.value;
 
       (mockDependencies.updateProductUseCase.execute as jest.Mock).mockResolvedValue(success(product));

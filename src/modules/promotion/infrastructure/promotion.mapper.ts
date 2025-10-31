@@ -1,9 +1,10 @@
 import { Promotion as PrismaPromotion, DiscountType } from '@prisma/client';
 import { Promotion } from '@/modules/promotion/domain/promotion.entity';
+import { Result } from '@/core/utils/result';
 
 export class PromotionMapper {
-  public static toDomain(raw: PrismaPromotion): Promotion {
-    const promotionResult = Promotion.create(
+  public static toDomain(raw: PrismaPromotion): Result<Promotion, Error> {
+    return Promotion.create(
       {
         name: raw.name,
         code: raw.code,
@@ -18,11 +19,6 @@ export class PromotionMapper {
       },
       raw.id,
     );
-
-    if (!promotionResult.success) {
-      throw new Error(`Failed to map raw data to Promotion entity: ${promotionResult.error.message}`);
-    }
-    return promotionResult.value;
   }
 
   public static toPersistence(promotion: Promotion) {

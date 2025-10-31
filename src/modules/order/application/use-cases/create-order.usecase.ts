@@ -21,7 +21,7 @@ export class CreateOrderUseCase {
 
     const combinedResult = Result.combine(orderItemsResult);
     if (!combinedResult.success) {
-      return failure(HttpError.badRequest(combinedResult.error.message));
+      return failure(HttpError.badRequest(combinedResult.error));
     }
     const orderItems = combinedResult.value;
 
@@ -36,7 +36,7 @@ export class CreateOrderUseCase {
 
     const orderResult = Order.create(orderProps);
     if (!orderResult.success) {
-      return failure(HttpError.internalServerError(orderResult.error.message));
+      return failure(HttpError.internalServerError(orderResult.error));
     }
     const order = orderResult.value;
 

@@ -31,7 +31,7 @@ export class PromotionController {
 
     if (result.isSuccess()) {
       res.status(201).json(PromotionPresenter.toJSON(result.value));
-    } else {
+    } else if (result.isFailure()) {
       this.handleError(res, result.error);
     }
   }
@@ -43,7 +43,7 @@ export class PromotionController {
 
       if (result.isSuccess()) {
         res.status(200).json(PromotionPresenter.toJSON(result.value));
-      } else {
+      } else if (result.isFailure()) {
         this.handleError(res, result.error);
       }
     } catch (error) {
@@ -57,7 +57,7 @@ export class PromotionController {
 
       if (result.isSuccess()) {
         res.status(200).json(result.value.map(PromotionPresenter.toJSON));
-      } else {
+      } else if (result.isFailure()) {
         this.handleError(res, result.error);
       }
     } catch (error) {
@@ -75,7 +75,7 @@ export class PromotionController {
 
       if (result.isSuccess()) {
         res.status(200).json(PromotionPresenter.toJSON(result.value));
-      } else {
+      } else if (result.isFailure()) {
         this.handleError(res, result.error);
       }
     } catch (error) {
@@ -90,7 +90,7 @@ export class PromotionController {
 
       if (result.isSuccess()) {
         res.status(204).send();
-      } else {
+      } else if (result.isFailure()) {
         this.handleError(res, result.error);
       }
     } catch (error) {
