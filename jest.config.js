@@ -3,7 +3,9 @@ module.exports = {
   testEnvironment: 'node',
   moduleDirectories: ['node_modules', 'src'],
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: 'tsconfig.json'
+    }],
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testMatch: [

@@ -14,8 +14,8 @@ export class OrderPromotionMapper {
       raw.id,
     );
 
-    if (!orderPromotionResult.success) {
-      throw new Error(`Failed to map raw data to OrderPromotion entity: ${orderPromotionResult.error.message}`);
+    if (orderPromotionResult.isFailure() || !orderPromotionResult.value) {
+      throw new Error(`Failed to map raw data to OrderPromotion entity: ${orderPromotionResult.error?.message}`);
     }
     return orderPromotionResult.value;
   }

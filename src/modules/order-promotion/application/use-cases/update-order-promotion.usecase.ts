@@ -19,8 +19,8 @@ export class UpdateOrderPromotionUseCase {
     const updatedOrderPromotionProps = { ...orderPromotion.props, ...dto };
     const updatedOrderPromotionResult = OrderPromotion.create(updatedOrderPromotionProps, orderPromotion.id);
 
-    if(!updatedOrderPromotionResult.success){
-        return failure(HttpError.internalServerError(updatedOrderPromotionResult.error.message));
+    if (updatedOrderPromotionResult.isFailure() || !updatedOrderPromotionResult.value) {
+      return failure(HttpError.internalServerError(updatedOrderPromotionResult.error?.message || 'Could not update order promotion'));
     }
 
     let updatedOrderPromotion = updatedOrderPromotionResult.value;

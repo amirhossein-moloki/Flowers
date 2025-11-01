@@ -14,18 +14,20 @@ export class UpdateOrderUseCase {
       return failure(HttpError.notFound('Order not found.'));
     }
 
-    const items = dto.items ? dto.items.map((item) => {
-      const orderItemResult = OrderItem.create({ ...item, orderId: order.id });
-      if (orderItemResult.success === false) {
-        throw new Error('Could not create order item');
+    let items = order.props.items;
+    if (dto.items) {
+      const orderItemResults = dto.items.map((item) => OrderItem.create({ ...item, orderId: order.id }));
+      const combinedResult = Result.combine(orderItemResults);
+      if (combinedResult.isFailure() || !combinedResult.value) {
+        return failure(HttpError.badRequest(combinedResult.error?.message || 'Invalid order items'));
       }
-      return orderItemResult.value;
-    }) : order.props.items;
+      items = combinedResult.value;
+    }
     const updatedOrderProps = { ...order.props, ...dto, items };
     const updatedOrderResult = Order.create(updatedOrderProps as any, order.id);
 
-    if (updatedOrderResult.success === false) {
-      return failure(HttpError.internalServerError(updatedOrderResult.error.message));
+    if (updatedOrderResult.isFailure() || !updatedOrderResult.value) {
+      return failure(HttpError.internalServerError(updatedOrderResult.error?.message || 'Could not update order'));
     }
 
     const updatedOrder = updatedOrderResult.value;

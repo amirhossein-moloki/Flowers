@@ -71,18 +71,20 @@ describe('OrderController', () => {
     quantity: 1,
     price: 100,
   });
-  if (!orderItemResult.success) {
-    throw new Error('Test setup failed');
+  if (orderItemResult.isFailure() || !orderItemResult.value) {
+    throw new Error('Test setup failed: could not create order item');
   }
+  const orderItem = orderItemResult.value;
+
   const orderResult = Order.create({
     userId,
-    items: [orderItemResult.value],
+    items: [orderItem],
     status: OrderStatus.PENDING,
     total: 100,
   });
 
-  if (!orderResult.success) {
-    throw orderResult.error;
+  if (orderResult.isFailure() || !orderResult.value) {
+    throw new Error('Test setup failed: could not create order');
   }
 
   const order = orderResult.value;
