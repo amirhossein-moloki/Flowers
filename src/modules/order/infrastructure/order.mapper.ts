@@ -27,7 +27,7 @@ export class OrderMapper {
     });
 
     const combinedResult = Result.combine(orderItemsResult);
-    if (combinedResult.isFailure()) {
+    if (combinedResult.isFailure() || !combinedResult.value) {
       throw new Error(`Could not create domain order item from prisma data: ${combinedResult.error}`);
     }
     const orderItems = combinedResult.value;
@@ -42,7 +42,7 @@ export class OrderMapper {
     };
 
     const orderResult = Order.create(orderProps, prismaOrder.id);
-    if (orderResult.isFailure()) {
+    if (orderResult.isFailure() || !orderResult.value) {
       throw new Error(`Could not create domain order from prisma data: ${orderResult.error}`);
     }
 

@@ -15,8 +15,8 @@ export class CreateOrderPromotionUseCase {
       created_at: new Date(),
     });
 
-    if (!orderPromotionResult.success) {
-      return failure(HttpError.internalServerError(orderPromotionResult.error.message));
+    if (orderPromotionResult.isFailure() || !orderPromotionResult.value) {
+      return failure(HttpError.internalServerError(orderPromotionResult.error?.message || 'Could not create order promotion'));
     }
 
     let orderPromotion = orderPromotionResult.value;

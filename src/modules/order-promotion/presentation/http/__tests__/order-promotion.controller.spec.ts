@@ -2,9 +2,11 @@ import express from 'express';
 import request from 'supertest';
 import { mock, mockDeep } from 'jest-mock-extended';
 
+import { Request, Response, NextFunction } from 'express';
+
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: jest.fn((req, res, next) => next()),
-  hasRole: jest.fn(() => (req, res, next) => next()),
+  isAuthenticated: jest.fn((req: Request, res: Response, next: NextFunction) => next()),
+  hasRole: jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
 }));
 import { PrismaClient } from '@prisma/client';
 import { CreateOrderPromotionUseCase } from '@/modules/order-promotion/application/use-cases/create-order-promotion.usecase';
