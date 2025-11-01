@@ -10,8 +10,10 @@ import { DeleteUserUseCase } from '@/modules/user/application/use-cases/delete-u
 import { ListUsersUseCase } from '@/modules/user/application/use-cases/list-users.usecase';
 import { UserRole } from '@prisma/client';
 
+import { Request, Response, NextFunction } from 'express';
+
 jest.mock('@/core/middlewares/auth.middleware', () => ({
-  isAuthenticated: (req, res, next) => next(),
+  isAuthenticated: (req: Request, res: Response, next: NextFunction) => next(),
 }));
 
 const app = express();

@@ -26,9 +26,9 @@ export class PrismaUserRepository implements IUserRepository {
     return users.map(UserMapper.toDomain);
   }
 
-  async save(user: User): Promise<void> {
+  async save(user: User): Promise<User> {
     const data = UserMapper.toPersistence(user);
-    await this.prisma.user.upsert({
+    const prismaUser = await this.prisma.user.upsert({
       where: { id: user.id },
       update: {
         ...data,
@@ -41,6 +41,7 @@ export class PrismaUserRepository implements IUserRepository {
         password: data.password ?? '',
       },
     });
+    return UserMapper.toDomain(prismaUser);
   }
 
   async delete(id: string): Promise<void> {

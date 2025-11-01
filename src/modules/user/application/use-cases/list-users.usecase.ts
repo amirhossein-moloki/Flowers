@@ -1,13 +1,15 @@
 import { IUserRepository } from '../../domain/user.repository.interface';
-import { User } from '../../domain/user.entity';
+import { UserDto } from '../dtos/user.dto';
 import { Result, success } from '@/core/utils/result';
 import { HttpError } from '@/core/errors/http-error';
+import { UserMapper } from '../../infrastructure/user.mapper';
 
 export class ListUsersUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  async execute(): Promise<Result<User[], HttpError>> {
+  async execute(): Promise<Result<UserDto[], HttpError>> {
     const users = await this.userRepository.findAll();
-    return success(users);
+    const userDtos = users.map(UserMapper.toDto);
+    return success(userDtos);
   }
 }

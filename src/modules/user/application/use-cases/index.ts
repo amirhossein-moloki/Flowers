@@ -1,5 +1,7 @@
 export * from './create-user.usecase';
 export * from './delete-user.usecase';
+export * from './get-all-users.usecase';
+export * from './get-me.usecase';
 export * from './get-user.usecase';
 export * from './list-users.usecase';
 export * from './update-user.usecase';

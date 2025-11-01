@@ -4,6 +4,7 @@ import { UserRole } from '@prisma/client';
 export { UserRole };
 
 export interface IUserProps {
+  id?: string;
   username: string;
   email:string;
   role: UserRole;
