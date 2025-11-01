@@ -1,50 +1,48 @@
-import { prismaMock } from '@/modules/__tests__/helpers/prisma-mock.helper';
+import { PrismaClient } from '@prisma/client';
+import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
 import { PrismaProductRepository } from '@/modules/product/infrastructure/prisma-product.repository';
 import { Product } from '@/modules/product/domain/product.entity';
 import { ProductMapper } from '@/modules/product/infrastructure/product.mapper';
+import { IProductProps } from '@/modules/product/domain/product.entity';
+import { Result } from '@/core/utils/result';
+import { HttpError } from '@/core/errors/http-error';
 
 describe('PrismaProductRepository', () => {
   let repository: PrismaProductRepository;
+  let prismaMock: DeepMockProxy<PrismaClient>;
 
   beforeEach(() => {
+    prismaMock = mockDeep<PrismaClient>();
     repository = new PrismaProductRepository(prismaMock);
   });
 
-  const productProps = {
+  const productProps: IProductProps = {
     name: 'Test Product',
     description: 'This is a test product.',
     price: 99.99,
     stock: 100,
     vendorId: 'vendor-id-1',
   };
-  const productResult = Product.create(productProps, 'prod-id-1');
-  if (!productResult.success) {
-    throw new Error('Test setup failed: could not create product entity');
-  }
-  const productEntity = productResult.value;
 
-  const prismaProduct = {
-    id: productEntity.id,
-    ...productProps,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  const productEntity = Product.create(productProps, 'prod-id-1').value as Product;
 
-  test('findById should return a product entity when found', async () => {
-    prismaMock.product.findUnique.mockResolvedValue(prismaProduct);
+  it('findById should return a product entity when found', async () => {
+    prismaMock.product.findUnique.mockResolvedValue(ProductMapper.toPersistence(productEntity));
+    const result = await repository.findById('prod-id-1');
 
-    const foundProduct = await repository.findById('prod-id-1');
-
+    expect(result.isSuccess()).toBe(true);
+    const foundProduct = result.value as Product;
     expect(foundProduct).toBeInstanceOf(Product);
-    expect(foundProduct?.id).toBe('prod-id-1');
+    expect(foundProduct.id).toBe('prod-id-1');
     expect(prismaMock.product.findUnique).toHaveBeenCalledWith({ where: { id: 'prod-id-1' } });
   });
 
-  test('findAll should return a paginated list of products', async () => {
-    prismaMock.product.findMany.mockResolvedValue([prismaProduct]);
+  it('findAll should return a paginated list of products', async () => {
+    prismaMock.product.findMany.mockResolvedValue([ProductMapper.toPersistence(productEntity)]);
+    const result = await repository.findAll({ page: 1, limit: 10, vendorId: 'vendor-id-1' });
 
-    const products = await repository.findAll({ page: 1, limit: 10, vendorId: 'vendor-id-1' });
-
+    expect(result.isSuccess()).toBe(true);
+    const products = result.value as Product[];
     expect(products).toHaveLength(1);
     expect(products[0]).toBeInstanceOf(Product);
     expect(prismaMock.product.findMany).toHaveBeenCalledWith({
@@ -54,19 +52,24 @@ describe('PrismaProductRepository', () => {
     });
   });
 
-  test('findByName should return a product entity when found', async () => {
-    prismaMock.product.findFirst.mockResolvedValue(prismaProduct);
+  it('findByName should return a product entity when found', async () => {
+    prismaMock.product.findFirst.mockResolvedValue(ProductMapper.toPersistence(productEntity));
+    const result = await repository.findByName('Test Product');
 
-    const foundProduct = await repository.findByName('Test Product');
-
+    expect(result.isSuccess()).toBe(true);
+    const foundProduct = result.value as Product;
     expect(foundProduct).toBeInstanceOf(Product);
-    expect(foundProduct?.name).toBe('Test Product');
+    expect(foundProduct.name).toBe('Test Product');
     expect(prismaMock.product.findFirst).toHaveBeenCalledWith({ where: { name: 'Test Product' } });
   });
 
-  test('save should call upsert on prisma client', async () => {
-    await repository.save(productEntity);
+  it('save should create or update a product', async () => {
+    prismaMock.product.upsert.mockResolvedValue(ProductMapper.toPersistence(productEntity));
+    const result = await repository.save(productEntity);
 
+    expect(result.isSuccess()).toBe(true);
+    const savedProduct = result.value as Product;
+    expect(savedProduct).toBeInstanceOf(Product);
     expect(prismaMock.product.upsert).toHaveBeenCalledWith({
       where: { id: productEntity.id },
       create: ProductMapper.toPersistence(productEntity),
@@ -74,11 +77,12 @@ describe('PrismaProductRepository', () => {
     });
   });
 
-  test('delete should call delete on prisma client', async () => {
-    await repository.delete('prod-id-1');
+  it('delete should remove a product', async () => {
+    prismaMock.product.delete.mockResolvedValue(ProductMapper.toPersistence(productEntity));
+    const result = await repository.delete('prod-id-1');
 
-    expect(prismaMock.product.delete).toHaveBeenCalledWith({
-      where: { id: 'prod-id-1' },
-    });
+    expect(result.isSuccess()).toBe(true);
+    expect(result.value).toBe(true);
+    expect(prismaMock.product.delete).toHaveBeenCalledWith({ where: { id: 'prod-id-1' } });
   });
 });

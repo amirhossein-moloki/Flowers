@@ -7,14 +7,14 @@ import { ProductMapper } from '../../infrastructure/product.mapper';
 export class GetProductUseCase {
   constructor(private readonly productRepository: IProductRepository) {}
 
-  async execute(id: string): Promise<Result<ProductDto | null, HttpError>> {
-    const product = await this.productRepository.findById(id);
+  async execute(id: string): Promise<Result<ProductDto, HttpError>> {
+    const productResult = await this.productRepository.findById(id);
 
-    if (!product) {
-      return success(null);
+    if (productResult.isFailure()) {
+      return failure(productResult.error);
     }
 
-    const productDto = ProductMapper.toDto(product);
+    const productDto = ProductMapper.toDto(productResult.value);
     return success(productDto);
   }
 }

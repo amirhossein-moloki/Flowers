@@ -20,15 +20,20 @@ export class CreateProductUseCase {
 
     const productResult = Product.create(productProps);
 
-    if (!productResult.success) {
-      return failure(HttpError.internalServerError(productResult.error.message));
+    if (productResult.isFailure()) {
+      return failure(HttpError.unprocessableEntity(productResult.error.message));
     }
 
     const product = productResult.value;
 
-    await this.productRepository.save(product);
+    const saveResult = await this.productRepository.save(product);
+    if (saveResult.isFailure()) {
+      return failure(saveResult.error);
+    }
 
-    const productDto = ProductMapper.toDto(product);
+    const savedProduct = saveResult.value;
+
+    const productDto = ProductMapper.toDto(savedProduct);
     return success(productDto);
   }
 }
