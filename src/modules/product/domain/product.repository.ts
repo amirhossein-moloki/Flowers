@@ -1,14 +1,15 @@
-import { IRepository } from '@/core/domain/repository';
-import { Product } from './product.entity';
+import { Result } from '@/core/utils/result';
+import { Product } from '@/modules/product/domain/product.entity';
+import { HttpError } from '@/core/errors/http-error';
 
-export interface IProductRepository extends IRepository<Product> {
-  findById(id: string): Promise<Product | null>;
+export interface IProductRepository {
+  findById(id: string): Promise<Result<Product, HttpError>>;
   findAll(options: {
     page: number;
     limit: number;
     vendorId?: string;
-  }): Promise<Product[]>;
-  findByName(name: string): Promise<Product | null>;
-  save(product: Product): Promise<void>;
-  delete(id: string): Promise<void>;
+  }): Promise<Result<Product[], HttpError>>;
+  findByName(name: string): Promise<Result<Product, HttpError>>;
+  save(product: Product): Promise<Result<Product, HttpError>>;
+  delete(id: string): Promise<Result<boolean, HttpError>>;
 }

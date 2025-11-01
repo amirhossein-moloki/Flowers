@@ -10,24 +10,31 @@ export class UpdateProductUseCase {
   constructor(private readonly productRepository: IProductRepository) {}
 
   async execute(id: string, dto: UpdateProductDto): Promise<Result<ProductDto, HttpError>> {
-    const product = await this.productRepository.findById(id);
+    const productResult = await this.productRepository.findById(id);
 
-    if (!product) {
-      return failure(HttpError.notFound('Product not found.'));
+    if (productResult.isFailure()) {
+      return failure(productResult.error);
     }
+
+    const product = productResult.value;
 
     const updatedProductProps = { ...product.props, ...dto };
     const updatedProductResult = Product.create(updatedProductProps, product.id);
 
-    if(!updatedProductResult.success){
-        return failure(HttpError.internalServerError(updatedProductResult.error.message));
+    if(updatedProductResult.isFailure()){
+        return failure(HttpError.unprocessableEntity(updatedProductResult.error.message));
     }
 
     const updatedProduct = updatedProductResult.value;
 
-    await this.productRepository.save(updatedProduct);
+    const saveResult = await this.productRepository.save(updatedProduct);
+    if (saveResult.isFailure()) {
+      return failure(saveResult.error);
+    }
 
-    const productDto = ProductMapper.toDto(updatedProduct);
+    const savedProduct = saveResult.value;
+
+    const productDto = ProductMapper.toDto(savedProduct);
     return success(productDto);
   }
 }
