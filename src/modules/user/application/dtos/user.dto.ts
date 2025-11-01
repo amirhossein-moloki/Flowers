@@ -1,13 +1,4 @@
-import { UserRole } from '../../domain/user.entity';
-
-export interface GetUserDto {
-  id: string;
-  name: string;
-  username: string;
-  email: string;
-  role: UserRole;
-  createdAt: Date;
-}
+import { UserRole } from '@prisma/client';
 
 export interface UserDto {
   id: string;

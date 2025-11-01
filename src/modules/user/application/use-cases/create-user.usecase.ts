@@ -1,5 +1,5 @@
 import { IUserRepository } from '../../domain/user.repository.interface';
-import { User, IUserProps, UserRole as DomainUserRole } from '../../domain/user.entity';
+import { User, IUserProps } from '../../domain/user.entity';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UserDto } from '../dtos/user.dto';
 import { Result, success, failure } from '@/core/utils/result';
@@ -35,10 +35,10 @@ export class CreateUserUseCase {
 
     // 3. Persist the user
     // Note: In a real app, password hashing would happen here before saving
-    await this.userRepository.save(user);
+    const savedUser = await this.userRepository.save(user);
 
     // 4. Return a public-facing DTO
-    const userDto = UserMapper.toDto(user);
+    const userDto = UserMapper.toDto(savedUser);
     return success(userDto);
   }
 }
